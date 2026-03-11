@@ -3,6 +3,7 @@ layout: opencs
 title: Soroptimist International of Poway
 permalink: /sip/home/
 ---
+
 <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 1100px; margin: 0 auto; padding: 40px 24px;">
 
   <div style="text-align: center; margin-bottom: 56px;">
