@@ -50,14 +50,14 @@ permalink: /sip/home/
         <div style="flex: 1; min-width: 220px; background: rgba(232,131,106,0.07); border: 1px solid rgba(232,131,106,0.25); border-radius: 6px; padding: 20px;">
           <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">💛 Support Us</h3>
           <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Your donation directly funds scholarships, housing support, and career programs for women who need it most. Every dollar makes a measurable difference.</p>
-          <a href="#" style="display: inline-block; background: #e8836a; color: #111; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Donate Now</a>
+          <a href="https://www.paypal.com/us/fundraiser/charity/4220142" style="display: inline-block; background: #e8836a; color: #fff; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Donate Now</a>
         </div>
 
         <!-- Volunteer -->
         <div style="flex: 1; min-width: 220px; background: rgba(94,203,138,0.07); border: 1px solid rgba(94,203,138,0.25); border-radius: 6px; padding: 20px;">
           <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">🌿 Volunteer</h3>
           <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community.</p>
-          <a href="#" style="display: inline-block; background: #5ecb8a; color: #111; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Get Started</a>
+          <a href="/sip/contact" style="display: inline-block; background: #5ecb8a; color: #fff; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Get Started</a>
         </div>
 
       </div>
