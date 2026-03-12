@@ -49,14 +49,14 @@ permalink: /sip/home/
         <!-- Support Us -->
         <div style="flex: 1; min-width: 220px; background: rgba(232,131,106,0.07); border: 1px solid rgba(232,131,106,0.25); border-radius: 6px; padding: 20px;">
           <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">💛 Support Us</h3>
-          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Your donation directly funds scholarships, housing support, and career programs for women who need it most. Every dollar makes a measurable difference.</p>
+          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Your donation directly funds scholarships, housing support, and career programs for women who need it most. Every dollar makes a measurable difference — giving a woman the resources she needs to become self-sufficient and thrive.</p>
           <a href="https://www.paypal.com/us/fundraiser/charity/4220142" style="display: inline-block; background: #e8836a; color: #fff; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Donate Now</a>
         </div>
 
         <!-- Volunteer -->
         <div style="flex: 1; min-width: 220px; background: rgba(94,203,138,0.07); border: 1px solid rgba(94,203,138,0.25); border-radius: 6px; padding: 20px;">
           <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">🌿 Volunteer</h3>
-          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community.</p>
+          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community. Your presence shows women and girls that people care — and that kind of support can change the course of a life.</p>
           <a href="/sip/contact" style="display: inline-block; background: #5ecb8a; color: #fff; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Get Started</a>
         </div>
 
@@ -74,7 +74,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Transitional Housing</h2>
         <div style="width: 32px; height: 2px; background: #e8836a; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Supporting women and families in need of safe, stable housing as they work toward independence and long-term stability in our community.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Supporting women and families in need of safe, stable housing as they work toward independence and long-term stability in our community. When a woman has a secure place to call home, she can focus on rebuilding her life — finding work, caring for her children, and moving forward with confidence.</p>
       </div>
     </a>
 
@@ -86,7 +86,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Live Your Dream</h2>
         <div style="width: 32px; height: 2px; background: #6ab0e8; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Awards education and training grants to women who are the primary financial supporters of their families, helping them gain the skills needed for a better life.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Awards education and training grants to women who are the primary financial supporters of their families, helping them gain the skills needed for a better life. With access to education, recipients gain higher earning potential — breaking cycles of financial hardship and creating lasting change for themselves and their families.</p>
       </div>
     </a>
 
@@ -98,7 +98,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">"Dream It, Be It"</h2>
         <div style="width: 32px; height: 2px; background: #d4b84a; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">A career development program for girls, helping them set career goals, overcome obstacles, and connect with inspiring women who model what is possible.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">A career development program for girls, helping them set career goals, overcome obstacles, and connect with inspiring women who model what is possible. Girls who participate leave with greater self-confidence, a clearer sense of direction, and the belief that their ambitions are truly within reach.</p>
       </div>
     </a>
 
@@ -110,7 +110,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">STAT!</h2>
         <div style="width: 32px; height: 2px; background: #e86a6a; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Stop Trafficking and Trauma — providing support and resources to survivors of human trafficking and connecting them to the services they need to reclaim their lives.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Stop Trafficking and Trauma — providing support and resources to survivors of human trafficking and connecting them to the services they need to reclaim their lives. By helping survivors access safety, counseling, and stable footing, this program ensures that trauma does not become a permanent barrier to a full life.</p>
       </div>
     </a>
 
@@ -122,7 +122,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Abraxas Scholarship</h2>
         <div style="width: 32px; height: 2px; background: #5ecb8a; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Scholarship support for students at Abraxas High School, recognizing and uplifting young people who demonstrate commitment to education and personal growth.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Scholarship support for students at Abraxas High School, recognizing and uplifting young people who demonstrate commitment to education and personal growth. For students who face extra hurdles, this recognition can be a turning point — validating their hard work and opening doors to higher education and new opportunities.</p>
       </div>
     </a>
 
@@ -134,7 +134,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Colegio La Esperanza</h2>
         <div style="width: 32px; height: 2px; background: #b07de8; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Supporting girls' education at Colegio La Esperanza, ensuring access to quality schooling and opportunity for young women across the border in Tijuana, Mexico.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Supporting girls' education at Colegio La Esperanza, ensuring access to quality schooling and opportunity for young women across the border in Tijuana, Mexico. An educated girl becomes an empowered woman — one who can uplift her family, strengthen her community, and inspire the next generation to dream bigger.</p>
       </div>
     </a>
 
