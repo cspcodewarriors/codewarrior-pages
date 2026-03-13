@@ -30,7 +30,7 @@ permalink: /sip/abraxas-scholarship/
 
 <div class="sip-page">
 
-  <a href="/sip/home/" class="sip-back">← Back to Programs</a>
+  <a href="/codewarrior-pages/sip/home/" class="sip-back">← Back to Programs</a>
 
   <p class="sip-eyebrow">🎓 Scholarship &amp; Service</p>
   <h1 class="sip-title">Abraxas High School<br>Scholarships &amp; Programs</h1>

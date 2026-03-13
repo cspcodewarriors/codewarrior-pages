@@ -75,7 +75,7 @@ permalink: /sip/home/
             <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">🌿 Volunteer</h3>
             <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community. Your presence shows women and girls that people care — and that kind of support can change the course of a life.</p>
           </div>
-          <a href="/sip/contact" class="sip-btn" style="background: #5ecb8a; align-self: flex-start;">Get Started</a>
+          <a href="/codewarrior-pages/sip/contact" class="sip-btn" style="background: #5ecb8a; align-self: flex-start;">Get Started</a>
         </div>
 
       </div>

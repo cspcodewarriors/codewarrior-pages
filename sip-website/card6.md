@@ -37,7 +37,7 @@ permalink: /sip/colegio-la-esparanza/
 
 <div class="sip-page">
 
-  <a href="/sip/home/" class="sip-back">← Back to Programs</a>
+  <a href="/codewarrior-pages/sip/home/" class="sip-back">← Back to Programs</a>
 
   <p class="sip-eyebrow">🌺 International Education</p>
   <h1 class="sip-title">Colegio<br>La Esperanza</h1>
