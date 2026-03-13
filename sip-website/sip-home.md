@@ -58,19 +58,23 @@ permalink: /sip/home/
       <div style="width: 32px; height: 2px; background: #e8836a; margin-bottom: 14px;"></div>
       <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0 0 24px 0;">Your time and generosity fuel real change. Every contribution — big or small — helps women and girls in our community build better lives.</p>
 
-      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end;">
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: stretch;">
 
         <!-- Support Us -->
-        <div style="flex: 1; min-width: 220px; background: rgba(232,131,106,0.07); border: 1px solid rgba(232,131,106,0.25); border-radius: 6px; padding: 20px; display: flex; flex-direction: column;">
-          <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">💛 Support Us</h3>
-          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0; flex: 1;">Your donation directly funds scholarships, housing support, and career programs for women who need it most. Every dollar makes a measurable difference — giving a woman the resources she needs to become self-sufficient and thrive.</p>
+        <div style="flex: 1; min-width: 220px; background: rgba(232,131,106,0.07); border: 1px solid rgba(232,131,106,0.25); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">💛 Support Us</h3>
+            <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Your donation directly funds scholarships, housing support, and career programs for women who need it most. Every dollar makes a measurable difference — giving a woman the resources she needs to become self-sufficient and thrive.</p>
+          </div>
           <a href="https://www.paypal.com/us/fundraiser/charity/4220142" class="sip-btn" style="background: #e8836a; align-self: flex-start;">Donate Now</a>
         </div>
 
         <!-- Volunteer -->
-        <div style="flex: 1; min-width: 220px; background: rgba(94,203,138,0.07); border: 1px solid rgba(94,203,138,0.25); border-radius: 6px; padding: 20px; display: flex; flex-direction: column;">
-          <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">🌿 Volunteer</h3>
-          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0; flex: 1;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community. Your presence shows women and girls that people care — and that kind of support can change the course of a life.</p>
+        <div style="flex: 1; min-width: 220px; background: rgba(94,203,138,0.07); border: 1px solid rgba(94,203,138,0.25); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">🌿 Volunteer</h3>
+            <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community. Your presence shows women and girls that people care — and that kind of support can change the course of a life.</p>
+          </div>
           <a href="/sip/contact" class="sip-btn" style="background: #5ecb8a; align-self: flex-start;">Get Started</a>
         </div>
 
