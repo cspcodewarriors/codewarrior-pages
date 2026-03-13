@@ -337,7 +337,7 @@ permalink: /sip/blog
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="/sip/home/" class="nav-logo">Soroptimist <span>·</span> Poway</a>
+  <a href="/codewarrior-pages/sip/home/" class="nav-logo">Soroptimist <span>·</span> Poway</a>
   <div class="nav-actions">
     <a href="/sip/home/" class="nav-back">← Programs</a>
     <div class="admin-badge" id="adminBadge"><span class="admin-dot"></span>Admin</div>
