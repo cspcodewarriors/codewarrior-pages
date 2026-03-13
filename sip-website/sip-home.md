@@ -23,6 +23,20 @@ permalink: /sip/home/
     transform: translateY(-1px) scale(1.005);
     filter: brightness(1.04);
   }
+  .sip-btn {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none !important;
+    color: #fff !important;
+  }
+  .sip-btn:hover, .sip-btn:visited, .sip-btn:active {
+    color: #fff !important;
+  }
 </style>
 
 <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 1100px; margin: 0 auto; padding: 40px 24px;">
@@ -44,20 +58,20 @@ permalink: /sip/home/
       <div style="width: 32px; height: 2px; background: #e8836a; margin-bottom: 14px;"></div>
       <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0 0 24px 0;">Your time and generosity fuel real change. Every contribution — big or small — helps women and girls in our community build better lives.</p>
 
-      <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end;">
 
         <!-- Support Us -->
-        <div style="flex: 1; min-width: 220px; background: rgba(232,131,106,0.07); border: 1px solid rgba(232,131,106,0.25); border-radius: 6px; padding: 20px;">
+        <div style="flex: 1; min-width: 220px; background: rgba(232,131,106,0.07); border: 1px solid rgba(232,131,106,0.25); border-radius: 6px; padding: 20px; display: flex; flex-direction: column;">
           <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">💛 Support Us</h3>
-          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Your donation directly funds scholarships, housing support, and career programs for women who need it most. Every dollar makes a measurable difference — giving a woman the resources she needs to become self-sufficient and thrive.</p>
-          <a href="https://www.paypal.com/us/fundraiser/charity/4220142" style="display: inline-block; background: #e8836a; color: #fff; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Donate Now</a>
+          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0; flex: 1;">Your donation directly funds scholarships, housing support, and career programs for women who need it most. Every dollar makes a measurable difference — giving a woman the resources she needs to become self-sufficient and thrive.</p>
+          <a href="https://www.paypal.com/us/fundraiser/charity/4220142" class="sip-btn" style="background: #e8836a; align-self: flex-start;">Donate Now</a>
         </div>
 
         <!-- Volunteer -->
-        <div style="flex: 1; min-width: 220px; background: rgba(94,203,138,0.07); border: 1px solid rgba(94,203,138,0.25); border-radius: 6px; padding: 20px;">
+        <div style="flex: 1; min-width: 220px; background: rgba(94,203,138,0.07); border: 1px solid rgba(94,203,138,0.25); border-radius: 6px; padding: 20px; display: flex; flex-direction: column;">
           <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">🌿 Volunteer</h3>
-          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community. Your presence shows women and girls that people care — and that kind of support can change the course of a life.</p>
-          <a href="/sip/contact" style="display: inline-block; background: #5ecb8a; color: #fff; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 4px; text-decoration: none;">Get Started</a>
+          <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0; flex: 1;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community. Your presence shows women and girls that people care — and that kind of support can change the course of a life.</p>
+          <a href="/sip/contact" class="sip-btn" style="background: #5ecb8a; align-self: flex-start;">Get Started</a>
         </div>
 
       </div>
