@@ -374,43 +374,21 @@ permalink: /sip/contact
     font-size: 1.1rem;
   }
 
-  .admin-key-row {
+  .admin-user-row {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: space-between;
     margin-bottom: 1.25rem;
     flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
-  .admin-key-row input {
-    padding: 0.45rem 0.75rem;
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-family: monospace;
-    width: 220px;
-  }
-
-  .admin-key-row input:focus { outline: none; border-color: var(--blue-light); }
-
-  .btn-unlock {
-    padding: 0.45rem 1rem;
-    background: var(--blue);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
+  .admin-user-info {
     font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
+    color: var(--text-muted);
   }
-  .btn-unlock:hover { background: var(--blue-light); }
 
-  .admin-auth-status {
-    font-size: 0.82rem;
-    font-style: italic;
-  }
-  .admin-auth-status.ok { color: #2e7d32; }
-  .admin-auth-status.err { color: var(--danger); }
+  .admin-user-info strong { color: var(--blue); }
 
   .admin-form-grid {
     display: grid;
@@ -627,22 +605,25 @@ permalink: /sip/contact
     <h2>Upcoming Meetings</h2>
     <p class="section-desc">Click any meeting on the calendar to view details.</p>
 
-    <!-- Admin toggle -->
-    <div class="admin-toggle-row">
+    <!-- Admin toggle (only rendered for admins via JS) -->
+    <div class="admin-toggle-row" id="admin-toggle-row" style="display:none">
       <button class="btn-admin-toggle" onclick="toggleAdminPanel()">Manage Events</button>
+    </div>
+
+    <!-- Login prompt for non-admins (shown via JS) -->
+    <div id="admin-login-prompt" style="display:none; text-align:right; margin-bottom:0.75rem;">
+      <a id="admin-login-link" href="/login" style="font-size:0.82rem;color:var(--blue);text-decoration:underline;">Log in to manage events</a>
     </div>
 
     <!-- Admin panel -->
     <div class="admin-panel" id="admin-panel">
       <h3>Event Management</h3>
 
-      <div class="admin-key-row">
-        <input type="password" id="admin-key-input" placeholder="Admin key">
-        <button class="btn-unlock" onclick="setAdminKey()">Unlock</button>
-        <span class="admin-auth-status" id="admin-auth-status"></span>
+      <div class="admin-user-row">
+        <span class="admin-user-info">Logged in as <strong id="admin-username"></strong></span>
       </div>
 
-      <div id="admin-controls" style="display:none">
+      <div id="admin-controls">
         <!-- Add / Edit form -->
         <div id="event-form-section">
           <strong id="event-form-title" style="font-size:0.9rem;color:var(--blue);">Add New Event</strong>
@@ -755,7 +736,6 @@ permalink: /sip/contact
   let MEETINGS  = [];           // populated from API
   let editingId = null;         // ID of event being edited (null = adding new)
   let modalEventId = null;      // currently open event's ID
-  let adminKey = '';
   let adminUnlocked = false;
 
   // ── Form handling ─────────────────────────────────────────────
@@ -767,34 +747,35 @@ permalink: /sip/contact
       .forEach(el => el.disabled = true);
   }
 
+  // ── Auth check ────────────────────────────────────────────────
+  function checkAdminSession() {
+    fetch(`${API_BASE}/api/id`, { credentials: 'include' })
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(user => {
+        if (user.is_admin) {
+          adminUnlocked = true;
+          document.getElementById('admin-username').textContent = user.name || user.uid;
+          document.getElementById('admin-toggle-row').style.display = 'block';
+          document.getElementById('admin-controls').style.display = 'block';
+          renderAdminList();
+        } else {
+          // Logged in but not admin — hide manage controls entirely
+          document.getElementById('admin-toggle-row').style.display = 'none';
+        }
+      })
+      .catch(status => {
+        if (status === 401) {
+          // Not logged in — show login prompt pointing to the frontend login page
+          const loginLink = document.getElementById('admin-login-link');
+          loginLink.href = `/login?next=${encodeURIComponent(window.location.pathname)}`;
+          document.getElementById('admin-login-prompt').style.display = 'block';
+        }
+      });
+  }
+
   // ── Admin panel ───────────────────────────────────────────────
   function toggleAdminPanel() {
     document.getElementById('admin-panel').classList.toggle('open');
-  }
-
-  function setAdminKey() {
-    adminKey = document.getElementById('admin-key-input').value.trim();
-    // Try a lightweight request to verify
-    fetch(`${API_BASE}/api/sip/events`, {
-      headers: { 'X-Admin-Key': adminKey }
-    })
-    .then(r => {
-      if (r.ok) {
-        adminUnlocked = true;
-        document.getElementById('admin-auth-status').textContent = 'Access granted';
-        document.getElementById('admin-auth-status').className = 'admin-auth-status ok';
-        document.getElementById('admin-controls').style.display = 'block';
-        renderAdminList();
-      } else {
-        throw new Error('invalid key');
-      }
-    })
-    .catch(() => {
-      adminUnlocked = false;
-      document.getElementById('admin-auth-status').textContent = 'Invalid key';
-      document.getElementById('admin-auth-status').className = 'admin-auth-status err';
-      document.getElementById('admin-controls').style.display = 'none';
-    });
   }
 
   function showAdminMsg(text, type) {
@@ -883,10 +864,8 @@ permalink: /sip/contact
 
     fetch(url, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Key': adminKey,
-      },
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
     .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Error')))
@@ -910,7 +889,7 @@ permalink: /sip/contact
     if (!confirm('Delete this event?')) return;
     fetch(`${API_BASE}/api/sip/events/${id}`, {
       method: 'DELETE',
-      headers: { 'X-Admin-Key': adminKey },
+      credentials: 'include',
     })
     .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Error')))
     .then(() => {
@@ -1073,4 +1052,5 @@ permalink: /sip/contact
 
   renderDayNames();
   loadEvents();
+  checkAdminSession();
 </script>

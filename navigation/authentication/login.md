@@ -5,608 +5,377 @@ permalink: /login
 search_exclude: true
 show_reading_time: false
 ---
-<br>
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<div id="sip-auth-root">
 
-<div class="login-container">
-    <!-- Python Login Form -->
-    <div class="login-card">
-        <h1 id="pythonTitle">User Login</h1>
-        <hr>
-        <form id="pythonForm" onsubmit="loginBoth(); return false;">
-            <div class="form-group">
-                <input type="text" id="uid" placeholder="GitHub ID" required>
-            </div>
-            <div class="form-group">
-                <input type="password" id="password" placeholder="Password" required>
-            </div>
-            <p>
-                <button type="submit" class="large primary submit-button">Login</button>
-            </p>
-            <p id="message" style="color: red;"></p>
-        </form>
-    </div>
-    <div class="signup-card">
-        <h1 id="signupTitle">Sign Up</h1>
-        <hr>
-        <!-- Google OAuth Section (initially hidden) -->
-        <div id="oauth-verification" style="display: none; text-align: center; margin-bottom: 2rem;">
-            <h3 style="color: #6366f1; margin-bottom: 1rem;">🎓 School Email Verification</h3>
-            <p style="margin-bottom: 1.5rem; color: #d1d5db;">
-                Please sign in with your school Google account to verify you're a Poway USD student or teacher.
-                <br><strong>You must use an email ending in @stu.powayusd.com or @powayusd.com</strong>
-            </p>
-            <div id="g_id_onload"
-                 data-client_id="65827797404-ccjleg7jg4g2an8ddpmhnlca4ii2gk8q.apps.googleusercontent.com"
-                 data-callback="handleGoogleSignIn"
-                 data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin" 
-                 data-type="standard"
-                 data-size="large"
-                 data-theme="filled_blue"
-                 data-text="signin_with"
-                 data-shape="rectangular"
-                 data-logo_alignment="left"
-                 style="margin-bottom: 1rem;">
-            </div>
-            <button type="button" class="large secondary" onclick="showSignupForm()" 
-                    style="background-color: #6b7280;">
-                ← Back to Form
-            </button>
-            <div id="oauth-status" style="margin-top: 1rem;"></div>
-        </div>
-        <!-- Signup Form -->
-        <form id="signupForm" onsubmit="handleSignupSubmit(event);">
-            <div class="form-group">
-                <input type="text" id="name" placeholder="Name" required>
-            </div>
-            <div class="form-group">
-                <input type="text" id="signupUid" placeholder="GitHub ID" required>
-            </div>
-            <div class="form-group">
-                <input type="text" id="signupSid" placeholder="Student ID" required>
-            </div>
-            <div class="form-group">
-                <select id="signupSchool" required>
-                    <option value="" disabled selected>Select Your High School</option>
-                    <option value="Abraxas High School">Abraxas</option>
-                    <option value="Del Norte High School">Del Norte</option>
-                    <option value="Mt Carmel High School">Mt Carmel</option>
-                    <option value="Poway High School">Poway</option>
-                    <option value="Poway to Palomar">Poway to Palomar</option>
-                    <option value="Rancho Bernardo High School">Rancho Bernardo</option>
-                    <option value="Westview High School">Westview</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="email" id="signupEmail" placeholder="Personal (not school) Email" required>
-            </div>
-            <div class="form-group">
-                <input type="password" id="signupPassword" placeholder="Password" required>
-            </div>
-            <!-- Confirm Password Field -->
-            <div class="form-group">
-                <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
-                <div id="password-validation-message" class="validation-message"></div>
-            </div>
-            <p>
-                <label class="switch">
-                    <span class="toggle">
-                        <input type="checkbox" name="kasmNeeded" id="kasmNeeded">
-                        <span class="slider"></span>
-                    </span>
-                    <span class="label-text">Kasm Server Needed</span>
-                </label>
-            </p>
-            <p>
-                <button type="submit" class="large primary submit-button">Sign Up</button>
-            </p>
-            <!-- Backend Status Display -->
-            <div class="backend-status">
-                <div id="flaskStatus" class="status-item">
-                    <span class="status-icon">⏳</span>
-                    <span class="status-text">Flask</span>
-                </div>
-                <div id="springStatus" class="status-item">
-                    <span class="status-icon">⏳</span>
-                    <span class="status-text">Spring</span>
-                </div>
-            </div>
-            <div id="overallStatus" class="overall-status hidden"></div>
-        </form>
-    </div>
+<style>
+  #sip-auth-root {
+    font-family: "Segoe UI", Georgia, sans-serif;
+    max-width: 460px;
+    margin: 1.5rem auto 3rem;
+    padding: 0 1rem;
+    color: #1a1a2e;
+  }
+
+  /* Page heading */
+  #sip-auth-root .sip-heading {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  #sip-auth-root .sip-heading h2 {
+    color: #003F87;
+    font-size: 1.35rem;
+    margin: 0 0 0.2rem;
+    border: none;
+    font-weight: 700;
+  }
+  #sip-auth-root .sip-heading p {
+    color: #5a6278;
+    font-size: 0.88rem;
+    margin: 0;
+  }
+  #sip-auth-root .sip-gold-rule {
+    border: none;
+    border-top: 3px solid #C8973A;
+    width: 48px;
+    margin: 0.65rem auto;
+    opacity: 0.75;
+  }
+
+  /* Card */
+  #sip-auth-root .sip-card {
+    border: 2px solid #dde3ec;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,63,135,0.09);
+    background: #fff;
+  }
+
+  /* Tab strip */
+  #sip-auth-root .sip-tab-strip {
+    display: flex !important;
+    background: #003F87;
+    border-bottom: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  #sip-auth-root .sip-tab-btn {
+    flex: 1;
+    padding: 0.85rem 0;
+    background: rgba(255,255,255,0.1) !important;
+    color: rgba(255,255,255,0.65) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    font-family: inherit !important;
+    transition: background 0.15s, color 0.15s;
+    outline: none;
+    text-align: center;
+    display: block;
+    width: 100%;
+    line-height: 1.2;
+    box-shadow: none !important;
+  }
+  #sip-auth-root .sip-tab-btn.sip-active {
+    background: #fff !important;
+    color: #003F87 !important;
+  }
+  #sip-auth-root .sip-tab-btn:not(.sip-active):hover {
+    background: rgba(255,255,255,0.22) !important;
+    color: #fff !important;
+  }
+
+  /* Panels */
+  #sip-auth-root .sip-panel {
+    display: none;
+    padding: 1.75rem;
+  }
+  #sip-auth-root .sip-panel.sip-active {
+    display: block;
+  }
+
+  /* Form groups */
+  #sip-auth-root .sip-fg {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+    margin-bottom: 1rem;
+  }
+  #sip-auth-root .sip-fg label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    display: block;
+  }
+  #sip-auth-root .sip-fg input,
+  #sip-auth-root .sip-fg select {
+    padding: 0.58rem 0.8rem !important;
+    border: 1.5px solid #dde3ec !important;
+    border-radius: 7px !important;
+    font-size: 0.93rem !important;
+    font-family: inherit !important;
+    color: #1a1a2e !important;
+    background: #fff !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s;
+    box-shadow: none !important;
+  }
+  #sip-auth-root .sip-fg input:focus,
+  #sip-auth-root .sip-fg select:focus {
+    outline: none !important;
+    border-color: #1a5fa8 !important;
+    box-shadow: 0 0 0 3px rgba(26,95,168,0.1) !important;
+  }
+  #sip-auth-root .sip-fg .hint {
+    font-size: 0.77rem;
+    color: #5a6278;
+  }
+
+  /* Buttons */
+  #sip-auth-root .sip-submit {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.7rem !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 7px !important;
+    font-size: 0.97rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    font-family: inherit !important;
+    margin-top: 0.35rem !important;
+    box-shadow: none !important;
+    transition: opacity 0.15s;
+  }
+  #sip-auth-root .sip-submit.sip-blue { background: #003F87 !important; }
+  #sip-auth-root .sip-submit.sip-blue:hover { background: #1a5fa8 !important; }
+  #sip-auth-root .sip-submit.sip-gold { background: #C8973A !important; }
+  #sip-auth-root .sip-submit.sip-gold:hover { background: #a07628 !important; }
+  #sip-auth-root .sip-submit:disabled { opacity: 0.55 !important; cursor: not-allowed !important; }
+
+  /* Status messages */
+  #sip-auth-root .sip-msg {
+    display: block;
+    margin-top: 0.85rem;
+    font-size: 0.87rem;
+    text-align: center;
+    min-height: 1.1em;
+    color: #c0392b;
+  }
+  #sip-auth-root .sip-msg.ok { color: #2e7d32; }
+
+  /* Password match hint */
+  #sip-auth-root .pw-hint { font-size: 0.77rem; }
+  #sip-auth-root .pw-hint.ok  { color: #2e7d32; }
+  #sip-auth-root .pw-hint.err { color: #c0392b; }
+
+  /* Divider + footer */
+  #sip-auth-root .sip-hr {
+    border: none;
+    border-top: 1px solid #dde3ec;
+    margin: 1.25rem 0 1rem;
+  }
+  #sip-auth-root .sip-note {
+    font-size: 0.8rem;
+    color: #5a6278;
+    text-align: center;
+    line-height: 1.5;
+  }
+  #sip-auth-root .sip-note a { color: #003F87; text-decoration: none; }
+  #sip-auth-root .sip-note a:hover { text-decoration: underline; }
+</style>
+
+<div class="sip-heading">
+  <h2>Soroptimist International of Poway</h2>
+  <hr class="sip-gold-rule">
+  <p>Chapter Member &amp; Administrator Portal</p>
+</div>
+
+<div class="sip-card">
+
+  <!-- Tab strip -->
+  <div class="sip-tab-strip">
+    <button class="sip-tab-btn sip-active" id="tab-login" onclick="sipSwitchTab('login')">Log In</button>
+    <button class="sip-tab-btn" id="tab-signup" onclick="sipSwitchTab('signup')">Sign Up</button>
+  </div>
+
+  <!-- Login panel -->
+  <div class="sip-panel sip-active" id="sip-panel-login">
+    <form onsubmit="sipLogin(event)">
+      <div class="sip-fg">
+        <label for="sip-uid">Member ID</label>
+        <input type="text" id="sip-uid" placeholder="Your assigned member ID" autocomplete="username" required>
+        <span class="hint">Assigned to you by your chapter administrator</span>
+      </div>
+      <div class="sip-fg">
+        <label for="sip-pw">Password</label>
+        <input type="password" id="sip-pw" placeholder="Enter your password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="sip-submit sip-blue" id="login-btn">Log In</button>
+      <span class="sip-msg" id="login-msg"></span>
+    </form>
+  </div>
+
+  <!-- Sign up panel -->
+  <div class="sip-panel" id="sip-panel-signup">
+    <form onsubmit="sipSignup(event)">
+      <div class="sip-fg">
+        <label for="su-name">Full Name</label>
+        <input type="text" id="su-name" placeholder="Your full name" required>
+      </div>
+      <div class="sip-fg">
+        <label for="su-email">Email Address</label>
+        <input type="email" id="su-email" placeholder="your@email.com" required>
+      </div>
+      <div class="sip-fg">
+        <label for="su-uid">Member ID</label>
+        <input type="text" id="su-uid" placeholder="Choose a unique ID, e.g. jsmith" required>
+        <span class="hint">This will be your login username</span>
+      </div>
+      <div class="sip-fg">
+        <label for="su-role">Role</label>
+        <select id="su-role" required>
+          <option value="" disabled selected>Select your role</option>
+          <option>Chapter Member</option>
+          <option>Chapter Officer</option>
+          <option>Program Volunteer</option>
+        </select>
+      </div>
+      <div class="sip-fg">
+        <label for="su-pw">Password</label>
+        <input type="password" id="su-pw" placeholder="At least 8 characters" required>
+      </div>
+      <div class="sip-fg">
+        <label for="su-pw2">Confirm Password</label>
+        <input type="password" id="su-pw2" placeholder="Re-enter your password" required>
+        <span class="pw-hint" id="pw-match-msg"></span>
+      </div>
+      <button type="submit" class="sip-submit sip-gold" id="signup-btn">Sign Up</button>
+      <span class="sip-msg" id="signup-msg"></span>
+      <hr class="sip-hr">
+      <p class="sip-note">
+        New accounts start with standard access. An administrator can upgrade your role after review.
+        Questions? <a href="/sip/contact">Contact the chapter.</a>
+      </p>
+    </form>
+  </div>
+
+</div>
 </div>
 
 <script type="module">
-    import { login, pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+  import { login, pythonURI } from '{{site.baseurl}}/assets/js/api/config.js';
 
-    let signupFormData = {};
-    let verifiedSchoolEmail = null;
-    let validationTimeout = null;
-    const GOOGLE_CLIENT_ID = "65827797404-ccjleg7jg4g2an8ddpmhnlca4ii2gk8q.apps.googleusercontent.com";
+  // ── Tab switching ────────────────────────────────────────────
+  window.sipSwitchTab = function(tab) {
+    ['login','signup'].forEach(t => {
+      document.getElementById(`tab-${t}`).classList.toggle('sip-active', t === tab);
+      document.getElementById(`sip-panel-${t}`).classList.toggle('sip-active', t === tab);
+    });
+  };
 
-    // Password validation with debouncing (1.5 second delay)
-    function validatePasswordsDebounced() {
-        // Clear existing timeout
-        if (validationTimeout) {
-            clearTimeout(validationTimeout);
-        }
+  // ── Redirect target ──────────────────────────────────────────
+  function getNextUrl() {
+    return new URLSearchParams(window.location.search).get('next') || '/sip/contact';
+  }
 
-        // Set new timeout for 1.5 seconds
-        validationTimeout = setTimeout(() => {
-            validateForm();
-        }, 1500);
-    }
+  // ── Login ────────────────────────────────────────────────────
+  window.sipLogin = function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('login-btn');
+    const msg = document.getElementById('login-msg');
+    btn.disabled = true;
+    btn.textContent = 'Logging in...';
+    msg.textContent = '';
+    msg.className = 'sip-msg';
 
-    function validateForm() {
-        const password = document.getElementById('signupPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const confirmField = document.getElementById('confirmPassword');
-        const messageDiv = document.getElementById('password-validation-message');
-
-        // Clear previous validation styles
-        confirmField.classList.remove('password-match', 'password-mismatch', 'password-length');
-        messageDiv.classList.remove('success', 'error');
-
-        // Don't validate if confirm password is empty
-        if (confirmPassword === '') {
-            messageDiv.textContent = '';
-            return true;
-        }
-
-        if (password.length < 8) {
-            confirmField.classList.add('password-length');
-            messageDiv.classList.add('error');
-            messageDiv.textContent = '✗ Passwords must be at least 8 characters long';
-            return false;
-        }
-
-        if (password === confirmPassword) {
-            confirmField.classList.add('password-match');
-            messageDiv.classList.add('success');
-            messageDiv.textContent = '✓ Passwords match';
-            return true;
-        } else {
-            confirmField.classList.add('password-mismatch');
-            messageDiv.classList.add('error');
-            messageDiv.textContent = '✗ Passwords do not match';
-            return false;
-        }
-    }
-
-    // Form submission validation
-    function validateSignupForm() {
-        const password = document.getElementById('signupPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        if (password !== confirmPassword) {
-            alert('Passwords do not match. Please try again.');
-            document.getElementById('confirmPassword').focus();
-            return false;
-        }
-
-        if (password.length < 8) {
-            alert('Password must be at least 8 characters long.');
-            document.getElementById('signupPassword').focus();
-            return false;
-        }
-
-        return true;
-    }
-
-    // Backend status management
-    function updateBackendStatus(backend, status, message = '') {
-        const element = document.getElementById(`${backend}Status`);
-        const icon = element.querySelector('.status-icon');
-        const text = element.querySelector('.status-text');
-
-        // Remove existing status classes
-        element.classList.remove('pending', 'success', 'error');
-
-        switch(status) {
-            case 'pending':
-                element.classList.add('pending');
-                icon.textContent = '⏳';
-                text.textContent = backend.charAt(0).toUpperCase() + backend.slice(1);
-                break;
-            case 'success':
-                element.classList.add('success');
-                icon.textContent = '✅';
-                text.textContent = `${backend.charAt(0).toUpperCase() + backend.slice(1)} ✓`;
-                break;
-            case 'error':
-                element.classList.add('error');
-                icon.textContent = '❌';
-                text.textContent = `${backend.charAt(0).toUpperCase() + backend.slice(1)} ✗`;
-                break;
-        }
-    }
-
-    function updateOverallStatus() {
-        const flaskEl = document.getElementById('flaskStatus');
-        const springEl = document.getElementById('springStatus');
-        const overallEl = document.getElementById('overallStatus');
-
-        const flaskSuccess = flaskEl.classList.contains('success');
-        const springSuccess = springEl.classList.contains('success');
-        const flaskError = flaskEl.classList.contains('error');
-        const springError = springEl.classList.contains('error');
-
-        overallEl.classList.remove('hidden', 'success', 'partial', 'error');
-
-        if (flaskSuccess && springSuccess) {
-            overallEl.classList.add('success');
-            overallEl.textContent = '🎉 Account created on both backends! You can now login.';
-        } else if (flaskSuccess && springError) {
-            overallEl.classList.add('partial');
-            overallEl.textContent = '⚠️ Flask account created successfully! Spring failed but you can still login.';
-        } else if (flaskError && springSuccess) {
-            overallEl.classList.add('partial');
-            overallEl.textContent = '⚠️ Spring account created! Flask failed - please try again.';
-        } else if (flaskError && springError) {
-            overallEl.classList.add('error');
-            overallEl.textContent = '💥 Both backends failed. Please check your information and try again.';
-        }
-    }
-
-    window.handleSignupSubmit = function(event) {
-        event.preventDefault();
-
-        // Validate form
-        const form = document.getElementById('signupForm');
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
-
-        // Check password confirmation
-        if (!validateSignupForm()) {
-            return;
-        }
-
-        // Store form data
-        signupFormData = {
-            name: document.getElementById("name").value,
-            uid: document.getElementById("signupUid").value,
-            sid: document.getElementById("signupSid").value,
-            school: document.getElementById("signupSchool").value,
-            email: document.getElementById("signupEmail").value,
-            password: document.getElementById("signupPassword").value,
-            kasm_server_needed: document.getElementById("kasmNeeded").checked,
-        };
-
-        // Show OAuth verification
-        showOAuthVerification();
-    }
-
-    function showOAuthVerification() {
-        document.getElementById('signupForm').style.display = 'none';
-        document.getElementById('oauth-verification').style.display = 'block';
-    }
-
-    window.showSignupForm = function() {
-        document.getElementById('oauth-verification').style.display = 'none';
-        document.getElementById('signupForm').style.display = 'block';
-        clearOAuthStatus();
-    }
-
-    function clearOAuthStatus() {
-        document.getElementById('oauth-status').innerHTML = '';
-    }
-
-    function showOAuthStatus(message, isError = false) {
-        const statusDiv = document.getElementById('oauth-status');
-        statusDiv.innerHTML = `<div class="${isError ? 'oauth-error' : 'oauth-success'}">${message}</div>`;
-    }
-
-    window.handleGoogleSignIn = function(response) {
-        try {
-            const userInfo = parseJwt(response.credential);
-            const email = userInfo.email;
-            if (!email.endsWith('@stu.powayusd.com') && !email.endsWith('@powayusd.com')) {
-                showOAuthStatus('❌ You must use your school email address ending with @stu.powayusd.com or @powayusd.com', true);
-                return;
-            }
-            verifiedSchoolEmail = email;
-            showOAuthStatus(`✅ School email verified: ${email}`);
-
-            setTimeout(() => {
-                document.getElementById('oauth-verification').style.display = 'none';
-                document.getElementById('signupForm').style.display = 'block';
-
-                console.log("About to call signup() with stored data:", signupFormData);
-                console.log("pythonURI:", pythonURI);
-
-
-                signup();
-            }, 1500);
-
-        } catch (error) {
-            console.error("Error handling Google Sign-In:", error);
-            showOAuthStatus('❌ Error processing Google Sign-In. Please try again.', true);
-        }
-    }
-
-    function parseJwt(token) {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-    }
-
-    // Initialize password validation when page loads
-    window.addEventListener('load', function() {
-        const passwordField = document.getElementById('signupPassword');
-        const confirmPasswordField = document.getElementById('confirmPassword');
-
-        if (passwordField && confirmPasswordField) {
-            // Add debounced validation listeners
-            passwordField.addEventListener('input', validatePasswordsDebounced);
-            confirmPasswordField.addEventListener('input', validatePasswordsDebounced);
-        }
-
-        if (window.google && window.google.accounts) {
-            window.google.accounts.id.initialize({
-                client_id: GOOGLE_CLIENT_ID,
-                callback: handleGoogleSignIn
-            });
-        }
+    login({
+      URL: `${pythonURI}/api/authenticate`,
+      method: 'POST',
+      cache: 'no-cache',
+      body: {
+        uid: document.getElementById('sip-uid').value,
+        password: document.getElementById('sip-pw').value,
+      },
+      callback: function() {
+        msg.textContent = 'Login successful. Redirecting...';
+        msg.className = 'sip-msg ok';
+        setTimeout(() => { window.location.href = getNextUrl(); }, 800);
+      },
+      message: 'login-msg',
     });
 
-    // Function to handle both Python and Java login simultaneously
-    window.loginBoth = function () {
-        // Wrap both logins in Promises and only redirect after both finish
-        let javaPromise = new Promise((resolve) => {
-            window.javaLogin(resolve);
-        });
-        let pythonPromise = new Promise((resolve) => {
-            window.pythonLogin(resolve);
-        });
-        Promise.allSettled([javaPromise, pythonPromise]).then(() => {
-            // Only redirect after both have completed (success or fail)
-            window.location.href = '{{site.baseurl}}/profile';
-        });
-    };
-    // Function to handle Python login
-    window.pythonLogin = function (done) {
-        const options = {
-            URL: `${pythonURI}/api/authenticate`,
-            callback: function() {
-                pythonDatabase();
-                if (done) done();
-            },
-            message: "message",
-            method: "POST",
-            cache: "no-cache",
-            body: {
-                uid: document.getElementById("uid").value,
-                password: document.getElementById("password").value,
-            }
-        };
-        login(options);
-        // If login() is not async, call done() immediately
-        // if (done) done();
+    setTimeout(() => {
+      if (btn.disabled) {
+        btn.disabled = false;
+        btn.textContent = 'Log In';
+        if (!msg.classList.contains('ok'))
+          msg.textContent = 'Invalid member ID or password.';
+      }
+    }, 4000);
+  };
+
+  // ── Sign up ──────────────────────────────────────────────────
+  window.sipSignup = function(e) {
+    e.preventDefault();
+    const pw  = document.getElementById('su-pw').value;
+    const pw2 = document.getElementById('su-pw2').value;
+    const msg = document.getElementById('signup-msg');
+    const btn = document.getElementById('signup-btn');
+
+    if (pw.length < 8) {
+      msg.textContent = 'Password must be at least 8 characters.';
+      msg.className = 'sip-msg';
+      return;
     }
-    // Function to handle Java login
-    window.javaLogin = function (done) {
-        const loginURL = `${javaURI}/authenticate`;
-        const databaseURL = `${javaURI}/api/person/get`;
-        const signupURL = `${javaURI}/api/person/create`;
-        const userCredentials = JSON.stringify({
-            uid: document.getElementById("uid").value,
-            password: document.getElementById("password").value,
-        });
-        const loginOptions = {
-            ...fetchOptions,
-            method: "POST",
-            body: userCredentials,
-        };
-        console.log("Attempting Java login...");
-        fetch(loginURL, loginOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Invalid login");
-                }
-                return response.text();
-            })
-            .then(data => {
-                console.log("Login successful!", data);
-                // Do not redirect here
-                // Fetch database after login success using fetchOptions
-                return fetch(databaseURL, fetchOptions);
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Spring server response: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Java database response:", data);
-                if (done) done();
-            })
-            .catch(error => {
-                console.error("Login failed:", error.message);
-                // If login fails, attempt account creation
-                if (error.message === "Invalid login") {
-                    const signupData = JSON.stringify({
-                        uid: document.getElementById("uid").value,
-                        sid: "0000000",
-                        email: document.getElementById("uid").value + "@gmail.com",
-                        dob: "11-01-2024", // Static date, can be modified
-                        name: document.getElementById("uid").value,
-                        password: document.getElementById("password").value,
-                        kasmServerNeeded: false,
-                    });
-                    const signupOptions = {
-                        ...fetchOptions,
-                        method: "POST",
-                        body: signupData,
-                    };
-                    fetch(signupURL, signupOptions)
-                        .then(signupResponse => {
-                            if (!signupResponse.ok) {
-                                throw new Error("Account creation failed!");
-                            }
-                            return signupResponse.json();
-                        })
-                        .then(signupResult => {
-                            console.log("Account creation successful!", signupResult);
-                            // Retry login after account creation
-                            return fetch(loginURL, loginOptions);
-                        })
-                        .then(newLoginResponse => {
-                            if (!newLoginResponse.ok) {
-                                throw new Error("Login failed after account creation");
-                            }
-                            console.log("Login successful after account creation!");
-                            // Fetch database after successful login
-                            return fetch(databaseURL, fetchOptions);
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Spring server response: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log("Java database response:", data);
-                            if (done) done();
-                        })
-                        .catch(newLoginError => {
-                            console.error("Error after account creation:", newLoginError.message);
-                            if (done) done();
-                        });
-                } else {
-                    console.log("Logged in!");
-                    if (done) done();
-                }
-            });
-    };
-    // Function to fetch and display Python data
-    function pythonDatabase() {
-        // Skip the /api/id fetch due to CORS restrictions with credentials mode.
-        // The user is already authenticated (token in cookie), so just redirect to profile.
-        console.log("Authentication successful, redirecting to profile...");
-        setTimeout(() => {
-            window.location.href = '{{site.baseurl}}/profile';
-        }, 1000);
-    }  
-    window.signup = function () {
-        const signupButton = document.querySelector(".signup-card button");
-        // Disable the button and change its color
-        signupButton.disabled = true;
-        signupButton.classList.add("disabled");
-        // Reset status indicators
-        updateBackendStatus('flask', 'pending');
-        updateBackendStatus('spring', 'pending');
-        document.getElementById('overallStatus').classList.add('hidden');
-
-        const data = signupFormData && Object.keys(signupFormData).length > 0 ? signupFormData : {
-            name: document.getElementById("name").value,
-            uid: document.getElementById("signupUid").value,
-            sid: document.getElementById("signupSid").value,
-            school: document.getElementById("signupSchool").value,
-            email: document.getElementById("signupEmail").value,
-            password: document.getElementById("signupPassword").value,
-            kasm_server_needed: document.getElementById("kasmNeeded").checked,
-        };
-
-        const signupDataJava = {
-            uid: data.uid,
-            sid: data.sid,
-            email: data.email,
-            dob: "11-01-2024",
-            name: data.name,
-            password: data.password,
-            kasmServerNeeded: data.kasm_server_needed,
-        };
-
-        if (verifiedSchoolEmail) {
-            console.log("Account created with verified school email:", verifiedSchoolEmail);
-        }
-
-        console.log("Sending this data to Flask:", JSON.stringify(data, null, 2));
-        console.log("Request URL:", `${pythonURI}/api/user`);
-
-        // Flask Backend Request
-        const flaskPromise = fetch(`${pythonURI}/api/user`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (response.ok) {
-                updateBackendStatus('flask', 'success');
-                return response.json();
-            } else {
-                return response.text().then(errorText => {
-                    console.log("Flask error details:", errorText);
-                    throw new Error(`Flask: ${response.status} - ${errorText}`);
-                });
-            }
-        })
-        .catch(error => {
-            console.error("Flask signup error:", error);
-            updateBackendStatus('flask', 'error');
-            throw error;
-        });
-
-        // Spring Backend Request
-        const springPromise = fetch(`${javaURI}/api/person/create`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(signupDataJava)
-        })
-        .then(response => {
-            if (response.ok) {
-                updateBackendStatus('spring', 'success');
-                return response.json();
-            } else {
-                throw new Error(`Spring: ${response.status}`);
-            }
-        })
-        .catch(error => {
-            console.error("Spring signup error:", error);
-            updateBackendStatus('spring', 'error');
-            throw error;
-        });
-
-        // Handle both requests
-        Promise.allSettled([flaskPromise, springPromise])
-            .then(results => {
-                const [flaskResult, springResult] = results;
-
-                console.log("Flask result:", flaskResult);
-                console.log("Spring result:", springResult);
-
-                // Update overall status after both complete
-                setTimeout(updateOverallStatus, 500);
-
-                // Re-enable button
-                signupButton.disabled = false;
-                signupButton.classList.remove("disabled");
-            });
+    if (pw !== pw2) {
+      msg.textContent = 'Passwords do not match.';
+      msg.className = 'sip-msg';
+      return;
     }
-    function javaDatabase() {
-        const URL = `${javaURI}/api/person/get`;
-        fetch(URL, fetchOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Spring server response: ${response.status}`);
-                }
-                return response.json();
-            })
-            .catch(error => {
-                console.error("Java Database Error:", error);
-            });
-    }
+
+    btn.disabled = true;
+    btn.textContent = 'Creating account...';
+    msg.textContent = '';
+    msg.className = 'sip-msg';
+
+    fetch(`${pythonURI}/api/user`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name:     document.getElementById('su-name').value,
+        uid:      document.getElementById('su-uid').value,
+        email:    document.getElementById('su-email').value,
+        password: pw,
+      }),
+    })
+    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Sign up failed.')))
+    .then(() => {
+      msg.textContent = 'Account created! You can now log in.';
+      msg.className = 'sip-msg ok';
+      e.target.reset();
+      document.getElementById('pw-match-msg').textContent = '';
+    })
+    .catch(err => {
+      msg.textContent = typeof err === 'string' ? err : 'Sign up failed. That member ID may already be taken.';
+      msg.className = 'sip-msg';
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = 'Sign Up';
+    });
+  };
+
+  // ── Password match indicator ─────────────────────────────────
+  document.getElementById('su-pw2').addEventListener('input', function() {
+    const el = document.getElementById('pw-match-msg');
+    if (!this.value) { el.textContent = ''; el.className = 'pw-hint'; return; }
+    const match = this.value === document.getElementById('su-pw').value;
+    el.textContent = match ? 'Passwords match' : 'Passwords do not match';
+    el.className = 'pw-hint ' + (match ? 'ok' : 'err');
+  });
 </script>
