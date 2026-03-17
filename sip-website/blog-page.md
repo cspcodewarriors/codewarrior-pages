@@ -212,6 +212,15 @@ permalink: /sip/blog
       transition: border-color 0.15s, color 0.15s;
     }
     .btn-delete:hover { border-color: #c0392b; color: #c0392b; }
+    .btn-edit-post {
+      background: none; border: 1px solid var(--border2);
+      font-family: var(--sans); font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--accent); cursor: pointer;
+      padding: 4px 10px; border-radius: 3px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .btn-edit-post:hover { border-color: var(--accent); background: rgba(232,131,106,0.08); }
 
     /* ── MODAL BACKDROP ── */
     .modal-backdrop {
@@ -341,7 +350,7 @@ permalink: /sip/blog
   <div class="nav-actions">
     <a href="/codewarrior-pages/sip/home/" class="nav-back">← Programs</a>
     <div class="admin-badge" id="adminBadge"><span class="admin-dot"></span>Admin</div>
-    <button class="btn-admin btn-admin-in" id="adminBtn" onclick="openLogin()">Admin Login</button>
+    <button class="btn-admin btn-admin-in" id="adminBtn" style="display:none">Sign Out</button>
   </div>
 </nav>
 
@@ -360,6 +369,14 @@ permalink: /sip/blog
   </button>
 </div>
 
+<!-- LOGIN PROMPT (shown when not logged in) -->
+<div class="admin-bar" id="adminLoginPrompt" style="display:none; justify-content:flex-end; align-items:center;">
+  <a id="adminLoginLink" href="{{ site.baseurl }}/login"
+     style="font-size:0.8rem;color:var(--accent);text-decoration:underline;letter-spacing:0.06em;font-family:var(--sans);">
+    Log in to manage posts
+  </a>
+</div>
+
 <!-- POSTS -->
 <main class="posts-wrap" id="postsWrap">
   <div class="posts-empty" id="emptyState">
@@ -373,57 +390,25 @@ permalink: /sip/blog
   Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls
 </footer>
 
-<!-- ── MODAL: LOGIN ── -->
-<div class="modal-backdrop" id="loginModal">
-  <div class="modal">
-    <p class="modal-eyebrow">🔐 Admin Access</p>
-    <h2 class="modal-title">Sign In</h2>
-    <div class="modal-error" id="loginError">Incorrect credentials. Please try again.</div>
-    <div class="field">
-      <label>Username</label>
-      <input type="text" id="loginUser" placeholder="admin" autocomplete="username" />
-    </div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"
-             onkeydown="if(event.key==='Enter')submitLogin()" />
-    </div>
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="submitLogin()">Sign In</button>
-      <button class="btn-secondary" onclick="closeLogin()">Cancel</button>
-    </div>
-    <p style="margin-top:20px;font-size:0.73rem;color:var(--text-muted);line-height:1.6;">
-      This area is restricted to authorized SIP administrators.<br>
-      Contact your club coordinator for access credentials.
-    </p>
-  </div>
-</div>
-
-<!-- ── MODAL: NEW POST ── -->
+<!-- ── MODAL: NEW / EDIT POST ── -->
 <div class="modal-backdrop" id="postModal">
   <div class="modal modal-post">
-    <p class="modal-eyebrow">✍️ New Entry</p>
-    <h2 class="modal-title">Create Post</h2>
+    <p class="modal-eyebrow" id="postModalEyebrow">✍️ New Entry</p>
+    <h2 class="modal-title" id="postModalTitle">Create Post</h2>
     <div class="field">
       <label>Post Title</label>
       <input type="text" id="postTitle" placeholder="e.g. Celebrating Our 2025 Graduates" />
     </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Date</label>
-        <input type="date" id="postDate" />
-      </div>
-      <div class="field">
-        <label>Tag / Category</label>
-        <input type="text" id="postTag" placeholder="e.g. Announcement" />
-      </div>
+    <div class="field">
+      <label>Tag / Category</label>
+      <input type="text" id="postTag" placeholder="e.g. Announcement" />
     </div>
     <div class="field">
       <label>Content</label>
       <textarea id="postBody" placeholder="Share your update with the community…"></textarea>
     </div>
     <div class="modal-actions">
-      <button class="btn-primary" onclick="submitPost()">Publish Post</button>
+      <button class="btn-primary" id="postSubmitBtn" onclick="submitPost()">Publish Post</button>
       <button class="btn-secondary" onclick="closePostModal()">Cancel</button>
     </div>
   </div>
@@ -433,124 +418,164 @@ permalink: /sip/blog
 <div class="toast" id="toast"></div>
 
 <script>
+  /* ── CONFIG ── */
+  const API_BASE = 'http://localhost:8001';
+
   /* ── STATE ── */
-  let isAdmin = false;
-  let posts   = [];
+  let isAdmin       = false;
+  let posts         = [];
+  let editingPostId = null;
 
-  /* ────────────────────────────────
-     AUTH
-     In production, replace submitLogin() with a real
-     API call:  POST /api/auth/login  { username, password }
-     Expect a JWT/session token back, store securely,
-     and gate all write operations with that token.
-  ──────────────────────────────── */
-  const ADMIN_CREDS = { user: 'admin', pass: 'sip2025' }; // ← replace with real backend auth
-
-  function openLogin() { document.getElementById('loginModal').classList.add('open'); setTimeout(()=>document.getElementById('loginUser').focus(),50); }
-  function closeLogin() { document.getElementById('loginModal').classList.remove('open'); document.getElementById('loginError').classList.remove('visible'); }
-
-  function submitLogin() {
-    const u = document.getElementById('loginUser').value.trim();
-    const p = document.getElementById('loginPass').value;
-
-    // ── BACKEND HOOK ──
-    // fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username:u, password:p}) })
-    //   .then(r=>r.json())
-    //   .then(data=>{ if(data.token){ sessionStorage.setItem('sip_token', data.token); setAdmin(true); closeLogin(); } else showLoginError(); })
-    //   .catch(showLoginError);
-
-    if (u === ADMIN_CREDS.user && p === ADMIN_CREDS.pass) {
-      setAdmin(true);
-      closeLogin();
-      showToast('Welcome back, admin.');
-    } else {
-      document.getElementById('loginError').classList.add('visible');
-    }
+  /* ── AUTH ── */
+  function checkAdminSession() {
+    fetch(`${API_BASE}/api/id`, { credentials: 'include' })
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(user => {
+        if (user.is_admin) {
+          setAdmin(true);
+        }
+        // logged in but not admin — keep everything hidden
+      })
+      .catch(status => {
+        if (status === 401) {
+          // not logged in — show login prompt (same pattern as sip-contact.md)
+          const link = document.getElementById('adminLoginLink');
+          link.href = '{{ site.baseurl }}/login?next=' + encodeURIComponent(window.location.pathname);
+          document.getElementById('adminLoginPrompt').style.display = 'flex';
+        }
+      });
   }
 
   function setAdmin(val) {
     isAdmin = val;
     document.getElementById('adminBar').classList.toggle('visible', val);
     document.getElementById('adminBadge').classList.toggle('visible', val);
+    document.getElementById('adminLoginPrompt').style.display = 'none';
     const btn = document.getElementById('adminBtn');
     if (val) {
-      btn.textContent = 'Sign Out';
-      btn.className = 'btn-admin btn-admin-out';
-      btn.onclick = logout;
+      btn.style.display = '';
+      btn.className     = 'btn-admin btn-admin-out';
+      btn.onclick       = logout;
     } else {
-      btn.textContent = 'Admin Login';
-      btn.className = 'btn-admin btn-admin-in';
-      btn.onclick = openLogin;
+      btn.style.display = 'none';
     }
     renderPosts();
   }
 
   function logout() {
-    setAdmin(false);
-    // sessionStorage.removeItem('sip_token');
-    showToast('Signed out.');
+    fetch(`${API_BASE}/api/authenticate`, { method: 'DELETE', credentials: 'include' })
+      .finally(() => {
+        setAdmin(false);
+        // re-show login prompt after sign-out
+        const link = document.getElementById('adminLoginLink');
+        link.href = '{{ site.baseurl }}/login?next=' + encodeURIComponent(window.location.pathname);
+        document.getElementById('adminLoginPrompt').style.display = 'flex';
+        showToast('Signed out.');
+      });
+  }
+
+  /* ── POSTS: LOAD ── */
+  function loadPosts() {
+    fetch(`${API_BASE}/api/post/all`)
+      .then(r => r.json())
+      .then(data => {
+        posts = data;
+        renderPosts();
+      })
+      .catch(() => renderPosts());
   }
 
   /* ── POST MODAL ── */
-  function openPostModal() {
-    document.getElementById('postDate').value = new Date().toISOString().split('T')[0];
+  function openPostModal(postId) {
+    editingPostId = postId || null;
+    const isEdit  = editingPostId !== null;
+
+    document.getElementById('postModalEyebrow').textContent = isEdit ? '✏️ Edit Entry'   : '✍️ New Entry';
+    document.getElementById('postModalTitle').textContent   = isEdit ? 'Edit Post'        : 'Create Post';
+    document.getElementById('postSubmitBtn').textContent    = isEdit ? 'Save Changes'     : 'Publish Post';
+
+    if (isEdit) {
+      const p = posts.find(post => post.id === editingPostId);
+      if (!p) return;
+      document.getElementById('postTitle').value = p.pageTitle || '';
+      document.getElementById('postTag').value   = p.pageUrl   || '';
+      document.getElementById('postBody').value  = p.content   || '';
+    } else {
+      clearPostForm();
+    }
+
     document.getElementById('postModal').classList.add('open');
-    setTimeout(()=>document.getElementById('postTitle').focus(),50);
+    setTimeout(() => document.getElementById('postTitle').focus(), 50);
   }
-  function closePostModal() { document.getElementById('postModal').classList.remove('open'); }
+
+  function closePostModal() {
+    document.getElementById('postModal').classList.remove('open');
+    editingPostId = null;
+  }
 
   function submitPost() {
     const title = document.getElementById('postTitle').value.trim();
-    const date  = document.getElementById('postDate').value;
     const tag   = document.getElementById('postTag').value.trim() || 'Update';
     const body  = document.getElementById('postBody').value.trim();
 
-    if (!title || !date || !body) { showToast('Please fill in all required fields.'); return; }
+    if (!title || !body) { showToast('Please fill in title and content.'); return; }
 
-    const post = { id: Date.now(), title, date, tag, body, author: 'SIP Admin' };
+    const payload = { content: body, pageTitle: title, pageUrl: tag };
+    const isEdit  = editingPostId !== null;
+    const url     = isEdit ? `${API_BASE}/api/post/${editingPostId}` : `${API_BASE}/api/post`;
+    const method  = isEdit ? 'PUT' : 'POST';
 
-    // ── BACKEND HOOK ──
-    // const token = sessionStorage.getItem('sip_token');
-    // fetch('/api/posts', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify(post) })
-    //   .then(r=>r.json())
-    //   .then(saved=>{ posts.unshift(saved); renderPosts(); });
-
-    posts.unshift(post);
-    renderPosts();
-    closePostModal();
-    clearPostForm();
-    showToast('Post published successfully.');
+    fetch(url, {
+      method,
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Error')))
+    .then(saved => {
+      if (isEdit) {
+        const idx = posts.findIndex(p => p.id === editingPostId);
+        if (idx !== -1) posts[idx] = saved;
+      } else {
+        posts.unshift(saved);
+      }
+      closePostModal();
+      clearPostForm();
+      renderPosts();
+      showToast(isEdit ? 'Post updated.' : 'Post published successfully.');
+    })
+    .catch(err => showToast(String(err)));
   }
 
   function clearPostForm() {
-    ['postTitle','postDate','postTag','postBody'].forEach(id=>document.getElementById(id).value='');
+    ['postTitle', 'postTag', 'postBody'].forEach(id => document.getElementById(id).value = '');
   }
 
   function deletePost(id) {
     if (!confirm('Delete this post? This cannot be undone.')) return;
-    posts = posts.filter(p=>p.id!==id);
-
-    // ── BACKEND HOOK ──
-    // const token = sessionStorage.getItem('sip_token');
-    // fetch('/api/posts/'+id, { method:'DELETE', headers:{'Authorization':'Bearer '+token} });
-
-    renderPosts();
-    showToast('Post deleted.');
+    fetch(`${API_BASE}/api/post/${id}`, { method: 'DELETE', credentials: 'include' })
+      .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Error')))
+      .then(() => {
+        posts = posts.filter(p => p.id !== id);
+        renderPosts();
+        showToast('Post deleted.');
+      })
+      .catch(err => showToast(String(err)));
   }
 
   /* ── RENDER ── */
   function renderPosts() {
-    const wrap = document.getElementById('postsWrap');
+    const wrap  = document.getElementById('postsWrap');
     const empty = document.getElementById('emptyState');
 
     if (posts.length === 0) {
       empty.style.display = 'block';
-      wrap.querySelectorAll('.post-card').forEach(el=>el.remove());
+      wrap.querySelectorAll('.post-card').forEach(el => el.remove());
       return;
     }
 
     empty.style.display = 'none';
-    wrap.querySelectorAll('.post-card').forEach(el=>el.remove());
+    wrap.querySelectorAll('.post-card').forEach(el => el.remove());
 
     posts.forEach((p, i) => {
       const card = document.createElement('div');
@@ -558,20 +583,27 @@ permalink: /sip/blog
       card.style.animationDelay = (i * 0.07) + 's';
       card.dataset.id = p.id;
 
-      const fmtDate = new Date(p.date + 'T00:00:00').toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+      const ts      = p.timestamp || p.updatedAt || '';
+      const fmtDate = ts
+        ? new Date(ts).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+        : '';
       const bodyId = 'body_' + p.id;
+      const tag    = p.pageUrl   || '';
+      const title  = p.pageTitle || 'Untitled';
+      const author = p.studentName || 'SIP Admin';
 
       card.innerHTML = `
         <div class="post-meta">
           <span class="post-date">${fmtDate}</span>
-          ${p.tag ? `<span class="post-tag">${escHtml(p.tag)}</span>` : ''}
+          ${tag ? `<span class="post-tag">${escHtml(tag)}</span>` : ''}
         </div>
-        <h2 class="post-title">${escHtml(p.title)}</h2>
-        <div class="post-body clamped" id="${bodyId}">${escHtml(p.body)}</div>
+        <h2 class="post-title">${escHtml(title)}</h2>
+        <div class="post-body clamped" id="${bodyId}">${escHtml(p.content || '')}</div>
         <div class="post-footer">
-          <span class="post-author">By ${escHtml(p.author)}</span>
+          <span class="post-author">By ${escHtml(author)}</span>
           <div class="post-actions">
             <button class="btn-read-more" id="rmBtn_${p.id}" onclick="toggleRead(${p.id})">Read more →</button>
+            ${isAdmin ? `<button class="btn-edit-post" onclick="openPostModal(${p.id})">Edit</button>` : ''}
             ${isAdmin ? `<button class="btn-delete" onclick="deletePost(${p.id})">Delete</button>` : ''}
           </div>
         </div>`;
@@ -596,7 +628,7 @@ permalink: /sip/blog
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>t.classList.remove('show'), 2800);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
   }
 
   /* ── UTIL ── */
@@ -604,20 +636,12 @@ permalink: /sip/blog
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  /* ── CLOSE MODALS ON BACKDROP CLICK ── */
-  document.getElementById('loginModal').addEventListener('click', function(e){ if(e.target===this) closeLogin(); });
-  document.getElementById('postModal').addEventListener('click', function(e){ if(e.target===this) closePostModal(); });
+  /* ── CLOSE MODAL ON BACKDROP CLICK ── */
+  document.getElementById('postModal').addEventListener('click', function(e) { if (e.target === this) closePostModal(); });
 
-  /* ── SEED DEMO POST ── */
-  posts = [{
-    id: 1,
-    title: "Celebrating 27 Years of Transitional Housing",
-    date: "2024-11-12",
-    tag: "Milestone",
-    body: "This year marks our 27th anniversary supporting domestic violence survivors through our Transitional Housing Program. Since 1997, we have helped 91 families — and 218 children — rebuild their lives in safety and dignity.\n\nWe are grateful beyond words to every volunteer, sponsor, and community member who has stood with us on this journey. Here's to many more years of empowering women and girls in our community.",
-    author: "SIP Admin"
-  }];
-  renderPosts();
+  /* ── INIT ── */
+  checkAdminSession();
+  loadPosts();
 </script>
 </body>
 </html>
