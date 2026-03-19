@@ -1,4 +1,5 @@
 ---
+title: Blog
 permalink: /sip/blog
 ---
 
@@ -123,6 +124,22 @@ permalink: /sip/blog
     }
     .btn-new-post:hover { background: var(--accent-hover); transform: translateY(-1px); }
 
+    /* ── ADMIN LOGIN PROMPT ── */
+    .btn-admin-login {
+      background: rgba(232,131,106,0.12);
+      border: 1px solid rgba(232,131,106,0.3);
+      color: var(--accent);
+      font-family: var(--sans);
+      font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 8px 18px; border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: background 0.15s;
+    }
+    .btn-admin-login:hover { background: rgba(232,131,106,0.22); }
+
     /* ── POSTS GRID ── */
     .posts-wrap { max-width: 860px; margin: 0 auto; padding: 8px 24px 72px; }
     .posts-empty {
@@ -163,7 +180,6 @@ permalink: /sip/blog
       padding: 2px 8px; border: 1px solid var(--border2);
       border-radius: 2px;
     }
-    /* Draft pill — admin only */
     .draft-badge {
       font-size: 0.65rem; text-transform: uppercase;
       letter-spacing: 0.1em; color: #f0c060;
@@ -236,106 +252,6 @@ permalink: /sip/blog
     .btn-publish-toggle.published { color: var(--text-muted); }
     .btn-publish-toggle.published:hover { border-color: var(--text-muted); background: none; }
 
-    /* ── MODAL BACKDROP ── */
-    /* backdrop-filter removed — it creates its own stacking context which
-       traps child elements and causes the modal panel to disappear when
-       the Jekyll layout nav has a higher z-index. Blur is applied to
-       page content via .modal-open-blur instead. */
-    .modal-backdrop {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.78);
-      z-index: 99999;
-      align-items: flex-start; justify-content: center;
-      padding: 40px 24px;
-      overflow-y: auto;
-    }
-    .modal-backdrop.open { display: flex; }
-    /* Blur the page content behind the modal */
-    body.modal-open-blur > *:not(.modal-backdrop):not(.toast) {
-      filter: blur(4px);
-      transition: filter 0.2s;
-    }
-
-    /* ── MODAL ── */
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      width: 100%; max-width: 420px;
-      padding: 40px 36px;
-      animation: modalIn 0.25s ease;
-    }
-    @keyframes modalIn {
-      from { opacity: 0; transform: scale(0.96) translateY(8px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .modal-eyebrow {
-      font-size: 0.7rem; text-transform: uppercase;
-      letter-spacing: 0.14em; color: var(--accent); margin-bottom: 10px;
-    }
-    .modal-title {
-      font-family: var(--serif); font-size: 1.9rem;
-      font-weight: 600; color: var(--text-primary); margin-bottom: 28px;
-    }
-    .field { margin-bottom: 20px; }
-    .field label {
-      display: block; font-size: 0.73rem;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--text-label); margin-bottom: 8px;
-    }
-    .field input, .field textarea, .field select {
-      width: 100%; background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 5px; padding: 11px 14px;
-      color: var(--text-primary); font-family: var(--sans);
-      font-size: 0.93rem; outline: none;
-      transition: border-color 0.15s;
-    }
-    .field select { cursor: pointer; }
-    .field select option { background: #1a1917; color: var(--text-primary); }
-    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
-    .field textarea { resize: vertical; min-height: 140px; line-height: 1.7; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .modal-error {
-      font-size: 0.8rem; color: #c0392b;
-      margin-bottom: 16px; display: none;
-    }
-    .modal-error.visible { display: block; }
-    .modal-actions { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
-    .btn-primary {
-      flex: 1; background: var(--accent); color: #111;
-      font-family: var(--sans); font-size: 0.8rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      padding: 12px; border: none; border-radius: 4px;
-      cursor: pointer; transition: background 0.15s;
-    }
-    .btn-primary:hover { background: var(--accent-hover); }
-    .btn-secondary {
-      background: transparent; border: 1px solid var(--border);
-      color: var(--text-label); font-family: var(--sans);
-      font-size: 0.8rem; font-weight: 500;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      padding: 12px 20px; border-radius: 4px; cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
-    }
-    .btn-secondary:hover { border-color: var(--text-label); color: var(--text-primary); }
-    /* Publish-now checkbox row inside modal */
-    .field-check {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 20px;
-    }
-    .field-check input[type="checkbox"] {
-      width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer;
-    }
-    .field-check label {
-      font-size: 0.8rem; color: var(--text-label);
-      text-transform: uppercase; letter-spacing: 0.08em;
-      cursor: pointer; margin: 0;
-    }
-
-    /* ── MODAL: NEW POST (wider) ── */
-    .modal-post { max-width: 600px; }
-
     /* ── TOAST ── */
     .toast {
       position: fixed; bottom: 32px; right: 32px;
@@ -375,8 +291,6 @@ permalink: /sip/blog
       .nav { padding: 16px 20px; }
       .hero { padding: 40px 20px 32px; }
       .posts-wrap { padding: 8px 20px 48px; }
-      .modal { padding: 28px 22px; }
-      .field-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -407,11 +321,10 @@ permalink: /sip/blog
   </button>
 </div>
 
-<!-- LOGIN PROMPT (shown when not logged in) -->
+<!-- ADMIN LOGIN PROMPT (shown when not logged in) -->
 <div class="admin-bar" id="adminLoginPrompt" style="display:none; justify-content:flex-end; align-items:center;">
-  <a id="adminLoginLink" href="{{ site.baseurl }}/login"
-     style="font-size:0.8rem;color:var(--accent);text-decoration:underline;letter-spacing:0.06em;font-family:var(--sans);">
-    Log in to manage posts
+  <a id="adminLoginLink" href="{{ site.baseurl }}/login" class="btn-admin-login">
+    🔒 Admin Login
   </a>
 </div>
 
@@ -427,54 +340,6 @@ permalink: /sip/blog
 <footer class="sip-footer">
   Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls
 </footer>
-
-<!-- ── MODAL: NEW / EDIT POST ── -->
-<div class="modal-backdrop" id="postModal">
-  <div class="modal modal-post">
-    <p class="modal-eyebrow" id="postModalEyebrow">✍️ New Entry</p>
-    <h2 class="modal-title" id="postModalTitle">Create Post</h2>
-
-    <div class="field">
-      <label for="postTitle">Post Title *</label>
-      <input type="text" id="postTitle" placeholder="e.g. Celebrating Our 2025 Graduates" />
-    </div>
-
-    <div class="field-row">
-      <div class="field">
-        <label for="postEventDate">Event Date *</label>
-        <input type="date" id="postEventDate" />
-      </div>
-      <div class="field">
-        <label for="postTag">Program Tag</label>
-        <select id="postTag">
-          <option value="">— None —</option>
-          <option value="Live Your Dream">Live Your Dream</option>
-          <option value="Dream It Be It">Dream It Be It</option>
-          <option value="STAT!">STAT!</option>
-          <option value="Abraxas Scholarship">Abraxas Scholarship</option>
-          <option value="Announcement">Announcement</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="postBody">Content *</label>
-      <textarea id="postBody" placeholder="Share your update with the community…"></textarea>
-    </div>
-
-    <div class="field-check">
-      <input type="checkbox" id="postPublish" />
-      <label for="postPublish">Publish immediately (visible to the public)</label>
-    </div>
-
-    <div class="modal-error" id="postError"></div>
-
-    <div class="modal-actions">
-      <button class="btn-primary" id="postSubmitBtn" onclick="submitPost()">Save Post</button>
-      <button class="btn-secondary" onclick="closePostModal()">Cancel</button>
-    </div>
-  </div>
-</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -498,18 +363,16 @@ permalink: /sip/blog
         if (user.is_admin) {
           setAdmin(true);
         } else {
-          // Logged in but not admin — just load posts normally
           loadPosts();
         }
       })
       .catch(status => {
         if (status === 401) {
-          // Not logged in — show login prompt
           const link = document.getElementById('adminLoginLink');
           link.href = '{{ site.baseurl }}/login?next=' + encodeURIComponent(window.location.pathname);
           document.getElementById('adminLoginPrompt').style.display = 'flex';
         }
-        loadPosts(); // public posts still load
+        loadPosts();
       });
   }
 
@@ -520,7 +383,7 @@ permalink: /sip/blog
     document.getElementById('adminLoginPrompt').style.display = 'none';
     const btn = document.getElementById('adminBtn');
     btn.style.display = val ? '' : 'none';
-    loadPosts(); // reload so admin sees drafts too
+    loadPosts();
   }
 
   function logout() {
@@ -534,136 +397,27 @@ permalink: /sip/blog
         link.href = '{{ site.baseurl }}/login?next=' + encodeURIComponent(window.location.pathname);
         document.getElementById('adminLoginPrompt').style.display = 'flex';
         showToast('Signed out.');
-        loadPosts(); // reload — drafts will disappear
+        loadPosts();
       });
   }
 
   /* ─────────────────────────────
      POSTS: LOAD
-     GET /api/blog
-     · No token → published only
-     · Admin token in cookie → all posts incl. drafts
   ───────────────────────────── */
   function loadPosts() {
     fetch(`${API_BASE}/api/blog`, { credentials: 'include' })
       .then(r => r.ok ? r.json() : Promise.reject('Failed to load posts'))
-      .then(data => {
-        posts = data;
-        renderPosts();
-      })
-      .catch(() => {
-        posts = [];
-        renderPosts();
-      });
-  }
-
-  /* ─────────────────────────────
-     POST MODAL
-  ───────────────────────────── */
-  function openPostModal(postId) {
-    editingPostId = postId || null;
-    const isEdit  = editingPostId !== null;
-
-    document.getElementById('postModalEyebrow').textContent = isEdit ? '✏️ Edit Entry' : '✍️ New Entry';
-    document.getElementById('postModalTitle').textContent   = isEdit ? 'Edit Post'     : 'Create Post';
-    document.getElementById('postSubmitBtn').textContent    = isEdit ? 'Save Changes'  : 'Save Post';
-    clearPostError();
-
-    if (isEdit) {
-      const p = posts.find(post => post.id === editingPostId);
-      if (!p) return;
-      document.getElementById('postTitle').value      = p.title        || '';
-      document.getElementById('postEventDate').value  = p.event_date   || '';
-      document.getElementById('postTag').value        = p.program_tag  || '';
-      document.getElementById('postBody').value       = p.description  || '';
-      document.getElementById('postPublish').checked  = p.published    || false;
-    } else {
-      clearPostForm();
-      // Default event date to today
-      document.getElementById('postEventDate').value = new Date().toISOString().slice(0, 10);
-    }
-
-    document.getElementById('postModal').classList.add('open');
-    document.body.classList.add('modal-open-blur');
-    setTimeout(() => document.getElementById('postTitle').focus(), 50);
-  }
-
-  function closePostModal() {
-    document.getElementById('postModal').classList.remove('open');
-    document.body.classList.remove('modal-open-blur');
-    editingPostId = null;
-    clearPostError();
-  }
-
-  /* ─────────────────────────────
-     SUBMIT: CREATE or UPDATE
-     POST /api/blog   → create
-     PUT  /api/blog   → update (id in body)
-  ───────────────────────────── */
-  function submitPost() {
-    const title      = document.getElementById('postTitle').value.trim();
-    const event_date = document.getElementById('postEventDate').value.trim();
-    const program_tag = document.getElementById('postTag').value.trim() || null;
-    const description = document.getElementById('postBody').value.trim();
-    const published  = document.getElementById('postPublish').checked;
-
-    // Client-side validation
-    if (!title || title.length < 2) {
-      return showPostError('Title is required (at least 2 characters).');
-    }
-    if (!event_date) {
-      return showPostError('Event date is required.');
-    }
-    if (!description || description.length < 2) {
-      return showPostError('Content is required (at least 2 characters).');
-    }
-
-    const isEdit  = editingPostId !== null;
-    const payload = { title, event_date, description, program_tag, published };
-    if (isEdit) payload.id = editingPostId;
-
-    const method = isEdit ? 'PUT' : 'POST';
-
-    document.getElementById('postSubmitBtn').textContent = isEdit ? 'Saving…' : 'Saving…';
-    document.getElementById('postSubmitBtn').disabled    = true;
-
-    fetch(`${API_BASE}/api/blog`, {
-      method,
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Server error')))
-    .then(saved => {
-      if (isEdit) {
-        const idx = posts.findIndex(p => p.id === editingPostId);
-        if (idx !== -1) posts[idx] = saved;
-      } else {
-        posts.unshift(saved);
-      }
-      closePostModal();
-      clearPostForm();
-      renderPosts();
-      showToast(isEdit ? 'Post updated.' : published ? 'Post published!' : 'Draft saved.');
-    })
-    .catch(err => {
-      showPostError(String(err));
-    })
-    .finally(() => {
-      document.getElementById('postSubmitBtn').disabled    = false;
-      document.getElementById('postSubmitBtn').textContent = isEdit ? 'Save Changes' : 'Save Post';
-    });
+      .then(data => { posts = data; renderPosts(); })
+      .catch(() => { posts = []; renderPosts(); });
   }
 
   /* ─────────────────────────────
      PUBLISH TOGGLE
-     POST /api/blog/publish  { id, published }
   ───────────────────────────── */
   function togglePublish(id) {
     const post = posts.find(p => p.id === id);
     if (!post) return;
     const newState = !post.published;
-
     fetch(`${API_BASE}/api/blog/publish`, {
       method: 'POST',
       credentials: 'include',
@@ -682,12 +436,10 @@ permalink: /sip/blog
 
   /* ─────────────────────────────
      DELETE
-     DELETE /api/blog  { id }
   ───────────────────────────── */
   function deletePost(id) {
     const post = posts.find(p => p.id === id);
     if (!confirm(`Delete "${post ? post.title : 'this post'}"? This cannot be undone.`)) return;
-
     fetch(`${API_BASE}/api/blog`, {
       method: 'DELETE',
       credentials: 'include',
@@ -709,34 +461,20 @@ permalink: /sip/blog
   function renderPosts() {
     const wrap  = document.getElementById('postsWrap');
     const empty = document.getElementById('emptyState');
-
-    // Remove old cards
     wrap.querySelectorAll('.post-card').forEach(el => el.remove());
-
-    if (posts.length === 0) {
-      empty.style.display = 'block';
-      return;
-    }
+    if (posts.length === 0) { empty.style.display = 'block'; return; }
     empty.style.display = 'none';
-
     posts.forEach((p, i) => {
       const card = document.createElement('div');
       card.className = 'post-card' + (p.published ? '' : ' draft');
       card.style.animationDelay = (i * 0.07) + 's';
       card.dataset.id = p.id;
-
-      // Format event_date (YYYY-MM-DD) for display
       let fmtDate = '';
       if (p.event_date) {
-        // Parse as local date to avoid UTC offset shifting the day
         const [y, m, d] = p.event_date.split('-').map(Number);
-        fmtDate = new Date(y, m - 1, d).toLocaleDateString('en-US', {
-          month: 'long', day: 'numeric', year: 'numeric'
-        });
+        fmtDate = new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
       }
-
       const bodyId = 'body_' + p.id;
-
       card.innerHTML = `
         <div class="post-meta">
           <span class="post-date">${escHtml(fmtDate)}</span>
@@ -777,29 +515,9 @@ permalink: /sip/blog
   /* ─────────────────────────────
      HELPERS
   ───────────────────────────── */
-  function clearPostForm() {
-    document.getElementById('postTitle').value     = '';
-    document.getElementById('postEventDate').value = '';
-    document.getElementById('postTag').value       = '';
-    document.getElementById('postBody').value      = '';
-    document.getElementById('postPublish').checked = false;
-  }
-
-  function showPostError(msg) {
-    const el = document.getElementById('postError');
-    el.textContent = msg;
-    el.classList.add('visible');
-  }
-
-  function clearPostError() {
-    const el = document.getElementById('postError');
-    el.textContent = '';
-    el.classList.remove('visible');
-  }
-
   let toastTimer;
   function showToast(msg) {
-    const t = document.getElementById('toast');
+    const t = document.getElementById('sipToast') || document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(toastTimer);
@@ -815,12 +533,11 @@ permalink: /sip/blog
   }
 
   /* ─────────────────────────────
-     INIT — inject modal + styles into real document.head/body
-     so they fully escape Jekyll's layout stacking context
+     MODAL BOOTSTRAP
+     Injected into real document.head/body to escape
+     Jekyll's layout stacking context.
   ───────────────────────────── */
   (function bootstrapModal() {
-    // 1. Inject modal CSS into <head> so it applies regardless of where
-    //    Jekyll places the page fragment in the DOM.
     const style = document.createElement('style');
     style.textContent = `
       #sipPostModal {
@@ -887,38 +604,49 @@ permalink: /sip/blog
       #sipPostModal .sip-field textarea { resize: vertical; min-height: 140px; line-height: 1.7; }
       #sipPostModal .sip-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
       @media(max-width:520px){ #sipPostModal .sip-row { grid-template-columns:1fr; } }
-      #sipPostModal .sip-check {
-        display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
-      }
-      #sipPostModal .sip-check input { width:16px; height:16px; accent-color:#e8836a; cursor:pointer; }
-      #sipPostModal .sip-check label {
-        font-size:0.8rem; color:#777; text-transform:uppercase;
-        letter-spacing:0.08em; cursor:pointer; margin:0;
-      }
       #sipPostModal .sip-error {
         font-size:0.8rem; color:#e05555;
         margin-bottom:14px; display:none;
       }
       #sipPostModal .sip-error.visible { display:block; }
-      #sipPostModal .sip-actions { display:flex; gap:12px; flex-wrap:wrap; }
-      #sipPostModal .sip-btn-primary {
-        flex:1; background:#e8836a; color:#111;
-        font-family:'Jost',sans-serif; font-size:0.8rem; font-weight:600;
-        text-transform:uppercase; letter-spacing:0.1em;
-        padding:12px; border:none; border-radius:4px; cursor:pointer;
-        transition:background 0.15s;
+      /* Three-button action row */
+      #sipPostModal .sip-actions {
+        display: flex; gap: 10px; flex-wrap: wrap;
       }
-      #sipPostModal .sip-btn-primary:hover { background:#f09a7e; }
-      #sipPostModal .sip-btn-primary:disabled { opacity:0.6; cursor:default; }
+      #sipPostModal .sip-btn-publish {
+        flex: 1;
+        background: #e8836a; color: #111;
+        font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        padding: 12px; border: none; border-radius: 4px; cursor: pointer;
+        transition: background 0.15s;
+        white-space: nowrap;
+      }
+      #sipPostModal .sip-btn-publish:hover { background: #f09a7e; }
+      #sipPostModal .sip-btn-publish:disabled { opacity: 0.6; cursor: default; }
+      #sipPostModal .sip-btn-draft {
+        flex: 1;
+        background: transparent;
+        border: 1px solid rgba(240,192,96,0.4);
+        color: #f0c060;
+        font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        padding: 12px; border-radius: 4px; cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+        white-space: nowrap;
+      }
+      #sipPostModal .sip-btn-draft:hover { border-color: #f0c060; background: rgba(240,192,96,0.08); }
+      #sipPostModal .sip-btn-draft:disabled { opacity: 0.6; cursor: default; }
       #sipPostModal .sip-btn-cancel {
-        background:transparent; border:1px solid rgba(255,255,255,0.1);
-        color:#777; font-family:'Jost',sans-serif;
-        font-size:0.8rem; font-weight:500;
-        text-transform:uppercase; letter-spacing:0.1em;
-        padding:12px 20px; border-radius:4px; cursor:pointer;
-        transition:border-color 0.15s, color 0.15s;
+        background: transparent; border: 1px solid rgba(255,255,255,0.1);
+        color: #777; font-family: 'Jost', sans-serif;
+        font-size: 0.8rem; font-weight: 500;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        padding: 12px 20px; border-radius: 4px; cursor: pointer;
+        transition: border-color 0.15s, color 0.15s;
+        white-space: nowrap;
       }
-      #sipPostModal .sip-btn-cancel:hover { border-color:#aaa; color:#f5f0eb; }
+      #sipPostModal .sip-btn-cancel:hover { border-color: #aaa; color: #f5f0eb; }
 
       #sipToast {
         position:fixed; bottom:32px; right:32px;
@@ -935,7 +663,6 @@ permalink: /sip/blog
     `;
     document.head.appendChild(style);
 
-    // 2. Build modal HTML and append directly to <body>
     const modal = document.createElement('div');
     modal.id = 'sipPostModal';
     modal.innerHTML = `
@@ -967,14 +694,11 @@ permalink: /sip/blog
           <label for="sipPostBody">Content *</label>
           <textarea id="sipPostBody" placeholder="Share your update with the community…"></textarea>
         </div>
-        <div class="sip-check">
-          <input type="checkbox" id="sipPostPublish" />
-          <label for="sipPostPublish">Publish immediately (visible to the public)</label>
-        </div>
         <div class="sip-error" id="sipPostError"></div>
         <div class="sip-actions">
-          <button class="sip-btn-primary" id="sipSubmitBtn" onclick="submitPost()">Save Post</button>
-          <button class="sip-btn-cancel" onclick="closePostModal()">Cancel</button>
+          <button class="sip-btn-publish" id="sipPublishBtn" onclick="submitPost(true)">Publish</button>
+          <button class="sip-btn-draft"   id="sipDraftBtn"   onclick="submitPost(false)">Save Draft</button>
+          <button class="sip-btn-cancel"                     onclick="closePostModal()">Cancel</button>
         </div>
       </div>`;
     document.body.appendChild(modal);
@@ -982,72 +706,78 @@ permalink: /sip/blog
       if (e.target === this) closePostModal();
     });
 
-    // 3. Build toast
     const toast = document.createElement('div');
     toast.id = 'sipToast';
     document.body.appendChild(toast);
 
-    // 4. Remove the old in-page modal + toast markup (no longer needed)
-    const old = document.getElementById('postModal');
-    if (old) old.remove();
+    // Remove old in-page toast (no longer needed)
     const oldToast = document.getElementById('toast');
     if (oldToast) oldToast.remove();
   })();
 
-  // ── Rewire helpers to use new element IDs ──────────────────────────────
-
-  // Override openPostModal to use new IDs
-  openPostModal = function(postId) {
+  /* ─────────────────────────────
+     MODAL FUNCTIONS
+  ───────────────────────────── */
+  function openPostModal(postId) {
     editingPostId = postId || null;
     const isEdit = editingPostId !== null;
+
     document.getElementById('sipModalEyebrow').textContent = isEdit ? '✏️ Edit Entry' : '✍️ New Entry';
     document.getElementById('sipModalTitle').textContent   = isEdit ? 'Edit Post'     : 'Create Post';
-    document.getElementById('sipSubmitBtn').textContent    = isEdit ? 'Save Changes'  : 'Save Post';
-    document.getElementById('sipSubmitBtn').disabled      = false;
+
+    // Button labels for edit mode
+    document.getElementById('sipPublishBtn').textContent = isEdit ? 'Publish' : 'Publish';
+    document.getElementById('sipDraftBtn').textContent   = isEdit ? 'Save Draft' : 'Save Draft';
+    document.getElementById('sipPublishBtn').disabled    = false;
+    document.getElementById('sipDraftBtn').disabled      = false;
+
     clearPostError();
+
     if (isEdit) {
       const p = posts.find(post => post.id === editingPostId);
       if (!p) return;
-      document.getElementById('sipPostTitle').value   = p.title       || '';
-      document.getElementById('sipPostDate').value    = p.event_date  || '';
-      document.getElementById('sipPostTag').value     = p.program_tag || '';
-      document.getElementById('sipPostBody').value    = p.description || '';
-      document.getElementById('sipPostPublish').checked = p.published || false;
+      document.getElementById('sipPostTitle').value = p.title       || '';
+      document.getElementById('sipPostDate').value  = p.event_date  || '';
+      document.getElementById('sipPostTag').value   = p.program_tag || '';
+      document.getElementById('sipPostBody').value  = p.description || '';
     } else {
-      document.getElementById('sipPostTitle').value   = '';
-      document.getElementById('sipPostDate').value    = new Date().toISOString().slice(0,10);
-      document.getElementById('sipPostTag').value     = '';
-      document.getElementById('sipPostBody').value    = '';
-      document.getElementById('sipPostPublish').checked = false;
+      document.getElementById('sipPostTitle').value = '';
+      document.getElementById('sipPostDate').value  = new Date().toISOString().slice(0, 10);
+      document.getElementById('sipPostTag').value   = '';
+      document.getElementById('sipPostBody').value  = '';
     }
+
     document.getElementById('sipPostModal').classList.add('open');
     setTimeout(() => document.getElementById('sipPostTitle').focus(), 80);
-  };
+  }
 
-  closePostModal = function() {
+  function closePostModal() {
     document.getElementById('sipPostModal').classList.remove('open');
     editingPostId = null;
     clearPostError();
-  };
+  }
 
-  submitPost = function() {
+  /* published param comes from which button was clicked */
+  function submitPost(published) {
     const title       = document.getElementById('sipPostTitle').value.trim();
     const event_date  = document.getElementById('sipPostDate').value.trim();
     const program_tag = document.getElementById('sipPostTag').value.trim() || null;
     const description = document.getElementById('sipPostBody').value.trim();
-    const published   = document.getElementById('sipPostPublish').checked;
 
-    if (!title || title.length < 2)       return showPostError('Title is required (at least 2 characters).');
-    if (!event_date)                       return showPostError('Event date is required.');
+    if (!title || title.length < 2)            return showPostError('Title is required (at least 2 characters).');
+    if (!event_date)                            return showPostError('Event date is required.');
     if (!description || description.length < 2) return showPostError('Content is required (at least 2 characters).');
 
     const isEdit  = editingPostId !== null;
     const payload = { title, event_date, description, program_tag, published };
     if (isEdit) payload.id = editingPostId;
 
-    const btn = document.getElementById('sipSubmitBtn');
-    btn.textContent = 'Saving…';
-    btn.disabled    = true;
+    const publishBtn = document.getElementById('sipPublishBtn');
+    const draftBtn   = document.getElementById('sipDraftBtn');
+    publishBtn.disabled = true;
+    draftBtn.disabled   = true;
+    publishBtn.textContent = published ? 'Publishing…' : 'Publish';
+    draftBtn.textContent   = published ? 'Save Draft'  : 'Saving…';
 
     fetch(`${API_BASE}/api/blog`, {
       method: isEdit ? 'PUT' : 'POST',
@@ -1065,37 +795,34 @@ permalink: /sip/blog
       }
       closePostModal();
       renderPosts();
-      showToast(isEdit ? 'Post updated.' : published ? 'Post published!' : 'Draft saved.');
+      showToast(isEdit
+        ? (published ? 'Post published.' : 'Draft saved.')
+        : (published ? 'Post published!' : 'Draft saved.'));
     })
     .catch(err => {
       showPostError(String(err));
-      btn.textContent = isEdit ? 'Save Changes' : 'Save Post';
-      btn.disabled    = false;
+      publishBtn.disabled    = false;
+      draftBtn.disabled      = false;
+      publishBtn.textContent = 'Publish';
+      draftBtn.textContent   = 'Save Draft';
     });
-  };
+  }
 
-  showPostError = function(msg) {
+  function showPostError(msg) {
     const el = document.getElementById('sipPostError');
     el.textContent = msg;
     el.classList.add('visible');
-  };
+  }
 
-  clearPostError = function() {
+  function clearPostError() {
     const el = document.getElementById('sipPostError');
     if (!el) return;
     el.textContent = '';
     el.classList.remove('visible');
-  };
+  }
 
-  showToast = function(msg) {
-    const t = document.getElementById('sipToast');
-    t.textContent = msg;
-    t.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
-  };
-
-  checkAdminSession(); // triggers loadPosts() inside
+  /* ── INIT ── */
+  checkAdminSession();
 </script>
 </body>
 </html>
