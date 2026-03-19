@@ -54,8 +54,8 @@ show_reading_time: false
   /* Tab strip */
   #sip-auth-root .sip-tab-strip {
     display: flex !important;
-    background: #003F87;
-    border-bottom: none;
+    background: #f0f4fa;
+    border-bottom: 2px solid #dde3ec;
     padding: 0;
     margin: 0;
     list-style: none;
@@ -63,8 +63,8 @@ show_reading_time: false
   #sip-auth-root .sip-tab-btn {
     flex: 1;
     padding: 0.85rem 0;
-    background: rgba(255,255,255,0.1) !important;
-    color: rgba(255,255,255,0.65) !important;
+    background: transparent !important;
+    color: #5a6278 !important;
     border: none !important;
     border-radius: 0 !important;
     font-size: 0.95rem !important;
@@ -80,12 +80,12 @@ show_reading_time: false
     box-shadow: none !important;
   }
   #sip-auth-root .sip-tab-btn.sip-active {
-    background: #fff !important;
-    color: #003F87 !important;
+    background: #003F87 !important;
+    color: #fff !important;
   }
   #sip-auth-root .sip-tab-btn:not(.sip-active):hover {
-    background: rgba(255,255,255,0.22) !important;
-    color: #fff !important;
+    background: #e8f0fb !important;
+    color: #003F87 !important;
   }
 
   /* Panels */
