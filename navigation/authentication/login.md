@@ -259,7 +259,7 @@ show_reading_time: false
       <hr class="sip-hr">
       <p class="sip-note">
         New accounts start with standard access. An administrator can upgrade your role after review.
-        Questions? <a href="/sip/contact">Contact the chapter.</a>
+        Questions? <a href="/codewarrior-pages/sip/contact">Contact the chapter.</a>
       </p>
     </form>
   </div>
@@ -280,7 +280,7 @@ show_reading_time: false
 
   // ── Redirect target ──────────────────────────────────────────
   function getNextUrl() {
-    return new URLSearchParams(window.location.search).get('next') || '/sip/contact';
+    return new URLSearchParams(window.location.search).get('next') || '/codewarrior-pages/sip/contact';
   }
 
   // ── Login ────────────────────────────────────────────────────
@@ -355,12 +355,15 @@ show_reading_time: false
     })
     .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Sign up failed.')))
     .then(() => {
-      msg.textContent = 'Account created! You can now log in.';
-      msg.className = 'sip-msg ok';
-      e.target.reset();
-      document.getElementById('pw-match-msg').textContent = '';
+      // Store the first name so the garden page can greet the new user by name
+      const fullName = document.getElementById('su-name').value.trim();
+      const firstName = fullName.split(' ')[0];  // just the first name
+      sessionStorage.setItem('sip_new_user_name', firstName);
+  
+      // Redirect to the community garden welcome page
+      window.location.href = '/codewarrior-pages/sip/garden/';
     })
-    .catch(err => {
+      .catch(err => {
       msg.textContent = typeof err === 'string' ? err : 'Sign up failed. That member ID may already be taken.';
       msg.className = 'sip-msg';
     })
