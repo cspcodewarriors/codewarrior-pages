@@ -26,4 +26,9 @@ export async function handleLogout() {
         console.error('java logout failed:', e);
     }
 
+    // Clear JWT and session cookies client-side as a fallback
+    // (only works for non-httpOnly cookies, i.e. in development)
+    document.cookie = 'jwt_python_flask=; Max-Age=0; path=/;';
+    document.cookie = 'jwt_java_flask=; Max-Age=0; path=/;';
+    document.cookie = 'sess_python_flask=; Max-Age=0; path=/;';
 }
