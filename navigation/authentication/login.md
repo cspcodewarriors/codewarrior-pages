@@ -355,12 +355,11 @@ show_reading_time: false
     })
     .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Sign up failed.')))
     .then(() => {
-      // Store the first name so the garden page can greet the new user by name
-      const fullName = document.getElementById('su-name').value.trim();
-      const firstName = fullName.split(' ')[0];  // just the first name
-      sessionStorage.setItem('sip_new_user_name', firstName);
+      // Store the MEMBER ID (uid) — this is what the garden uses as the display name
+      const uid = document.getElementById('su-uid').value.trim();
+      sessionStorage.setItem('sip_new_user_uid', uid);
   
-      // Redirect to the community garden welcome page
+      // Redirect to the community garden
       window.location.href = '/codewarrior-pages/sip/garden/';
     })
       .catch(err => {
