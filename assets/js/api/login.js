@@ -95,7 +95,7 @@ function waitForElement(selector, maxAttempts = 20, interval = 100) {
 
 function getCredentials(baseurl) {
     const URL = pythonURI + '/api/id';
-    return fetch(URL, { ...fetchOptions, cache: 'no-cache' })
+    return fetch(URL, fetchOptions)
         .then(response => {
             if (!response.ok) {
                 console.warn("HTTP status code: " + response.status);
