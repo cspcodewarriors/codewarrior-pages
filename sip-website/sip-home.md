@@ -92,7 +92,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Transitional Housing</h2>
         <div style="width: 32px; height: 2px; background: #e8836a; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Supporting women and families in need of safe, stable housing as they work toward independence and long-term stability in our community. When a woman has a secure place to call home, she can focus on rebuilding her life — finding work, caring for her children, and moving forward with confidence.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Supporting women and families in need of safe, stable housing as they work toward independence and long-term stability in our community.</p>
       </div>
     </a>
 
@@ -104,7 +104,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Live Your Dream</h2>
         <div style="width: 32px; height: 2px; background: #6ab0e8; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Awards education and training grants to women who are the primary financial supporters of their families, helping them gain the skills needed for a better life. With access to education, recipients gain higher earning potential — breaking cycles of financial hardship and creating lasting change for themselves and their families.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Awards education and training grants to women who are the primary financial supporters of their families, helping them gain the skills needed for a better life.</p>
       </div>
     </a>
 
@@ -116,7 +116,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">"Dream It, Be It"</h2>
         <div style="width: 32px; height: 2px; background: #d4b84a; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">A career development program for girls, helping them set career goals, overcome obstacles, and connect with inspiring women who model what is possible. Girls who participate leave with greater self-confidence, a clearer sense of direction, and the belief that their ambitions are truly within reach.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">A career development program for girls, helping them set career goals, overcome obstacles, and connect with inspiring women who model what is possible.</p>
       </div>
     </a>
 
@@ -128,7 +128,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">STAT!</h2>
         <div style="width: 32px; height: 2px; background: #e86a6a; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Stop Trafficking and Trauma — providing support and resources to survivors of human trafficking and connecting them to the services they need to reclaim their lives. By helping survivors access safety, counseling, and stable footing, this program ensures that trauma does not become a permanent barrier to a full life.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Stop Trafficking and Trauma — providing support and resources to survivors of human trafficking and connecting them to the services they need to reclaim their lives.</p>
       </div>
     </a>
 
@@ -140,7 +140,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Abraxas Scholarship</h2>
         <div style="width: 32px; height: 2px; background: #5ecb8a; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Scholarship support for students at Abraxas High School, recognizing and uplifting young people who demonstrate commitment to education and personal growth. For students who face extra hurdles, this recognition can be a turning point — validating their hard work and opening doors to higher education and new opportunities.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Scholarship support for students at Abraxas High School, recognizing and uplifting young people who demonstrate commitment to education and personal growth.</p>
       </div>
     </a>
 
@@ -152,7 +152,7 @@ permalink: /sip/home/
         </div>
         <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Colegio La Esperanza</h2>
         <div style="width: 32px; height: 2px; background: #b07de8; margin-bottom: 14px;"></div>
-        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Supporting girls' education at Colegio La Esperanza, ensuring access to quality schooling and opportunity for young women across the border in Tijuana, Mexico. An educated girl becomes an empowered woman — one who can uplift her family, strengthen her community, and inspire the next generation to dream bigger.</p>
+        <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0;">Supporting girls' education at Colegio La Esperanza, ensuring access to quality schooling and opportunity for young women across the border in Tijuana, Mexico.</p>
       </div>
     </a>
 
