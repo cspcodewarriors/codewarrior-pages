@@ -727,7 +727,7 @@ permalink: /sip/contact
 
 <script>
   // ── Config ────────────────────────────────────────────────────
-  const API_BASE = 'http://localhost:8001';
+  const API_BASE = 'http://localhost:8427';
 
   // ── State ─────────────────────────────────────────────────────
   const today = new Date();

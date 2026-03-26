@@ -346,7 +346,7 @@ permalink: /sip/blog
 
 <script>
   /* ── CONFIG ── */
-  const API_BASE = 'http://localhost:8001';
+  const API_BASE = 'http://localhost:8427';
 
   /* ── STATE ── */
   let isAdmin       = false;
