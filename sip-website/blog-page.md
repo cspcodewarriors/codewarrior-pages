@@ -346,7 +346,12 @@ permalink: /sip/blog
 
 <script>
   /* ── CONFIG ── */
-  const API_BASE = 'http://localhost:8427';
+  var API_BASE;
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    API_BASE = "http://localhost:8427";
+  } else {
+    API_BASE = "https://sipoway.opencodingsociety.com";
+  }
 
   /* ── STATE ── */
   let isAdmin       = false;
