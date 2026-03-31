@@ -210,63 +210,123 @@ show_reading_time: false
 </div>
 
 <script>
+  
   const SPRITES   = ['🌸','🌺','🌻','🌷','🌼','🦋','🐝','🐞','🐛','🦗',
                      '🍀','🌿','🪴','🌱','🍃','🐢','🦔','🐇','🦜','🌙'];
   const FLOWERS   = ['🌸','🌺','🌻','🌷','🌼','💐','🪷'];
   const CREATURES = ['🦋','🐝','🐞','🐛','🪲'];
 
-  // ── Read member ID from sessionStorage (written by login.md on signup) ──
-  const memberUID = sessionStorage.getItem('sip_new_user_uid') || 'Friend';
-  // Clear it immediately — every signup gets a clean slate
+  // New signup lands here with this key set; returning logins use sip_uid
+  const newUserUID = sessionStorage.getItem('sip_new_user_uid') || null;
   sessionStorage.removeItem('sip_new_user_uid');
 
-  // Always wipe any old localStorage profile for this uid so the popup
-  // always shows fresh regardless of whether they signed up before
-  const storageKey = `sip_garden_profile_${memberUID}`;
-  localStorage.removeItem(storageKey);
+  const loggedInUID = sessionStorage.getItem('sip_uid') || null;
 
-  // Show the member ID in the popup greeting
-  document.getElementById('popup-name').textContent = memberUID;
+  // The active uid for this session — new signup takes priority
+  const activeUID = newUserUID || loggedInUID;
 
-  // ── Build sprite picker — always shown, never skipped ────────
-  const grid = document.getElementById('sprite-grid');
-  let selectedSprite = null;
+  async function fetchAllUsers() {
+    try {
+      const res = await fetch(`${pythonURI}/api/users`, { credentials: 'include' });
+      if (!res.ok) return [];
+      return await res.json();
+    } catch { return []; }
+  }
 
-  SPRITES.forEach(emoji => {
-    const btn = document.createElement('button');
-    btn.className = 'sprite-option';
-    btn.textContent = emoji;
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.sprite-option').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      selectedSprite = emoji;
-      document.getElementById('popup-confirm').disabled = false;
-    });
-    grid.appendChild(btn);
-  });
+  async function fetchCurrentUser(uid) {
+    try {
+      const res = await fetch(`${pythonURI}/api/user`, { credentials: 'include' });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch { return null; }
+  }
 
-  // ── Confirm ──────────────────────────────────────────────────
-  document.getElementById('popup-confirm').addEventListener('click', () => {
-    const profile = { name: memberUID, sprite: selectedSprite };
-    localStorage.setItem(storageKey, JSON.stringify(profile));
+  async function saveSpriteToDB(sprite) {
+    try {
+      await fetch(`${pythonURI}/api/user`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ garden_sprite: sprite })
+      });
+    } catch (e) { console.error('Failed to save sprite:', e); }
+  }
 
+  async function init() {
+    const allUsers = await fetchAllUsers();
+
+    if (newUserUID) {
+      // Brand new signup — show sprite picker, then build garden
+      document.getElementById('popup-name').textContent = newUserUID;
+      buildSpriteGrid(allUsers);
+      return;
+    }
+
+    if (loggedInUID) {
+      // Returning user — fetch their saved sprite from DB
+      const me = await fetchCurrentUser(loggedInUID);
+      const sprite = me && me.garden_sprite ? me.garden_sprite : null;
+
+      if (sprite) {
+        document.getElementById('popup-overlay').style.display = 'none';
+        showGreeting(loggedInUID, sprite);
+        buildGarden({ name: loggedInUID, sprite }, allUsers);
+        return;
+      }
+
+      // Logged in but no sprite chosen yet — show picker
+      document.getElementById('popup-name').textContent = loggedInUID;
+      buildSpriteGrid(allUsers);
+      return;
+    }
+
+    // Not logged in — just show the garden with community sprites
     document.getElementById('popup-overlay').style.display = 'none';
+    buildGarden(null, allUsers);
+  }
 
+  function showGreeting(uid, sprite) {
     const greet = document.getElementById('greeting');
-    greet.innerHTML = `You're in the garden, <span>${memberUID}</span> ${selectedSprite}`;
+    greet.innerHTML = `Welcome back, <span>${uid}</span> ${sprite}`;
     greet.style.display = 'block';
+  }
 
-    buildGarden(profile);
-  });
+  function buildSpriteGrid(allUsers) {
+    const grid = document.getElementById('sprite-grid');
+    let selectedSprite = null;
 
-  // ── Build the scene ──────────────────────────────────────────
-  function buildGarden(profile) {
+    SPRITES.forEach(emoji => {
+      const btn = document.createElement('button');
+      btn.className = 'sprite-option';
+      btn.textContent = emoji;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sprite-option').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedSprite = emoji;
+        document.getElementById('popup-confirm').disabled = false;
+      });
+      grid.appendChild(btn);
+    });
+
+    document.getElementById('popup-confirm').addEventListener('click', async () => {
+      await saveSpriteToDB(selectedSprite);
+      // Also update sessionStorage uid in case this was a new signup
+      if (newUserUID) sessionStorage.setItem('sip_uid', newUserUID);
+      document.getElementById('popup-overlay').style.display = 'none';
+      const greet = document.getElementById('greeting');
+      greet.innerHTML = `You're in the garden, <span>${activeUID}</span> ${selectedSprite}`;
+      greet.style.display = 'block';
+      buildGarden({ name: activeUID, sprite: selectedSprite }, allUsers);
+    });
+  }
+
+  function buildGarden(profile, allUsers) {
     const canvas = document.getElementById('garden-canvas');
     const ground = document.getElementById('ground');
     canvas.innerHTML = '';
     ground.innerHTML = '';
 
-    // Grass tufts — anchored to the top edge of #ground
+    // Grass tufts
     for (let i = 0; i < 50; i++) {
       const tuft = document.createElement('div');
       tuft.className = 'tuft';
@@ -281,13 +341,13 @@ show_reading_time: false
       ground.appendChild(tuft);
     }
 
-    // Flowers at varied heights throughout the ground area
+    // Flowers
     for (let i = 0; i < 24; i++) {
       const f = document.createElement('div');
       f.className = 'flower';
-      f.style.left             = (2 + Math.random() * 96) + '%';
-      f.style.bottom           = (2 + Math.random() * 65) + '%';
-      f.style.animationDelay   = (Math.random() * 4) + 's';
+      f.style.left              = (2 + Math.random() * 96) + '%';
+      f.style.bottom            = (2 + Math.random() * 65) + '%';
+      f.style.animationDelay    = (Math.random() * 4) + 's';
       f.style.animationDuration = (3 + Math.random() * 3) + 's';
       const head = document.createElement('div');
       head.className   = 'flower-head';
@@ -300,7 +360,7 @@ show_reading_time: false
       canvas.appendChild(f);
     }
 
-    // Creatures at varied heights
+    // Creatures
     for (let i = 0; i < 10; i++) {
       const c = document.createElement('div');
       c.className = 'creature';
@@ -312,35 +372,31 @@ show_reading_time: false
       canvas.appendChild(c);
     }
 
-    // User's sprite — fully randomized position across the whole field
-    // so each signup lands somewhere new and surprising
-    const userLeft   = (5  + Math.random() * 88) + '%';
-    const userBottom = (8  + Math.random() * 60) + '%';
-    placeSprite(canvas, {
-      emoji: profile.sprite, label: profile.name,
-      left: userLeft, bottom: userBottom,
-      size: '3rem', labelBg: 'rgba(0,63,135,0.85)',
-      delay: '0s', duration: '2.8s'
-    });
-
-    // Community sprites spread across random positions
-    const community = [
-      { name:'Maria', sprite:'🌸' }, { name:'Jane',   sprite:'🦋' },
-      { name:'Sarah', sprite:'🌻' }, { name:'Luisa',  sprite:'🐝' },
-      { name:'Anika', sprite:'🌷' }, { name:'Priya',  sprite:'🌺' },
-      { name:'Tomoko',sprite:'🍀' },
-    ];
-    // Divide width into 7 zones so they spread out, then randomize within each zone
-    community.forEach((m, idx) => {
-      const zoneWidth = 100 / community.length;
+    // Community sprites — all DB users with a sprite, excluding the current user
+    const community = (allUsers || []).filter(u =>
+      u.garden_sprite && u.uid !== (profile ? profile.name : null)
+    );
+    const zoneWidth = community.length > 0 ? 90 / community.length : 90;
+    community.forEach((u, idx) => {
       placeSprite(canvas, {
-        emoji: m.sprite, label: m.name,
-        left:   (idx * zoneWidth + Math.random() * (zoneWidth - 8)) + '%',
+        emoji: u.garden_sprite, label: u.uid,
+        left:   (5 + idx * zoneWidth + Math.random() * (zoneWidth - 8)) + '%',
         bottom: (5 + Math.random() * 55) + '%',
         size: '2.1rem', labelBg: 'rgba(45,106,45,0.75)',
         delay: (idx * 0.4) + 's', duration: (2.5 + Math.random() * 2) + 's'
       });
     });
+
+    // Current user's sprite
+    if (profile) {
+      placeSprite(canvas, {
+        emoji: profile.sprite, label: profile.name,
+        left:   (5  + Math.random() * 88) + '%',
+        bottom: (8  + Math.random() * 60) + '%',
+        size: '3rem', labelBg: 'rgba(0,63,135,0.85)',
+        delay: '0s', duration: '2.8s'
+      });
+    }
   }
 
   function placeSprite(canvas, { emoji, label, left, bottom, size, labelBg, delay, duration }) {
@@ -359,6 +415,8 @@ show_reading_time: false
     wrap.appendChild(lbl);
     canvas.appendChild(wrap);
   }
+
+  init();
 </script>
 </body>
 </html>
