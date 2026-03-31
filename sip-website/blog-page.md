@@ -152,8 +152,6 @@ permalink: /sip/blog
     .btn-publish-toggle:hover { border-color: #f0c060; background: rgba(240,192,96,0.08); }
     .btn-publish-toggle.published { color: var(--text-muted); }
     .btn-publish-toggle.published:hover { border-color: var(--text-muted); background: none; }
-    .btn-add-photos { background: none; border: 1px solid var(--border2); font-family: var(--sans); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-label); cursor: pointer; padding: 4px 10px; border-radius: 3px; transition: border-color 0.15s, color 0.15s; }
-    .btn-add-photos:hover { border-color: var(--accent); color: var(--accent); }
 
     /* ── TOAST ── */
     .toast { position: fixed; bottom: 32px; right: 32px; background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; padding: 14px 22px; font-size: 0.85rem; color: var(--text-primary); z-index: 999999; transform: translateY(20px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; pointer-events: none; }
@@ -244,8 +242,8 @@ permalink: /sip/blog
   let posts          = [];
   let editingPostId  = null;
 
-  // Image state for the upload modal
-  let uploadQueue    = [];   // Array of { dataURL, file } — staged but not yet sent
+  // Images staged inside the post modal (new uploads not yet sent)
+  let uploadQueue    = [];   // Array of { dataURL, name }
   let postImages     = {};   // { [postId]: [ { filename, data } ] }
 
   // Lightbox state
@@ -362,7 +360,6 @@ permalink: /sip/blog
                       title="${p.published ? 'Move to drafts' : 'Publish this post'}">
                 ${p.published ? 'Unpublish' : 'Publish'}
               </button>
-              <button class="btn-add-photos" onclick="openPhotoModal(${p.id})" title="Add photos to this post">📷 Photos</button>
               <button class="btn-edit-post"  onclick="openPostModal(${p.id})">Edit</button>
               <button class="btn-delete"     onclick="deletePost(${p.id})">Delete</button>
             ` : ''}
@@ -494,8 +491,8 @@ permalink: /sip/blog
     .then(() => {
       postImages[postId] = (postImages[postId] || []).filter(i => i.filename !== filename);
       renderGallery(postId);
-      // Also remove from photo modal preview if it's open
-      refreshPhotoModal(postId);
+      // Also refresh the in-modal existing photos if this post is being edited
+      refreshModalExistingPhotos(postId);
       showToast('Photo removed.');
     })
     .catch(err => showToast(String(err)));
@@ -533,8 +530,7 @@ permalink: /sip/blog
   }
 
   /* ═══════════════════════════════════════════════
-     MODAL BOOTSTRAP — injected into document
-     to escape Jekyll's layout stacking context
+     MODAL BOOTSTRAP
   ═══════════════════════════════════════════════ */
   (function bootstrapModals() {
     /* ── shared styles ── */
@@ -551,7 +547,7 @@ permalink: /sip/blog
       #sipPostModal.open { display: flex; }
       #sipPostModal .sip-modal-panel {
         background: #1a1917; border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 10px; width: 100%; max-width: 580px;
+        border-radius: 10px; width: 100%; max-width: 620px;
         padding: 40px 36px; position: relative;
         animation: sipModalIn 0.22s ease;
       }
@@ -611,70 +607,60 @@ permalink: /sip/blog
       }
       #sipPostModal .sip-btn-cancel:hover { border-color: #aaa; color: #f5f0eb; }
 
-      /* ── PHOTO MODAL ── */
-      #sipPhotoModal {
-        display: none; position: fixed; inset: 0;
-        background: rgba(0,0,0,0.88); z-index: 2147483647;
-        align-items: flex-start; justify-content: center;
-        padding: 40px 24px; overflow-y: auto;
-        font-family: 'Jost', 'Segoe UI', sans-serif;
+      /* ── PHOTO SECTION INSIDE POST MODAL ── */
+      .sip-photo-section {
+        margin-bottom: 18px;
+        border-top: 1px solid rgba(255,255,255,0.07);
+        padding-top: 18px;
       }
-      #sipPhotoModal.open { display: flex; }
-      #sipPhotoModal .sip-modal-panel {
-        background: #1a1917; border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 10px; width: 100%; max-width: 640px;
-        padding: 36px 32px; position: relative;
-        animation: sipModalIn 0.22s ease;
+      .sip-photo-section-header {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 12px;
       }
-      #sipPhotoModal .sip-eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em; color: #e8836a; margin-bottom: 8px; }
-      #sipPhotoModal .sip-title   { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.8rem; font-weight: 600; color: #f5f0eb; margin-bottom: 6px; }
-      #sipPhotoModal .sip-subtitle { font-size: 0.82rem; color: #777; margin-bottom: 24px; }
+      .sip-photo-section-label {
+        font-size: 0.72rem; text-transform: uppercase;
+        letter-spacing: 0.1em; color: #777;
+        display: flex; align-items: center; gap: 8px;
+        margin: 0;
+      }
+      .sip-photo-section-label span { color: #555; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.7rem; }
 
-      /* drop zone */
-      #sipDropZone {
-        border: 2px dashed rgba(232,131,106,0.35);
-        border-radius: 8px; padding: 36px 24px;
-        text-align: center; cursor: pointer;
-        transition: border-color 0.2s, background 0.2s;
-        margin-bottom: 20px;
+      /* + add photos button */
+      #sipPhotoAddBtn {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(232,131,106,0.1); border: 1px solid rgba(232,131,106,0.3);
+        color: #e8836a; font-family: 'Jost', sans-serif;
+        font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+        letter-spacing: 0.08em; padding: 5px 12px; border-radius: 4px;
+        cursor: pointer; transition: background 0.15s, border-color 0.15s;
+        flex-shrink: 0;
       }
-      #sipDropZone:hover,
-      #sipDropZone.drag-over { border-color: #e8836a; background: rgba(232,131,106,0.05); }
-      #sipDropZone .dz-icon  { font-size: 2rem; margin-bottom: 10px; opacity: 0.6; }
-      #sipDropZone .dz-label { font-size: 0.85rem; color: #777; }
-      #sipDropZone .dz-label span { color: #e8836a; text-decoration: underline; cursor: pointer; }
-      #sipFileInput { display: none; }
+      #sipPhotoAddBtn:hover { background: rgba(232,131,106,0.2); border-color: rgba(232,131,106,0.5); }
+      #sipPhotoAddBtn .plus-icon {
+        font-size: 1rem; line-height: 1; font-weight: 400;
+        transition: transform 0.25s ease;
+      }
+      #sipPhotoAddBtn.open .plus-icon { transform: rotate(45deg); }
 
-      /* staged preview grid */
-      #sipStagedGrid {
+      /* collapsible drop zone wrapper */
+      #sipModalDropWrapper {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
+        margin-top: 0;
+      }
+      #sipModalDropWrapper.expanded {
+        max-height: 200px;
+        opacity: 1;
+        margin-top: 10px;
+      }
+
+      /* existing photos strip */
+      #sipModalExistingGrid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 8px; margin-bottom: 18px;
-      }
-      .staged-img-wrap {
-        position: relative; border-radius: 5px;
-        overflow: hidden; aspect-ratio: 1;
-        background: rgba(255,255,255,0.04);
-      }
-      .staged-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .staged-remove {
-        position: absolute; top: 4px; right: 4px;
-        background: rgba(0,0,0,0.7); border: none;
-        color: #fff; font-size: 0.65rem; border-radius: 3px;
-        padding: 2px 5px; cursor: pointer;
-      }
-      .staged-label {
-        position: absolute; bottom: 0; left: 0; right: 0;
-        background: rgba(0,0,0,0.55); color: #aaa;
-        font-size: 0.6rem; text-align: center; padding: 3px;
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      }
-
-      /* existing photos */
-      #sipExistingGrid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 8px; margin-bottom: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 7px; margin-bottom: 14px;
       }
       .existing-img-wrap {
         position: relative; border-radius: 5px;
@@ -691,40 +677,48 @@ permalink: /sip/blog
       }
       .existing-img-wrap:hover .existing-remove { opacity: 1; }
 
-      .sip-section-label {
-        font-size: 0.7rem; text-transform: uppercase;
-        letter-spacing: 0.1em; color: #555;
-        margin-bottom: 10px;
+      /* drop zone */
+      #sipModalDropZone {
+        border: 2px dashed rgba(232,131,106,0.28);
+        border-radius: 7px; padding: 20px 16px;
+        text-align: center; cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
       }
+      #sipModalDropZone:hover,
+      #sipModalDropZone.drag-over { border-color: #e8836a; background: rgba(232,131,106,0.05); }
+      #sipModalDropZone .dz-icon  { font-size: 1.4rem; margin-bottom: 5px; opacity: 0.55; }
+      #sipModalDropZone .dz-label { font-size: 0.8rem; color: #666; }
+      #sipModalDropZone .dz-label span { color: #e8836a; text-decoration: underline; cursor: pointer; }
+      #sipModalFileInput { display: none; }
 
-      /* upload progress */
-      #sipUploadProgress {
-        font-size: 0.8rem; color: #e8836a;
-        margin-bottom: 14px; display: none;
+      /* staged previews */
+      #sipModalStagedGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 7px; margin-bottom: 10px;
       }
-      #sipUploadProgress.visible { display: block; }
-
-      #sipPhotoModal .sip-photo-actions {
-        display: flex; gap: 10px; flex-wrap: wrap;
+      .staged-img-wrap {
+        position: relative; border-radius: 5px;
+        overflow: hidden; aspect-ratio: 1;
+        background: rgba(255,255,255,0.04);
       }
-      #sipPhotoModal .sip-btn-upload {
-        flex:1; background: #e8836a; color: #111;
-        font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 600;
-        text-transform: uppercase; letter-spacing: 0.1em;
-        padding: 12px; border: none; border-radius: 4px; cursor: pointer;
-        transition: background 0.15s; white-space: nowrap;
+      .staged-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .staged-remove {
+        position: absolute; top: 4px; right: 4px;
+        background: rgba(0,0,0,0.7); border: none;
+        color: #fff; font-size: 0.65rem; border-radius: 3px;
+        padding: 2px 5px; cursor: pointer;
       }
-      #sipPhotoModal .sip-btn-upload:hover { background: #f09a7e; }
-      #sipPhotoModal .sip-btn-upload:disabled { opacity: 0.6; cursor: default; }
-      #sipPhotoModal .sip-btn-close {
-        background: transparent; border: 1px solid rgba(255,255,255,0.1);
-        color: #777; font-family: 'Jost', sans-serif;
-        font-size: 0.8rem; font-weight: 500;
-        text-transform: uppercase; letter-spacing: 0.1em;
-        padding: 12px 20px; border-radius: 4px; cursor: pointer;
-        transition: border-color 0.15s, color 0.15s;
+      .staged-label {
+        position: absolute; bottom: 0; left: 0; right: 0;
+        background: rgba(0,0,0,0.55); color: #aaa;
+        font-size: 0.58rem; text-align: center; padding: 3px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       }
-      #sipPhotoModal .sip-btn-close:hover { border-color: #aaa; color: #f5f0eb; }
+      .sip-staged-count {
+        font-size: 0.75rem; color: #e8836a;
+        margin-bottom: 6px;
+      }
 
       /* ── TOAST ── */
       #sipToast {
@@ -742,7 +736,7 @@ permalink: /sip/blog
     `;
     document.head.appendChild(style);
 
-    /* ── POST MODAL ── */
+    /* ── POST MODAL (now includes photo section) ── */
     const postModal = document.createElement('div');
     postModal.id = 'sipPostModal';
     postModal.innerHTML = `
@@ -774,6 +768,37 @@ permalink: /sip/blog
           <label for="sipPostBody">Content *</label>
           <textarea id="sipPostBody" placeholder="Share your update with the community…"></textarea>
         </div>
+
+        <!-- ── PHOTO SECTION ── -->
+        <div class="sip-photo-section">
+          <div class="sip-photo-section-header">
+            <p class="sip-photo-section-label">📷 Photos </p>
+            <button type="button" id="sipPhotoAddBtn" onclick="toggleDropZone()">
+              <span class="plus-icon">+</span> Add Photos
+            </button>
+          </div>
+
+          <!-- existing photos (shown in edit mode) -->
+          <div id="sipModalExistingSection" style="display:none; margin-bottom:14px;">
+            <div id="sipModalExistingGrid"></div>
+          </div>
+
+          <!-- staged (new) photos -->
+          <div id="sipModalStagedSection" style="display:none; margin-bottom:10px;">
+            <p class="sip-staged-count" id="sipModalStagedCount"></p>
+            <div id="sipModalStagedGrid"></div>
+          </div>
+
+          <!-- collapsible drop zone -->
+          <div id="sipModalDropWrapper">
+            <div id="sipModalDropZone">
+              <div class="dz-icon">🖼️</div>
+              <p class="dz-label">Drag &amp; drop images here, or <span onclick="document.getElementById('sipModalFileInput').click()">browse files</span></p>
+              <input type="file" id="sipModalFileInput" accept="image/*" multiple />
+            </div>
+          </div>
+        </div>
+
         <div class="sip-error" id="sipPostError"></div>
         <div class="sip-actions">
           <button class="sip-btn-publish" id="sipPublishBtn" onclick="submitPost(true)">Publish</button>
@@ -783,44 +808,6 @@ permalink: /sip/blog
       </div>`;
     document.body.appendChild(postModal);
     postModal.addEventListener('mousedown', e => { if (e.target === postModal) closePostModal(); });
-
-    /* ── PHOTO MODAL ── */
-    const photoModal = document.createElement('div');
-    photoModal.id = 'sipPhotoModal';
-    photoModal.innerHTML = `
-      <div class="sip-modal-panel">
-        <p class="sip-eyebrow">📷 Post Photos</p>
-        <h2 class="sip-title">Manage Images</h2>
-        <p class="sip-subtitle" id="sipPhotoSubtitle">Add or remove photos for this post.</p>
-
-        <!-- existing photos -->
-        <div id="sipExistingSection" style="margin-bottom:20px; display:none;">
-          <p class="sip-section-label">Current Photos</p>
-          <div id="sipExistingGrid"></div>
-        </div>
-
-        <!-- drop zone -->
-        <div id="sipDropZone">
-          <div class="dz-icon">🖼️</div>
-          <p class="dz-label">Drag &amp; drop images here, or <span onclick="document.getElementById('sipFileInput').click()">browse files</span></p>
-          <input type="file" id="sipFileInput" accept="image/*" multiple />
-        </div>
-
-        <!-- staged previews -->
-        <div id="sipStagedSection" style="display:none; margin-bottom:18px;">
-          <p class="sip-section-label" style="margin-bottom:10px;">Staged for Upload</p>
-          <div id="sipStagedGrid"></div>
-        </div>
-
-        <div id="sipUploadProgress"></div>
-
-        <div class="sip-photo-actions">
-          <button class="sip-btn-upload" id="sipUploadBtn" onclick="uploadStagedImages()" disabled>Upload Photos</button>
-          <button class="sip-btn-close"  onclick="closePhotoModal()">Done</button>
-        </div>
-      </div>`;
-    document.body.appendChild(photoModal);
-    photoModal.addEventListener('mousedown', e => { if (e.target === photoModal) closePhotoModal(); });
 
     /* ── TOAST ── */
     const toast = document.createElement('div');
@@ -832,8 +819,8 @@ permalink: /sip/blog
     if (old) old.remove();
 
     /* ── DROP ZONE WIRING ── */
-    const dz  = document.getElementById('sipDropZone');
-    const fin = document.getElementById('sipFileInput');
+    const dz  = document.getElementById('sipModalDropZone');
+    const fin = document.getElementById('sipModalFileInput');
 
     dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
     dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
@@ -843,7 +830,128 @@ permalink: /sip/blog
     });
     dz.addEventListener('click', e => { if (e.target !== fin) fin.click(); });
     fin.addEventListener('change', () => { stageFiles(fin.files); fin.value = ''; });
+
+    // Also open drop zone when something is dragged over the whole modal panel
+    document.getElementById('sipPostModal').addEventListener('dragover', e => {
+      e.preventDefault();
+      const wrapper = document.getElementById('sipModalDropWrapper');
+      if (!wrapper.classList.contains('expanded')) toggleDropZone(true);
+    });
   })();
+
+  /* ═══════════════════════════════════════════════
+     DROP ZONE TOGGLE
+  ═══════════════════════════════════════════════ */
+  function toggleDropZone(forceOpen) {
+    const wrapper = document.getElementById('sipModalDropWrapper');
+    const btn     = document.getElementById('sipPhotoAddBtn');
+    const isOpen  = wrapper.classList.contains('expanded');
+    if (forceOpen === true && isOpen) return;
+    const opening = forceOpen === true || !isOpen;
+    wrapper.classList.toggle('expanded', opening);
+    btn.classList.toggle('open', opening);
+  }
+
+  /* ═══════════════════════════════════════════════
+     PHOTO STAGING (inside post modal)
+  ═══════════════════════════════════════════════ */
+  function stageFiles(fileList) {
+    Array.from(fileList).forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        uploadQueue.push({ dataURL: e.target.result, name: file.name });
+        renderModalStagedGrid();
+      };
+      reader.readAsDataURL(file);
+    });
+    // Collapse drop zone after selecting files
+    const wrapper = document.getElementById('sipModalDropWrapper');
+    const btn     = document.getElementById('sipPhotoAddBtn');
+    if (wrapper) { wrapper.classList.remove('expanded'); btn.classList.remove('open'); }
+  }
+
+  function renderModalStagedGrid() {
+    const section = document.getElementById('sipModalStagedSection');
+    const grid    = document.getElementById('sipModalStagedGrid');
+    const count   = document.getElementById('sipModalStagedCount');
+    if (!section) return;
+
+    if (uploadQueue.length === 0) {
+      section.style.display = 'none'; return;
+    }
+    section.style.display = 'block';
+    count.textContent = uploadQueue.length + ' photo' + (uploadQueue.length !== 1 ? 's' : '') + ' ready to upload';
+    grid.innerHTML = '';
+
+    uploadQueue.forEach((item, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'staged-img-wrap';
+      wrap.innerHTML = `
+        <img src="${item.dataURL}" alt="${escHtml(item.name)}" />
+        <button class="staged-remove" onclick="unstageImage(${idx})">✕</button>
+        <div class="staged-label">${escHtml(item.name)}</div>`;
+      grid.appendChild(wrap);
+    });
+  }
+
+  function unstageImage(idx) {
+    uploadQueue.splice(idx, 1);
+    renderModalStagedGrid();
+  }
+
+  /* Refresh existing-photos strip inside the modal (used after a delete) */
+  function refreshModalExistingPhotos(postId) {
+    if (editingPostId !== postId) return;
+    const imgs    = postImages[postId] || [];
+    const section = document.getElementById('sipModalExistingSection');
+    const grid    = document.getElementById('sipModalExistingGrid');
+    if (!section || !grid) return;
+
+    if (imgs.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    grid.innerHTML = '';
+
+    imgs.forEach(img => {
+      const wrap = document.createElement('div');
+      wrap.className = 'existing-img-wrap';
+      wrap.innerHTML = `
+        <img src="data:image/png;base64,${img.data}" alt="photo" />
+        <button class="existing-remove" onclick="deletePostImage(event, ${postId}, '${escHtml(img.filename)}')">✕</button>`;
+      grid.appendChild(wrap);
+    });
+  }
+
+  /* Upload all staged images for a given post id */
+  async function uploadQueuedImages(postId) {
+    if (uploadQueue.length === 0) return;
+    const total = uploadQueue.length;
+    let succeeded = 0;
+
+    for (let i = 0; i < total; i++) {
+      const item = uploadQueue[i];
+      try {
+        const resp = await fetch(`${API_BASE}/api/blog/images/upload`, {
+          method: 'POST', credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ post_id: postId, image: item.dataURL }),
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (!postImages[postId]) postImages[postId] = [];
+          postImages[postId].push({
+            filename: data.filename,
+            data: item.dataURL.split(',')[1],
+          });
+          succeeded++;
+        }
+      } catch (e) { /* continue */ }
+    }
+
+    uploadQueue = [];
+    renderGallery(postId);
+    return succeeded;
+  }
 
   /* ═══════════════════════════════════════════════
      POST MODAL FUNCTIONS
@@ -851,6 +959,10 @@ permalink: /sip/blog
   function openPostModal(postId) {
     editingPostId = postId || null;
     const isEdit  = editingPostId !== null;
+
+    // Reset staged queue
+    uploadQueue = [];
+    renderModalStagedGrid();
 
     document.getElementById('sipModalEyebrow').textContent = isEdit ? '✏️ Edit Entry' : '✍️ New Entry';
     document.getElementById('sipModalTitle').textContent   = isEdit ? 'Edit Post'     : 'Create Post';
@@ -867,11 +979,16 @@ permalink: /sip/blog
       document.getElementById('sipPostDate').value  = p.event_date  || '';
       document.getElementById('sipPostTag').value   = p.program_tag || '';
       document.getElementById('sipPostBody').value  = p.description || '';
+      // Show existing photos
+      refreshModalExistingPhotos(editingPostId);
     } else {
       document.getElementById('sipPostTitle').value = '';
       document.getElementById('sipPostDate').value  = new Date().toISOString().slice(0, 10);
       document.getElementById('sipPostTag').value   = '';
       document.getElementById('sipPostBody').value  = '';
+      // Hide existing photos section for new posts
+      const exSection = document.getElementById('sipModalExistingSection');
+      if (exSection) exSection.style.display = 'none';
     }
 
     document.getElementById('sipPostModal').classList.add('open');
@@ -880,10 +997,17 @@ permalink: /sip/blog
 
   function closePostModal() {
     document.getElementById('sipPostModal').classList.remove('open');
-    editingPostId = null; clearPostError();
+    editingPostId = null;
+    uploadQueue   = [];
+    renderModalStagedGrid();
+    clearPostError();
+    // Collapse drop zone
+    const wrapper = document.getElementById('sipModalDropWrapper');
+    const btn     = document.getElementById('sipPhotoAddBtn');
+    if (wrapper) { wrapper.classList.remove('expanded'); btn.classList.remove('open'); }
   }
 
-  function submitPost(published) {
+  async function submitPost(published) {
     const title       = document.getElementById('sipPostTitle').value.trim();
     const event_date  = document.getElementById('sipPostDate').value.trim();
     const program_tag = document.getElementById('sipPostTag').value.trim() || null;
@@ -897,38 +1021,63 @@ permalink: /sip/blog
     const payload = { title, event_date, description, program_tag, published };
     if (isEdit) payload.id = editingPostId;
 
-    const pub = document.getElementById('sipPublishBtn');
+    const pub  = document.getElementById('sipPublishBtn');
     const drft = document.getElementById('sipDraftBtn');
     pub.disabled  = drft.disabled  = true;
     pub.textContent  = published ? 'Publishing…' : 'Publish';
     drft.textContent = published ? 'Save Draft'  : 'Saving…';
 
-    fetch(`${API_BASE}/api/blog`, {
-      method: isEdit ? 'PUT' : 'POST', credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Server error')))
-    .then(saved => {
-      if (isEdit) {
-        const idx = posts.findIndex(p => p.id === editingPostId);
-        if (idx !== -1) posts[idx] = saved;
-      } else {
-        posts.unshift(saved);
-        postImages[saved.id] = [];
+    let saved;
+    try {
+      const r = await fetch(`${API_BASE}/api/blog`, {
+        method: isEdit ? 'PUT' : 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!r.ok) {
+        const d = await r.json();
+        throw new Error(d.message || 'Server error');
       }
-      closePostModal();
-      renderPosts();
-      showToast(isEdit
-        ? (published ? 'Post published.'  : 'Draft saved.')
-        : (published ? 'Post published!'  : 'Draft saved.'));
-    })
-    .catch(err => {
+      saved = await r.json();
+    } catch (err) {
       showPostError(String(err));
       pub.disabled  = drft.disabled  = false;
       pub.textContent  = 'Publish';
       drft.textContent = 'Save Draft';
-    });
+      return;
+    }
+
+    // Update local posts list
+    if (isEdit) {
+      const idx = posts.findIndex(p => p.id === editingPostId);
+      if (idx !== -1) posts[idx] = saved;
+    } else {
+      posts.unshift(saved);
+      postImages[saved.id] = [];
+    }
+
+    // Upload any staged photos
+    const targetId    = saved.id;
+    const hadPhotos   = uploadQueue.length > 0;
+    let uploadedCount = 0;
+
+    if (hadPhotos) {
+      pub.textContent  = 'Uploading photos…';
+      drft.textContent = 'Uploading photos…';
+      uploadedCount = await uploadQueuedImages(targetId);
+    }
+
+    closePostModal();
+    renderPosts();
+
+    // Compose toast message
+    let toast = isEdit
+      ? (published ? 'Post published.' : 'Draft saved.')
+      : (published ? 'Post published!' : 'Draft saved.');
+    if (hadPhotos) {
+      toast += ` ${uploadedCount} photo${uploadedCount !== 1 ? 's' : ''} uploaded.`;
+    }
+    showToast(toast);
   }
 
   function showPostError(msg) {
@@ -940,138 +1089,6 @@ permalink: /sip/blog
     if (el) { el.textContent = ''; el.classList.remove('visible'); }
   }
 
-  /* ═══════════════════════════════════════════════
-     PHOTO MODAL FUNCTIONS
-  ═══════════════════════════════════════════════ */
-  let photoModalPostId = null;
-
-  function openPhotoModal(postId) {
-    photoModalPostId = postId;
-    uploadQueue      = [];
-    const p = posts.find(x => x.id === postId);
-    document.getElementById('sipPhotoSubtitle').textContent =
-      p ? `"${p.title}"` : `Post #${postId}`;
-
-    refreshPhotoModal(postId);
-    renderStagedGrid();
-
-    document.getElementById('sipPhotoModal').classList.add('open');
-  }
-
-  function closePhotoModal() {
-    document.getElementById('sipPhotoModal').classList.remove('open');
-    photoModalPostId = null;
-    uploadQueue      = [];
-    renderStagedGrid();
-  }
-
-  function refreshPhotoModal(postId) {
-    if (photoModalPostId !== postId) return;
-    const imgs    = postImages[postId] || [];
-    const section = document.getElementById('sipExistingSection');
-    const grid    = document.getElementById('sipExistingGrid');
-
-    if (imgs.length === 0) { section.style.display = 'none'; return; }
-    section.style.display = 'block';
-    grid.innerHTML = '';
-
-    imgs.forEach(img => {
-      const wrap = document.createElement('div');
-      wrap.className = 'existing-img-wrap';
-      wrap.innerHTML = `
-        <img src="data:image/png;base64,${img.data}" alt="photo" />
-        <button class="existing-remove" onclick="deletePostImage(event, ${postId}, '${escHtml(img.filename)}')">✕ Remove</button>`;
-      grid.appendChild(wrap);
-    });
-  }
-
-  /* Stage files from drop or file picker */
-  function stageFiles(fileList) {
-    Array.from(fileList).forEach(file => {
-      if (!file.type.startsWith('image/')) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        uploadQueue.push({ dataURL: e.target.result, name: file.name });
-        renderStagedGrid();
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function renderStagedGrid() {
-    const section = document.getElementById('sipStagedSection');
-    const grid    = document.getElementById('sipStagedGrid');
-    const btn     = document.getElementById('sipUploadBtn');
-
-    if (uploadQueue.length === 0) {
-      section.style.display = 'none';
-      btn.disabled = true; return;
-    }
-    section.style.display = 'block';
-    btn.disabled = false;
-    grid.innerHTML = '';
-
-    uploadQueue.forEach((item, idx) => {
-      const wrap = document.createElement('div');
-      wrap.className = 'staged-img-wrap';
-      wrap.innerHTML = `
-        <img src="${item.dataURL}" alt="${escHtml(item.name)}" />
-        <button class="staged-remove" onclick="unstageImage(${idx})">✕</button>
-        <div class="staged-label">${escHtml(item.name)}</div>`;
-      grid.appendChild(wrap);
-    });
-  }
-
-  function unstageImage(idx) {
-    uploadQueue.splice(idx, 1);
-    renderStagedGrid();
-  }
-
-  /* Upload all staged images sequentially */
-  async function uploadStagedImages() {
-    if (!photoModalPostId || uploadQueue.length === 0) return;
-
-    const btn      = document.getElementById('sipUploadBtn');
-    const progress = document.getElementById('sipUploadProgress');
-    btn.disabled   = true;
-    progress.classList.add('visible');
-
-    const total   = uploadQueue.length;
-    let succeeded = 0;
-
-    for (let i = 0; i < total; i++) {
-      const item = uploadQueue[i];
-      progress.textContent = `Uploading ${i + 1} of ${total}…`;
-      try {
-        const resp = await fetch(`${API_BASE}/api/blog/images/upload`, {
-          method: 'POST', credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ post_id: photoModalPostId, image: item.dataURL }),
-        });
-        if (resp.ok) {
-          const data = await resp.json();
-          // Optimistically add to cache so gallery updates without a full reload
-          if (!postImages[photoModalPostId]) postImages[photoModalPostId] = [];
-          postImages[photoModalPostId].push({
-            filename: data.filename,
-            data: item.dataURL.split(',')[1],  // strip data-URI prefix
-          });
-          succeeded++;
-        }
-      } catch (e) { /* continue */ }
-    }
-
-    progress.classList.remove('visible');
-    uploadQueue = [];
-    renderStagedGrid();
-    renderGallery(photoModalPostId);
-    refreshPhotoModal(photoModalPostId);
-    btn.disabled = false;
-
-    showToast(succeeded === total
-      ? `${succeeded} photo${succeeded !== 1 ? 's' : ''} uploaded!`
-      : `${succeeded}/${total} photos uploaded.`);
-  }
   /* ── INIT ── */
   checkAdminSession();
 </script>
