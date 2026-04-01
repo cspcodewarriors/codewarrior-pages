@@ -197,7 +197,7 @@ show_reading_time: false
   <div id="garden-canvas"></div>
 </div>
 
-<a href="/sip/home/" id="enter-btn">🌸 Enter the Site</a>
+<a href="/" id="enter-btn">🌸 Enter the Site</a>
 <div id="greeting"></div>
 
 <div id="popup-overlay">

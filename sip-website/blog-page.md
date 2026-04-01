@@ -177,9 +177,9 @@ permalink: /sip/blog
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="/sip/home/" class="nav-logo">Soroptimist <span>·</span> Poway</a>
+  <a href="/" class="nav-logo">Soroptimist <span>·</span> Poway</a>
   <div class="nav-actions">
-    <a href="/sip/home/" class="nav-back">← Programs</a>
+    <a href="/" class="nav-back">← Programs</a>
     <div class="admin-badge" id="adminBadge"><span class="admin-dot"></span>Admin</div>
     <button class="btn-admin btn-admin-out" id="adminBtn" style="display:none" onclick="logout()">Sign Out</button>
   </div>
