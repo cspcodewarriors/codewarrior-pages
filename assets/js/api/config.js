@@ -3,7 +3,11 @@
 
 // ^^ Do not remove the above front matter, it is required for Jekyll processing
 
-export const baseurl = "{{ site.baseurl }}";
+// Compute baseurl at runtime: strip any repo-name prefix the GitHub Pages gem may inject
+const _jekyllBaseurl = "{{ site.baseurl }}";
+export const baseurl = (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? _jekyllBaseurl
+    : "";
 
 export var pythonURI;
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {

@@ -43,7 +43,6 @@ permalink: /sip/contact
     font-size: 1rem;
   }
 
-  /* Two-column form layout */
   .forms-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -84,7 +83,6 @@ permalink: /sip/contact
     color: var(--text);
   }
 
-  .form-group input,
   .form-group select,
   .form-group textarea {
     padding: 0.55rem 0.75rem;
@@ -97,12 +95,20 @@ permalink: /sip/contact
     transition: border-color 0.2s;
   }
 
-  .form-group input:focus,
   .form-group select:focus,
   .form-group textarea:focus {
     outline: none;
     border-color: var(--blue-light);
   }
+
+  .form-group select.error { border-color: var(--danger); }
+
+  .field-error {
+    font-size: 0.78rem;
+    color: var(--danger);
+    display: none;
+  }
+  .field-error.visible { display: block; }
 
   .form-group textarea { resize: vertical; min-height: 90px; }
 
@@ -115,10 +121,14 @@ permalink: /sip/contact
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, opacity 0.2s;
     align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-  .btn-involved:hover { background: var(--blue-light); }
+  .btn-involved:hover:not(:disabled) { background: var(--blue-light); }
+  .btn-involved:disabled { opacity: 0.6; cursor: not-allowed; }
 
   .btn-help {
     padding: 0.65rem 1.4rem;
@@ -129,10 +139,26 @@ permalink: /sip/contact
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, opacity 0.2s;
     align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-  .btn-help:hover { background: var(--gold-dark); }
+  .btn-help:hover:not(:disabled) { background: var(--gold-dark); }
+  .btn-help:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .btn-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  .btn-spinner.visible { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   .form-success {
     display: none;
@@ -144,7 +170,17 @@ permalink: /sip/contact
     color: #2e7d32;
   }
 
-  /* Calendar section */
+  .form-error-banner {
+    display: none;
+    background: var(--danger-light);
+    border: 1.5px solid #e57373;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 0.92rem;
+    color: var(--danger);
+  }
+
+  /* Calendar */
   .calendar-section h2 { color: var(--blue); font-size: 1.6rem; margin-bottom: 0.25rem; }
   .section-desc { color: var(--text-muted); margin-bottom: 1.75rem; font-size: 0.95rem; }
 
@@ -179,17 +215,9 @@ permalink: /sip/contact
     text-align: center;
   }
 
-  .cal-status {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    font-style: italic;
-  }
+  .cal-status { font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
 
-  .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 
   .cal-day-name {
     text-align: center;
@@ -207,19 +235,13 @@ permalink: /sip/contact
     border: 1.5px solid var(--border);
     border-radius: 6px;
     padding: 0.3rem 0.4rem;
-    vertical-align: top;
     font-size: 0.82rem;
   }
 
   .cal-cell.other-month { background: var(--gray); }
   .cal-cell.today { border-color: var(--gold); background: var(--gold-light); }
 
-  .cal-date {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 0.2rem;
-  }
+  .cal-date { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.2rem; }
   .cal-cell.today .cal-date { color: var(--gold-dark); }
 
   .cal-event {
@@ -240,7 +262,7 @@ permalink: /sip/contact
   .cal-event.event-gold { background: var(--gold); }
   .cal-event.event-gold:hover { background: var(--gold-dark); }
 
-  /* Event detail modal */
+  /* Modal */
   .modal-overlay {
     display: none;
     position: fixed;
@@ -341,10 +363,7 @@ permalink: /sip/contact
   .btn-delete:hover { opacity: 0.85; }
 
   /* Admin panel */
-  .admin-toggle-row {
-    text-align: right;
-    margin-bottom: 0.75rem;
-  }
+  .admin-toggle-row { text-align: right; margin-bottom: 0.75rem; }
 
   .btn-admin-toggle {
     background: none;
@@ -367,12 +386,7 @@ permalink: /sip/contact
     margin-bottom: 1.75rem;
   }
   .admin-panel.open { display: block; }
-
-  .admin-panel h3 {
-    color: var(--blue);
-    margin: 0 0 1rem;
-    font-size: 1.1rem;
-  }
+  .admin-panel h3 { color: var(--blue); margin: 0 0 1rem; font-size: 1.1rem; }
 
   .admin-user-row {
     display: flex;
@@ -383,11 +397,7 @@ permalink: /sip/contact
     gap: 0.5rem;
   }
 
-  .admin-user-info {
-    font-size: 0.88rem;
-    color: var(--text-muted);
-  }
-
+  .admin-user-info { font-size: 0.88rem; color: var(--text-muted); }
   .admin-user-info strong { color: var(--blue); }
 
   .admin-form-grid {
@@ -397,7 +407,6 @@ permalink: /sip/contact
     margin-bottom: 1rem;
   }
   @media (max-width: 600px) { .admin-form-grid { grid-template-columns: 1fr; } }
-
   .admin-form-grid .full-width { grid-column: 1 / -1; }
 
   .admin-form-grid input,
@@ -506,8 +515,133 @@ permalink: /sip/contact
     border-radius: 6px;
     margin-top: 0.6rem;
   }
-  .admin-msg.ok { background: #e8f5e9; color: #2e7d32; border: 1px solid #81c784; }
+  .admin-msg.ok  { background: #e8f5e9; color: #2e7d32; border: 1px solid #81c784; }
   .admin-msg.err { background: var(--danger-light); color: var(--danger); border: 1px solid #e57373; }
+
+  /* Submissions inbox */
+  .submissions-section {
+    margin-top: 2rem;
+    border-top: 1.5px solid var(--border);
+    padding-top: 1.25rem;
+  }
+
+  .submissions-section h4 {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .submissions-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+
+  .submissions-filters select {
+    padding: 0.3rem 0.6rem;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .sub-item {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .sub-item-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.35rem;
+  }
+
+  .sub-item-uid  { font-weight: 700; font-size: 0.92rem; color: var(--blue); }
+  .sub-item-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+  .sub-badge {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .sub-badge.type-involved { background: var(--blue-pale); color: var(--blue); }
+  .sub-badge.type-help     { background: var(--gold-light); color: var(--gold-dark); }
+  .sub-badge.status-new         { background: #fff3e0; color: #e65100; }
+  .sub-badge.status-in_progress { background: #e3f2fd; color: #1565c0; }
+  .sub-badge.status-resolved    { background: #e8f5e9; color: #2e7d32; }
+
+  .sub-selection { font-size: 0.85rem; color: var(--text); margin-bottom: 0.2rem; }
+
+  .sub-message {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+    padding-top: 0.35rem;
+  }
+
+  .sub-actions { display: flex; gap: 0.35rem; margin-top: 0.5rem; flex-wrap: wrap; }
+
+  .btn-sub-status {
+    padding: 0.2rem 0.55rem;
+    border-radius: 5px;
+    font-size: 0.77rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--gray);
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .btn-sub-status:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-pale); }
+
+  .btn-sub-delete {
+    padding: 0.2rem 0.55rem;
+    border-radius: 5px;
+    font-size: 0.77rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--danger);
+    background: var(--danger-light);
+    color: var(--danger);
+    transition: all 0.15s;
+    margin-left: auto;
+  }
+  .btn-sub-delete:hover { background: var(--danger); color: #fff; }
+
+  .sub-pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .btn-page {
+    padding: 0.25rem 0.65rem;
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    color: var(--blue);
+  }
+  .btn-page:hover { background: var(--blue-pale); }
+  .btn-page:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .divider {
     border: none;
@@ -530,32 +664,28 @@ permalink: /sip/contact
         <h2>Get Involved</h2>
         <p>Support our mission by donating, volunteering your time, or joining as a member.</p>
       </div>
-      <form id="form-involved" onsubmit="handleSubmit(event, 'form-involved', 'success-involved')">
-        <div class="form-group">
-          <label for="inv-name">Name</label>
-          <input type="text" id="inv-name" placeholder="Your full name" required>
-        </div>
-        <div class="form-group">
-          <label for="inv-email">Email</label>
-          <input type="email" id="inv-email" placeholder="you@example.com" required>
-        </div>
+      <form id="form-involved" onsubmit="handleInvolvedSubmit(event)">
         <div class="form-group">
           <label for="inv-type">How would you like to contribute?</label>
           <select id="inv-type" required>
             <option value="" disabled selected>Select an option</option>
-            <option value="donate">Donate</option>
             <option value="volunteer">Volunteer</option>
             <option value="member">Join as a Member</option>
           </select>
+          <span class="field-error" id="inv-type-err">Please select an option.</span>
         </div>
         <div class="form-group">
           <label for="inv-message">Message</label>
           <textarea id="inv-message" placeholder="Tell us a bit about yourself or your interest..."></textarea>
         </div>
+        <div class="form-error-banner" id="err-involved"></div>
         <div class="form-success" id="success-involved">
-          Thank you for reaching out. We will be in touch soon.
+          ✓ Thank you for reaching out. We will be in touch soon.
         </div>
-        <button type="submit" class="btn-involved">Send Message</button>
+        <button type="submit" class="btn-involved" id="btn-involved">
+          <span class="btn-spinner" id="spinner-involved"></span>
+          Send Message
+        </button>
       </form>
     </div>
 
@@ -565,15 +695,7 @@ permalink: /sip/contact
         <h2>Get Help</h2>
         <p>Learn more about our programs, eligibility, and how to apply for support.</p>
       </div>
-      <form id="form-help" onsubmit="handleSubmit(event, 'form-help', 'success-help')">
-        <div class="form-group">
-          <label for="help-name">Name</label>
-          <input type="text" id="help-name" placeholder="Your full name" required>
-        </div>
-        <div class="form-group">
-          <label for="help-email">Email</label>
-          <input type="email" id="help-email" placeholder="you@example.com" required>
-        </div>
+      <form id="form-help" onsubmit="handleHelpSubmit(event)">
         <div class="form-group">
           <label for="help-program">Program you are inquiring about</label>
           <select id="help-program" required>
@@ -584,15 +706,20 @@ permalink: /sip/contact
             <option value="abraxas">Abraxas Scholarship</option>
             <option value="colegio">Colegio La Esperanza</option>
           </select>
+          <span class="field-error" id="help-program-err">Please select a program.</span>
         </div>
         <div class="form-group">
           <label for="help-message">Message</label>
           <textarea id="help-message" placeholder="Describe your situation or question..."></textarea>
         </div>
+        <div class="form-error-banner" id="err-help"></div>
         <div class="form-success" id="success-help">
-          Thank you for reaching out. We will be in touch soon.
+          ✓ Thank you for reaching out. We will be in touch soon.
         </div>
-        <button type="submit" class="btn-help">Send Message</button>
+        <button type="submit" class="btn-help" id="btn-help">
+          <span class="btn-spinner" id="spinner-help"></span>
+          Send Message
+        </button>
       </form>
     </div>
 
@@ -605,17 +732,14 @@ permalink: /sip/contact
     <h2>Upcoming Meetings</h2>
     <p class="section-desc">Click any meeting on the calendar to view details.</p>
 
-    <!-- Admin toggle (only rendered for admins via JS) -->
     <div class="admin-toggle-row" id="admin-toggle-row" style="display:none">
       <button class="btn-admin-toggle" onclick="toggleAdminPanel()">Manage Events</button>
     </div>
 
-    <!-- Login prompt for non-admins (shown via JS) -->
     <div id="admin-login-prompt" style="display:none; text-align:right; margin-bottom:0.75rem;">
       <a id="admin-login-link" href="/login" style="font-size:0.82rem;color:var(--blue);text-decoration:underline;">Log in to manage events</a>
     </div>
 
-    <!-- Admin panel -->
     <div class="admin-panel" id="admin-panel">
       <h3>Event Management</h3>
 
@@ -624,7 +748,8 @@ permalink: /sip/contact
       </div>
 
       <div id="admin-controls">
-        <!-- Add / Edit form -->
+
+        <!-- Add / Edit event form -->
         <div id="event-form-section">
           <strong id="event-form-title" style="font-size:0.9rem;color:var(--blue);">Add New Event</strong>
           <div class="admin-form-grid" style="margin-top:0.75rem">
@@ -655,9 +780,7 @@ permalink: /sip/contact
                 <option value="gold">Board / Committee (Gold)</option>
               </select>
             </div>
-            <div>
-              <label>&nbsp;</label><!-- spacer -->
-            </div>
+            <div><label>&nbsp;</label></div>
             <div class="full-width">
               <label>Notes</label>
               <textarea id="ef-notes" placeholder="Additional details..."></textarea>
@@ -677,6 +800,33 @@ permalink: /sip/contact
             <span style="font-size:0.85rem;color:var(--text-muted)">Loading...</span>
           </div>
         </div>
+
+        <!-- Contact submissions inbox -->
+        <div class="submissions-section">
+          <h4>Contact Submissions</h4>
+          <div class="submissions-filters">
+            <select id="sub-filter-type" onchange="loadSubmissions(1)">
+              <option value="">All Types</option>
+              <option value="involved">Get Involved</option>
+              <option value="help">Get Help</option>
+            </select>
+            <select id="sub-filter-status" onchange="loadSubmissions(1)">
+              <option value="">All Statuses</option>
+              <option value="new">New</option>
+              <option value="in_progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+          <div id="submissions-list">
+            <span style="font-size:0.85rem;color:var(--text-muted)">Loading submissions...</span>
+          </div>
+          <div class="sub-pagination" id="sub-pagination" style="display:none">
+            <button class="btn-page" id="btn-sub-prev" onclick="loadSubmissions(subPage - 1)">&#8592; Prev</button>
+            <span id="sub-page-info"></span>
+            <button class="btn-page" id="btn-sub-next" onclick="loadSubmissions(subPage + 1)">Next &#8594;</button>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -717,7 +867,6 @@ permalink: /sip/contact
       <span class="modal-detail-label">Notes</span>
       <span id="modal-notes"></span>
     </div>
-    <!-- Admin quick actions inside modal (only shown when unlocked) -->
     <div class="modal-actions" id="modal-admin-actions" style="display:none">
       <button class="btn-edit" onclick="editFromModal()">Edit</button>
       <button class="btn-delete" onclick="deleteFromModal()">Delete</button>
@@ -728,28 +877,126 @@ permalink: /sip/contact
 <script>
   // ── Config ────────────────────────────────────────────────────
   var API_BASE;
-  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    API_BASE = "http://localhost:8427";
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    API_BASE = 'http://localhost:8427';
   } else {
-    API_BASE = "https://sipoway.opencodingsociety.com";
+    API_BASE = 'https://sipoway.opencodingsociety.com';
   }
 
   // ── State ─────────────────────────────────────────────────────
-  const today = new Date();
+  const today   = new Date();
   let viewYear  = today.getFullYear();
   let viewMonth = today.getMonth();
-  let MEETINGS  = [];           // populated from API
-  let editingId = null;         // ID of event being edited (null = adding new)
-  let modalEventId = null;      // currently open event's ID
+  let MEETINGS      = [];
+  let editingId     = null;
+  let modalEventId  = null;
   let adminUnlocked = false;
+  let subPage       = 1;
+  const SUB_PER_PAGE = 10;
 
-  // ── Form handling ─────────────────────────────────────────────
-  function handleSubmit(e, formId, successId) {
-    e.preventDefault();
-    document.getElementById(successId).style.display = 'block';
+  // ── Utility ───────────────────────────────────────────────────
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function formatDisplayDate(dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return `${MONTH_NAMES[m - 1]} ${d}, ${y}`;
+  }
+
+  function formatDateTime(isoStr) {
+    if (!isoStr) return '—';
+    const d = new Date(isoStr);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      + ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  // ── Form helpers ──────────────────────────────────────────────
+  function setFieldError(fieldId, errId, show) {
+    const field = document.getElementById(fieldId);
+    const err   = document.getElementById(errId);
+    if (field) field.classList.toggle('error', show);
+    if (err)   err.classList.toggle('visible', show);
+  }
+
+  function showFormBanner(bannerId, msg) {
+    const el = document.getElementById(bannerId);
+    if (!el) return;
+    el.textContent   = msg;
+    el.style.display = msg ? 'block' : 'none';
+  }
+
+  function setSubmitting(btnId, spinnerId, submitting) {
+    const btn     = document.getElementById(btnId);
+    const spinner = document.getElementById(spinnerId);
+    if (btn)    btn.disabled = submitting;
+    if (spinner) spinner.classList.toggle('visible', submitting);
+  }
+
+  function lockForm(formId) {
     document.getElementById(formId)
-      .querySelectorAll('input, select, textarea, button[type=submit]')
+      .querySelectorAll('select, textarea, button[type=submit]')
       .forEach(el => el.disabled = true);
+  }
+
+  // ── Get Involved submission ───────────────────────────────────
+  // POSTs only { selection, message } — uid comes from the session cookie
+  function handleInvolvedSubmit(e) {
+    e.preventDefault();
+
+    const selection = document.getElementById('inv-type').value;
+    const message   = document.getElementById('inv-message').value.trim();
+
+    setFieldError('inv-type', 'inv-type-err', !selection);
+    if (!selection) return;
+
+    showFormBanner('err-involved', '');
+    setSubmitting('btn-involved', 'spinner-involved', true);
+
+    fetch(`${API_BASE}/api/sip/contact/involved`, {
+      method:      'POST',
+      credentials: 'include',
+      headers:     { 'Content-Type': 'application/json' },
+      body:        JSON.stringify({ selection, message }),
+    })
+    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Submission failed.')))
+    .then(() => {
+      document.getElementById('success-involved').style.display = 'block';
+      lockForm('form-involved');
+    })
+    .catch(err => showFormBanner('err-involved', String(err)))
+    .finally(() => setSubmitting('btn-involved', 'spinner-involved', false));
+  }
+
+  // ── Get Help submission ───────────────────────────────────────
+  // POSTs only { selection, message } — uid comes from the session cookie
+  function handleHelpSubmit(e) {
+    e.preventDefault();
+
+    const selection = document.getElementById('help-program').value;
+    const message   = document.getElementById('help-message').value.trim();
+
+    setFieldError('help-program', 'help-program-err', !selection);
+    if (!selection) return;
+
+    showFormBanner('err-help', '');
+    setSubmitting('btn-help', 'spinner-help', true);
+
+    fetch(`${API_BASE}/api/sip/contact/help`, {
+      method:      'POST',
+      credentials: 'include',
+      headers:     { 'Content-Type': 'application/json' },
+      body:        JSON.stringify({ selection, message }),
+    })
+    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Submission failed.')))
+    .then(() => {
+      document.getElementById('success-help').style.display = 'block';
+      lockForm('form-help');
+    })
+    .catch(err => showFormBanner('err-help', String(err)))
+    .finally(() => setSubmitting('btn-help', 'spinner-help', false));
   }
 
   // ── Auth check ────────────────────────────────────────────────
@@ -761,16 +1008,14 @@ permalink: /sip/contact
           adminUnlocked = true;
           document.getElementById('admin-username').textContent = user.name || user.uid;
           document.getElementById('admin-toggle-row').style.display = 'block';
-          document.getElementById('admin-controls').style.display = 'block';
           renderAdminList();
+          loadSubmissions(1);
         } else {
-          // Logged in but not admin — hide manage controls entirely
           document.getElementById('admin-toggle-row').style.display = 'none';
         }
       })
       .catch(status => {
         if (status === 401) {
-          // Not logged in — show login prompt pointing to the frontend login page
           const loginLink = document.getElementById('admin-login-link');
           loginLink.href = `/login?next=${encodeURIComponent(window.location.pathname)}`;
           document.getElementById('admin-login-prompt').style.display = 'block';
@@ -785,8 +1030,8 @@ permalink: /sip/contact
 
   function showAdminMsg(text, type) {
     const el = document.getElementById('admin-msg');
-    el.textContent = text;
-    el.className = `admin-msg ${type}`;
+    el.textContent   = text;
+    el.className     = `admin-msg ${type}`;
     el.style.display = 'block';
     setTimeout(() => { el.style.display = 'none'; }, 3500);
   }
@@ -816,23 +1061,23 @@ permalink: /sip/contact
     const m = MEETINGS.find(e => e.id === id);
     if (!m) return;
     editingId = id;
-    document.getElementById('event-form-title').textContent = 'Edit Event';
-    document.getElementById('btn-save-event').textContent = 'Save Changes';
+    document.getElementById('event-form-title').textContent  = 'Edit Event';
+    document.getElementById('btn-save-event').textContent    = 'Save Changes';
     document.getElementById('btn-cancel-edit').style.display = 'inline-block';
-    document.getElementById('ef-title').value = m.title;
-    document.getElementById('ef-date').value = m.date;
-    document.getElementById('ef-start').value = m.startTime;
-    document.getElementById('ef-end').value = m.endTime;
+    document.getElementById('ef-title').value    = m.title;
+    document.getElementById('ef-date').value     = m.date;
+    document.getElementById('ef-start').value    = m.startTime;
+    document.getElementById('ef-end').value      = m.endTime;
     document.getElementById('ef-location').value = m.location;
-    document.getElementById('ef-type').value = m.eventType;
-    document.getElementById('ef-notes').value = m.notes || '';
+    document.getElementById('ef-type').value     = m.eventType;
+    document.getElementById('ef-notes').value    = m.notes || '';
     document.getElementById('event-form-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   function cancelEdit() {
     editingId = null;
-    document.getElementById('event-form-title').textContent = 'Add New Event';
-    document.getElementById('btn-save-event').textContent = 'Add Event';
+    document.getElementById('event-form-title').textContent  = 'Add New Event';
+    document.getElementById('btn-save-event').textContent    = 'Add Event';
     document.getElementById('btn-cancel-edit').style.display = 'none';
     clearEventForm();
   }
@@ -860,9 +1105,8 @@ permalink: /sip/contact
       return;
     }
 
-    const btn = document.getElementById('btn-save-event');
+    const btn    = document.getElementById('btn-save-event');
     btn.disabled = true;
-
     const isEdit = editingId !== null;
     const url    = isEdit ? `${API_BASE}/api/sip/events/${editingId}` : `${API_BASE}/api/sip/events`;
     const method = isEdit ? 'PUT' : 'POST';
@@ -906,7 +1150,101 @@ permalink: /sip/contact
     .catch(err => showAdminMsg(String(err), 'err'));
   }
 
-  // ── Calendar rendering ────────────────────────────────────────
+  // ── Submissions inbox ─────────────────────────────────────────
+  const SELECTION_LABELS = {
+    volunteer:              'Volunteer',
+    member:                 'Join as a Member',
+    'transitional-housing': 'Transitional Housing',
+    'live-your-dream':      'Live Your Dream',
+    'dream-it-be-it':       'Dream It Be It',
+    abraxas:                'Abraxas Scholarship',
+    colegio:                'Colegio La Esperanza',
+  };
+
+  const STATUS_NEXT  = { new: 'in_progress', in_progress: 'resolved', resolved: 'new' };
+  const STATUS_LABEL = { new: 'Mark In Progress', in_progress: 'Mark Resolved', resolved: 'Reopen' };
+
+  function loadSubmissions(page) {
+    subPage = page;
+    const typeFilter   = document.getElementById('sub-filter-type').value;
+    const statusFilter = document.getElementById('sub-filter-status').value;
+
+    let url = `${API_BASE}/api/sip/contact?page=${page}&per_page=${SUB_PER_PAGE}`;
+    if (typeFilter)   url += `&form_type=${typeFilter}`;
+    if (statusFilter) url += `&status=${statusFilter}`;
+
+    const container = document.getElementById('submissions-list');
+    container.innerHTML = '<span style="font-size:0.85rem;color:var(--text-muted)">Loading...</span>';
+
+    fetch(url, { credentials: 'include' })
+      .then(r => r.ok ? r.json() : Promise.reject('Failed to load submissions.'))
+      .then(data => renderSubmissions(data))
+      .catch(err => {
+        container.innerHTML = `<span style="font-size:0.85rem;color:var(--danger)">${escHtml(String(err))}</span>`;
+      });
+  }
+
+  function renderSubmissions(data) {
+    const container = document.getElementById('submissions-list');
+
+    if (!data.items || !data.items.length) {
+      container.innerHTML = '<span style="font-size:0.85rem;color:var(--text-muted)">No submissions found.</span>';
+      document.getElementById('sub-pagination').style.display = 'none';
+      return;
+    }
+
+    container.innerHTML = data.items.map(s => `
+      <div class="sub-item" id="sub-item-${s.id}">
+        <div class="sub-item-top">
+          <div>
+            <div class="sub-item-uid">${escHtml(s.uid)}</div>
+            <div class="sub-item-meta">${formatDateTime(s.created_at)}</div>
+          </div>
+          <div style="display:flex;gap:0.35rem;flex-wrap:wrap;align-items:center">
+            <span class="sub-badge type-${s.form_type}">${s.form_type === 'involved' ? 'Get Involved' : 'Get Help'}</span>
+            <span class="sub-badge status-${s.status}">${escHtml(s.status.replace('_', ' '))}</span>
+          </div>
+        </div>
+        <div class="sub-selection"><strong>Selection:</strong> ${escHtml(SELECTION_LABELS[s.selection] || s.selection)}</div>
+        ${s.message ? `<div class="sub-message">${escHtml(s.message)}</div>` : ''}
+        <div class="sub-actions">
+          <button class="btn-sub-status" onclick="updateSubStatus(${s.id}, '${STATUS_NEXT[s.status]}')">${STATUS_LABEL[s.status]}</button>
+          <button class="btn-sub-delete" onclick="deleteSubmission(${s.id})">Delete</button>
+        </div>
+      </div>
+    `).join('');
+
+    const pag = document.getElementById('sub-pagination');
+    pag.style.display = data.pages > 1 ? 'flex' : 'none';
+    document.getElementById('sub-page-info').textContent = `Page ${data.page} of ${data.pages} (${data.total} total)`;
+    document.getElementById('btn-sub-prev').disabled = data.page <= 1;
+    document.getElementById('btn-sub-next').disabled = data.page >= data.pages;
+  }
+
+  function updateSubStatus(id, newStatus) {
+    fetch(`${API_BASE}/api/sip/contact/${id}`, {
+      method:      'PATCH',
+      credentials: 'include',
+      headers:     { 'Content-Type': 'application/json' },
+      body:        JSON.stringify({ status: newStatus }),
+    })
+    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Error')))
+    .then(() => loadSubmissions(subPage))
+    .catch(err => showAdminMsg(String(err), 'err'));
+  }
+
+  function deleteSubmission(id) {
+    if (!confirm('Permanently delete this submission?')) return;
+    fetch(`${API_BASE}/api/sip/contact/${id}`, {
+      method:      'DELETE',
+      credentials: 'include',
+    })
+    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Error')))
+    .then(() => loadSubmissions(subPage))
+    .catch(err => showAdminMsg(String(err), 'err'));
+  }
+
+  // ── Calendar ──────────────────────────────────────────────────
   const MONTH_NAMES = [
     'January','February','March','April','May','June',
     'July','August','September','October','November','December'
@@ -927,31 +1265,26 @@ permalink: /sip/contact
     const daysInPrev  = new Date(viewYear, viewMonth, 0).getDate();
 
     const cells = [];
-
     for (let i = firstDay - 1; i >= 0; i--)
       cells.push({ day: daysInPrev - i, month: viewMonth - 1, year: viewYear, current: false });
-
     for (let d = 1; d <= daysInMonth; d++)
       cells.push({ day: d, month: viewMonth, year: viewYear, current: true });
-
     const remaining = 42 - cells.length;
     for (let d = 1; d <= remaining; d++)
       cells.push({ day: d, month: viewMonth + 1, year: viewYear, current: false });
 
     document.getElementById('cal-cells').innerHTML = cells.map(cell => {
       const isToday = cell.current &&
-        cell.day === today.getDate() &&
+        cell.day   === today.getDate() &&
         cell.month === today.getMonth() &&
-        cell.year === today.getFullYear();
+        cell.year  === today.getFullYear();
 
-      // Normalise month/year for events lookup
       let nm = cell.month, ny = cell.year;
       while (nm > 11) { nm -= 12; ny++; }
       while (nm < 0)  { nm += 12; ny--; }
 
       const dateStr = `${ny}-${String(nm + 1).padStart(2,'0')}-${String(cell.day).padStart(2,'0')}`;
       const events  = MEETINGS.filter(m => m.date === dateStr);
-
       const eventHTML = events.map(m =>
         `<div class="cal-event event-${m.eventType}" onclick="openModal(${m.id})" title="${escHtml(m.title)}">${escHtml(m.title)}</div>`
       ).join('');
@@ -982,10 +1315,10 @@ permalink: /sip/contact
     const tag = document.getElementById('modal-tag');
     if (m.eventType === 'gold') {
       tag.textContent = 'Board / Committee Meeting';
-      tag.className = 'modal-tag gold';
+      tag.className   = 'modal-tag gold';
     } else {
       tag.textContent = 'General Meeting';
-      tag.className = 'modal-tag';
+      tag.className   = 'modal-tag';
     }
 
     document.getElementById('modal-title').textContent    = m.title;
@@ -994,9 +1327,7 @@ permalink: /sip/contact
     document.getElementById('modal-location').textContent = m.location;
     document.getElementById('modal-notes').textContent    = m.notes || 'No additional notes.';
 
-    const adminRow = document.getElementById('modal-admin-actions');
-    adminRow.style.display = adminUnlocked ? 'flex' : 'none';
-
+    document.getElementById('modal-admin-actions').style.display = adminUnlocked ? 'flex' : 'none';
     document.getElementById('event-modal').classList.add('open');
   }
 
@@ -1026,18 +1357,6 @@ permalink: /sip/contact
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModal();
   });
-
-  // ── Utility ───────────────────────────────────────────────────
-  function escHtml(str) {
-    return String(str)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  function formatDisplayDate(dateStr) {
-    const [y, m, d] = dateStr.split('-').map(Number);
-    return `${MONTH_NAMES[m - 1]} ${d}, ${y}`;
-  }
 
   // ── Bootstrap ─────────────────────────────────────────────────
   function loadEvents() {

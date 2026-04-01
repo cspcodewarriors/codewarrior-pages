@@ -1,7 +1,7 @@
 ---
 layout: opencs
 title: Soroptimist International of Poway
-permalink: /sip/home/
+permalink: /
 ---
 
 <style>

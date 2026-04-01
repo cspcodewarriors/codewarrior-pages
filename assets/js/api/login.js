@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             : ''
                         }
                                 <a href="${baseurl}/profile">Profile</a>
+                                <a href="${baseurl}/sip/persona/">Find My Program</a>
                                 <a href="${baseurl}/logout">Logout</a>
                             </div>
                         </div>
