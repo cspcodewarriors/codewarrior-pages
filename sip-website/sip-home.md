@@ -75,7 +75,7 @@ permalink: /sip/home/
             <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">🌿 Volunteer</h3>
             <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community. Your presence shows women and girls that people care — and that kind of support can change the course of a life.</p>
           </div>
-          <a href="/codewarrior-pages/sip/contact" class="sip-btn" style="background: #5ecb8a; align-self: flex-start;">Get Started</a>
+          <a href="/sip/contact" class="sip-btn" style="background: #5ecb8a; align-self: flex-start;">Get Started</a>
         </div>
 
       </div>
@@ -85,7 +85,7 @@ permalink: /sip/home/
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
 
     <!-- Card 1: Transitional Housing -->
-    <a href="/codewarrior-pages/sip/transitional-housing" class="sip-card" style="background: #1e1e2a; border-top: 4px solid #e8836a;">
+    <a href="/sip/transitional-housing" class="sip-card" style="background: #1e1e2a; border-top: 4px solid #e8836a;">
       <div style="padding: 28px 26px 26px;">
         <div style="width: 44px; height: 44px; background: rgba(232,131,106,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
           <span style="font-size: 1.4rem;">🏠</span>
@@ -97,7 +97,7 @@ permalink: /sip/home/
     </a>
 
     <!-- Card 2: Live Your Dream -->
-    <a href="/codewarrior-pages/sip/live-your-dream" class="sip-card" style="background: #1a1f2e; border-top: 4px solid #6ab0e8;">
+    <a href="/sip/live-your-dream" class="sip-card" style="background: #1a1f2e; border-top: 4px solid #6ab0e8;">
       <div style="padding: 28px 26px 26px;">
         <div style="width: 44px; height: 44px; background: rgba(106,176,232,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
           <span style="font-size: 1.4rem;">⭐</span>
@@ -109,7 +109,7 @@ permalink: /sip/home/
     </a>
 
     <!-- Card 3: Dream It, Be It -->
-    <a href="/codewarrior-pages/sip/dreamit-beit" class="sip-card" style="background: #1e1d14; border-top: 4px solid #d4b84a;">
+    <a href="/sip/dreamit-beit" class="sip-card" style="background: #1e1d14; border-top: 4px solid #d4b84a;">
       <div style="padding: 28px 26px 26px;">
         <div style="width: 44px; height: 44px; background: rgba(212,184,74,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
           <span style="font-size: 1.4rem;">✨</span>
@@ -121,7 +121,7 @@ permalink: /sip/home/
     </a>
 
     <!-- Card 4: STAT! -->
-    <a href="/codewarrior-pages/sip/stat" class="sip-card" style="background: #221616; border-top: 4px solid #e86a6a;">
+    <a href="/sip/stat" class="sip-card" style="background: #221616; border-top: 4px solid #e86a6a;">
       <div style="padding: 28px 26px 26px;">
         <div style="width: 44px; height: 44px; background: rgba(232,106,106,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
           <span style="font-size: 1.4rem;">🩺</span>
@@ -133,7 +133,7 @@ permalink: /sip/home/
     </a>
 
     <!-- Card 5: Abraxas Scholarship -->
-    <a href="/codewarrior-pages/sip/abraxas-scholarship" class="sip-card" style="background: #141f18; border-top: 4px solid #5ecb8a;">
+    <a href="/sip/abraxas-scholarship" class="sip-card" style="background: #141f18; border-top: 4px solid #5ecb8a;">
       <div style="padding: 28px 26px 26px;">
         <div style="width: 44px; height: 44px; background: rgba(94,203,138,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
           <span style="font-size: 1.4rem;">🎓</span>
@@ -145,7 +145,7 @@ permalink: /sip/home/
     </a>
 
     <!-- Card 6: Colegio La Esperanza -->
-    <a href="/codewarrior-pages/sip/colegio-la-esparanza" class="sip-card" style="background: #1c1626; border-top: 4px solid #b07de8;">
+    <a href="/sip/colegio-la-esparanza" class="sip-card" style="background: #1c1626; border-top: 4px solid #b07de8;">
       <div style="padding: 28px 26px 26px;">
         <div style="width: 44px; height: 44px; background: rgba(176,125,232,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
           <span style="font-size: 1.4rem;">🌺</span>

@@ -259,7 +259,7 @@ show_reading_time: false
       <hr class="sip-hr">
       <p class="sip-note">
         New accounts start with standard access. An administrator can upgrade your role after review.
-        Questions? <a href="/codewarrior-pages/sip/contact">Contact the chapter.</a>
+        Questions? <a href="/sip/contact">Contact the chapter.</a>
       </p>
     </form>
   </div>
@@ -280,7 +280,7 @@ show_reading_time: false
 
   // ── Redirect target ──────────────────────────────────────────
   function getNextUrl() {
-    return new URLSearchParams(window.location.search).get('next') || '/codewarrior-pages/sip/contact';
+    return new URLSearchParams(window.location.search).get('next') || '/sip/contact';
   }
 
   // ── Login ────────────────────────────────────────────────────
@@ -360,7 +360,7 @@ show_reading_time: false
       sessionStorage.setItem('sip_new_user_uid', uid);
   
       // Redirect to the community garden
-      window.location.href = '/codewarrior-pages/sip/garden/';
+      window.location.href = '/sip/garden/';
     })
       .catch(err => {
       msg.textContent = typeof err === 'string' ? err : 'Sign up failed. That member ID may already be taken.';
