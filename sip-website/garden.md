@@ -209,11 +209,13 @@ show_reading_time: false
   </div>
 </div>
 
-<script>
+<script type="module">
+
+  import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
   
   const SPRITES   = ['🌸','🌺','🌻','🌷','🌼','🦋','🐝','🐞','🐛','🦗',
                      '🍀','🌿','🪴','🌱','🍃','🐢','🦔','🐇','🦜','🌙'];
-  const FLOWERS   = ['🌸','🌺','🌻','🌷','🌼','💐','🪷'];
+  const FLOWERS   = ['🌸','🌺','🌻','🌷','🌼','🪷'];
   const CREATURES = ['🦋','🐝','🐞','🐛','🪲'];
 
   // New signup lands here with this key set; returning logins use sip_uid
@@ -227,29 +229,50 @@ show_reading_time: false
 
   async function fetchAllUsers() {
     try {
-      const res = await fetch(`${pythonURI}/api/users`, { credentials: 'include' });
-      if (!res.ok) return [];
+      const url = `${pythonURI}/api/users`;
+      let res = await fetch(url, { ...fetchOptions, method: 'GET' });
+      if (res.status === 405) {
+        console.warn('fetchAllUsers got 405, retrying with trailing slash');
+        res = await fetch(`${url}/`, { ...fetchOptions, method: 'GET' });
+      }
+      if (!res.ok) {
+        console.warn('fetchAllUsers failed', res.status, await res.text());
+        return [];
+      }
       return await res.json();
-    } catch { return []; }
+    } catch (e) {
+      console.error('fetchAllUsers error', e);
+      return [];
+    }
   }
 
   async function fetchCurrentUser(uid) {
     try {
-      const res = await fetch(`${pythonURI}/api/user`, { credentials: 'include' });
-      if (!res.ok) return null;
+      const res = await fetch(`${pythonURI}/api/user`, { ...fetchOptions, method: 'GET' });
+      if (!res.ok) {
+        console.warn('fetchCurrentUser failed', res.status, await res.text());
+        return null;
+      }
       return await res.json();
-    } catch { return null; }
+    } catch (e) {
+      console.error('fetchCurrentUser error', e);
+      return null;
+    }
   }
 
   async function saveSpriteToDB(sprite) {
     try {
-      await fetch(`${pythonURI}/api/user`, {
+      const res = await fetch(`${pythonURI}/api/user`, {
+        ...fetchOptions,
         method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ garden_sprite: sprite })
       });
-    } catch (e) { console.error('Failed to save sprite:', e); }
+      if (!res.ok) {
+        console.error('saveSpriteToDB failed', res.status, await res.text());
+      }
+    } catch (e) {
+      console.error('Failed to save sprite:', e);
+    }
   }
 
   async function init() {
