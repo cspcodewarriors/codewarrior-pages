@@ -532,18 +532,9 @@ permalink: /sip/contact
       </div>
       <form id="form-involved" onsubmit="handleSubmit(event, 'form-involved', 'success-involved')">
         <div class="form-group">
-          <label for="inv-name">Name</label>
-          <input type="text" id="inv-name" placeholder="Your full name" required>
-        </div>
-        <div class="form-group">
-          <label for="inv-email">Email</label>
-          <input type="email" id="inv-email" placeholder="you@example.com" required>
-        </div>
-        <div class="form-group">
           <label for="inv-type">How would you like to contribute?</label>
           <select id="inv-type" required>
             <option value="" disabled selected>Select an option</option>
-            <option value="donate">Donate</option>
             <option value="volunteer">Volunteer</option>
             <option value="member">Join as a Member</option>
           </select>
@@ -566,14 +557,6 @@ permalink: /sip/contact
         <p>Learn more about our programs, eligibility, and how to apply for support.</p>
       </div>
       <form id="form-help" onsubmit="handleSubmit(event, 'form-help', 'success-help')">
-        <div class="form-group">
-          <label for="help-name">Name</label>
-          <input type="text" id="help-name" placeholder="Your full name" required>
-        </div>
-        <div class="form-group">
-          <label for="help-email">Email</label>
-          <input type="email" id="help-email" placeholder="you@example.com" required>
-        </div>
         <div class="form-group">
           <label for="help-program">Program you are inquiring about</label>
           <select id="help-program" required>
