@@ -343,23 +343,31 @@ show_reading_time: false
     msg.textContent = '';
     msg.className = 'sip-msg';
 
+    const uid = document.getElementById('su-uid').value.trim();
+
     fetch(`${pythonURI}/api/user`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name:     document.getElementById('su-name').value,
-        uid:      document.getElementById('su-uid').value,
+        uid:      uid,
         email:    document.getElementById('su-email').value,
         password: pw,
       }),
     })
     .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Sign up failed.')))
     .then(() => {
-      // Store the MEMBER ID (uid) — this is what the garden uses as the display name
-      const uid = document.getElementById('su-uid').value.trim();
+      // Auto-login so the JWT cookie is set and the nav bar shows the user's name
+      return fetch(`${pythonURI}/api/authenticate`, {
+        method: 'POST',
+        cache: 'no-cache',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uid, password: pw }),
+      });
+    })
+    .then(() => {
       sessionStorage.setItem('sip_new_user_uid', uid);
-  
-      // Redirect to the community garden
       window.location.href = '/sip/garden/';
     })
       .catch(err => {
