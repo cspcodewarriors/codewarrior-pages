@@ -5,22 +5,23 @@
 
 // Compute baseurl at runtime: strip any repo-name prefix the GitHub Pages gem may inject
 const _jekyllBaseurl = "{{ site.baseurl }}";
-export const baseurl = (location.hostname === "localhost" || location.hostname === "127.0.0.1")
-    ? _jekyllBaseurl
-    : "";
+const isLocalDev = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+const localOrigin = `${location.protocol}//${location.hostname}`;
+
+export const baseurl = isLocalDev ? _jekyllBaseurl : "";
 
 export var pythonURI;
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    pythonURI = "http://localhost:8427";  // Same URI for localhost or 127.0.0.1
+if (isLocalDev) {
+    // Keep the frontend and backend on the same hostname so auth cookies remain usable.
+    pythonURI = `${localOrigin}:8427`;
 } else {
     pythonURI = "https://sipoway.opencodingsociety.com";
 
 }
 
 export var javaURI;
-// 127.0.0.1:8585 does not work for some machines
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-        javaURI = "http://localhost:8585";
+if (isLocalDev) {
+        javaURI = `${localOrigin}:8585`;
 } else {
     javaURI = "https://spring.opencodingsociety.com";
 }

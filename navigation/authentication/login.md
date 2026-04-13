@@ -268,7 +268,7 @@ show_reading_time: false
 </div>
 
 <script type="module">
-  import { login, pythonURI } from '{{site.baseurl}}/assets/js/api/config.js';
+  import { login, pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
   // ── Tab switching ────────────────────────────────────────────
   window.sipSwitchTab = function(tab) {
@@ -281,6 +281,19 @@ show_reading_time: false
   // ── Redirect target ──────────────────────────────────────────
   function getNextUrl() {
     return new URLSearchParams(window.location.search).get('next') || '/sip/contact';
+  }
+
+  async function fetchAuthenticatedUser() {
+    const response = await fetch(`${pythonURI}/api/id`, {
+      ...fetchOptions,
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Your login succeeded, but the browser did not keep the session.');
+    }
+
+    return response.json();
   }
 
   // ── Login ────────────────────────────────────────────────────
@@ -301,10 +314,19 @@ show_reading_time: false
         uid: document.getElementById('sip-uid').value,
         password: document.getElementById('sip-pw').value,
       },
-      callback: function() {
-        msg.textContent = 'Login successful. Redirecting...';
-        msg.className = 'sip-msg ok';
-        setTimeout(() => { window.location.href = getNextUrl(); }, 800);
+      callback: async function() {
+        try {
+          const user = await fetchAuthenticatedUser();
+          sessionStorage.setItem('sip_uid', user.uid);
+          msg.textContent = 'Login successful. Redirecting...';
+          msg.className = 'sip-msg ok';
+          setTimeout(() => { window.location.href = getNextUrl(); }, 800);
+        } catch (error) {
+          btn.disabled = false;
+          btn.textContent = 'Log In';
+          msg.textContent = error.message + ' Please retry from the same host you opened the site with.';
+          msg.className = 'sip-msg';
+        }
       },
       message: 'login-msg',
     });
@@ -366,12 +388,24 @@ show_reading_time: false
         body: JSON.stringify({ uid, password: pw }),
       });
     })
-    .then(() => {
-      sessionStorage.setItem('sip_new_user_uid', uid);
-      window.location.href = '/sip/garden/';
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Authentication failed after signup');
+      }
+      return fetchAuthenticatedUser();
+    })
+    .then(user => {
+      sessionStorage.setItem('sip_new_user_uid', user.uid);
+      sessionStorage.setItem('sip_uid', user.uid);
+      setTimeout(() => {
+        window.location.href = '/sip/garden/';
+      }, 500);
     })
       .catch(err => {
-      msg.textContent = typeof err === 'string' ? err : 'Sign up failed. That member ID may already be taken.';
+      const errorMessage = typeof err === 'string'
+        ? err
+        : (err && err.message) || 'Sign up failed. That member ID may already be taken.';
+      msg.textContent = errorMessage;
       msg.className = 'sip-msg';
     })
     .finally(() => {
