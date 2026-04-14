@@ -14,6 +14,54 @@ permalink: /
     z-index: 0;
   }
 
+  /* ── Nav ── */
+  #sip-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    height: 64px;
+    background: #0d0d14;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .nav-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f0ece6;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+  .nav-sub {
+    font-size: 0.72rem;
+    color: #e8836a;
+    letter-spacing: 0.06em;
+    font-style: italic;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+  }
+  .nav-links a {
+    font-size: 0.82rem;
+    color: #aaa;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover {
+    color: #f0ece6;
+  }
+
   /* ── Card base ── */
   .sip-card {
     border-radius: 6px;
@@ -37,11 +85,11 @@ permalink: /
   /* ── Learn More button ── */
   .sip-btn {
     display: inline-block;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    padding: 10px 20px;
+    padding: 9px 18px;
     border-radius: 4px;
     text-decoration: none !important;
     color: #fff !important;
@@ -54,6 +102,50 @@ permalink: /
   }
   .sip-btn:visited, .sip-btn:active {
     color: #fff !important;
+  }
+
+  /* ── Get Involved bar ── */
+  .get-involved-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    background: #111118;
+    border-top: 3px solid #e8836a;
+    border-radius: 6px;
+    padding: 18px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  }
+  .gi-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .gi-icon {
+    font-size: 1.2rem;
+  }
+  .gi-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .gi-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #f0ece6;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  .gi-desc {
+    font-size: 0.82rem;
+    color: #888;
+  }
+  .gi-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   /* ── Scroll-reveal for program cards ── */
@@ -77,46 +169,32 @@ permalink: /
 <!-- Flower background canvas -->
 <canvas id="flower-canvas"></canvas>
 
-<div id="sip-main" style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 1100px; margin: 0 auto; padding: 40px 24px;">
-
-  <!-- Hero -->
-  <div style="text-align: center; margin-bottom: 56px;">
-    <div style="display: inline-block; border-top: 3px solid #e8836a; border-bottom: 3px solid #e8836a; padding: 10px 0; margin-bottom: 16px;"></div>
-    <p style="font-size: 1.25rem; color: #e8836a; font-style: italic; margin: 0; letter-spacing: 0.06em;">Soroptimist International of Poway</p>
-    <p style="font-size: 0.95rem; color: #aaa; margin-top: 14px; max-width: 560px; margin-left: auto; margin-right: auto; line-height: 1.7;">Empowering women and girls through programs that help them achieve their goals and reach their full potential.</p>
+<!-- Sticky nav -->
+<nav id="sip-nav">
+  <div class="nav-brand">
+    <span class="nav-title">Soroptimist International of Poway</span>
+    <span class="nav-sub">Empowering women &amp; girls</span>
   </div>
+  <div class="nav-links">
+    <a href="/sip/contact">Contact</a>
+    <a href="https://www.paypal.com/us/fundraiser/charity/4220142">Donate</a>
+  </div>
+</nav>
 
-  <!-- Get Involved Card -->
-  <div style="margin-bottom: 24px; background: #111118; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.4); border-top: 4px solid #e8836a;">
-    <div style="padding: 28px 26px 26px;">
-      <div style="width: 44px; height: 44px; background: rgba(232,131,106,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
-        <span style="font-size: 1.4rem;">🤝</span>
+<div id="sip-main" style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 1100px; margin: 0 auto; padding: 32px 24px;">
+
+  <!-- Get Involved Bar -->
+  <div class="get-involved-bar">
+    <div class="gi-left">
+      <span class="gi-icon">🤝</span>
+      <div class="gi-text">
+        <span class="gi-title">Get Involved</span>
+        <span class="gi-desc">Your time and generosity fuel real change in our community.</span>
       </div>
-      <h2 style="font-size: 1.05rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px 0;">Get Involved</h2>
-      <div style="width: 32px; height: 2px; background: #e8836a; margin-bottom: 14px;"></div>
-      <p style="color: #aaa; font-size: 0.92rem; line-height: 1.75; margin: 0 0 24px 0;">Your time and generosity fuel real change. Every contribution — big or small — helps women and girls in our community build better lives.</p>
-
-      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: stretch;">
-
-        <!-- Support Us -->
-        <div style="flex: 1; min-width: 220px; background: rgba(232,131,106,0.07); border: 1px solid rgba(232,131,106,0.25); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">💛 Support Us</h3>
-            <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Your donation directly funds scholarships, housing support, and career programs for women who need it most. Every dollar makes a measurable difference — giving a woman the resources she needs to become self-sufficient and thrive.</p>
-          </div>
-          <a href="https://www.paypal.com/us/fundraiser/charity/4220142" class="sip-btn" style="background: #e8836a; align-self: flex-start;">Donate Now</a>
-        </div>
-
-        <!-- Volunteer -->
-        <div style="flex: 1; min-width: 220px; background: rgba(94,203,138,0.07); border: 1px solid rgba(94,203,138,0.25); border-radius: 6px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <h3 style="font-size: 0.95rem; font-weight: 700; color: #f0ece6; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 8px 0;">🌿 Volunteer</h3>
-            <p style="color: #999; font-size: 0.88rem; line-height: 1.7; margin: 0 0 16px 0;">Share your skills, time, and passion. Whether mentoring young women or helping at events, volunteers are the heart of everything we do in the Poway community. Your presence shows women and girls that people care — and that kind of support can change the course of a life.</p>
-          </div>
-          <a href="/sip/contact" class="sip-btn" style="background: #5ecb8a; align-self: flex-start;">Get Started</a>
-        </div>
-
-      </div>
+    </div>
+    <div class="gi-actions">
+      <a href="https://www.paypal.com/us/fundraiser/charity/4220142" class="sip-btn" style="background: #e8836a;">Donate</a>
+      <a href="/sip/contact" class="sip-btn" style="background: #5ecb8a;">Volunteer</a>
     </div>
   </div>
 
@@ -218,14 +296,13 @@ permalink: /
   const canvas = document.getElementById('flower-canvas');
   const ctx    = canvas.getContext('2d');
 
-  // Palette pulled from the site's accent colours
   const PETAL_PALETTES = [
-    ['#e8836a','#f0a080','#ffd0bb'],  // orange-coral
-    ['#6ab0e8','#90c8f8','#c0e0ff'],  // blue
-    ['#d4b84a','#f0d870','#fff0a0'],  // gold
-    ['#5ecb8a','#80e8a8','#b0f8cc'],  // green
-    ['#e86a6a','#f89090','#ffbbbb'],  // red
-    ['#b07de8','#cc9eff','#e8d0ff'],  // purple
+    ['#e8836a','#f0a080','#ffd0bb'],
+    ['#6ab0e8','#90c8f8','#c0e0ff'],
+    ['#d4b84a','#f0d870','#fff0a0'],
+    ['#5ecb8a','#80e8a8','#b0f8cc'],
+    ['#e86a6a','#f89090','#ffbbbb'],
+    ['#b07de8','#cc9eff','#e8d0ff'],
   ];
 
   let flowers = [];
@@ -238,22 +315,17 @@ permalink: /
   resize();
   window.addEventListener('resize', resize);
 
-  /* One flower object */
   function makeFlower() {
     const palette = PETAL_PALETTES[Math.floor(Math.random() * PETAL_PALETTES.length)];
     return {
-      x:        Math.random() * W,
-      y:        Math.random() * H,
-      // grow 0→1 then stay
-      progress: 0,
-      // each flower has its own pace
-      speed:    0.004 + Math.random() * 0.008,
-      // final size
-      maxR:     14 + Math.random() * 22,
-      petals:   4 + Math.floor(Math.random() * 4),   // 4–7 petals
+      x:         Math.random() * W,
+      y:         Math.random() * H,
+      progress:  0,
+      speed:     0.004 + Math.random() * 0.008,
+      maxR:      14 + Math.random() * 22,
+      petals:    4 + Math.floor(Math.random() * 4),
       palette,
-      rotation: Math.random() * Math.PI * 2,
-      // after fully grown, slowly fade out over a long wait
+      rotation:  Math.random() * Math.PI * 2,
       waitTicks: 180 + Math.random() * 300,
       waited:    0,
       fadeSpeed: 0.003 + Math.random() * 0.004,
@@ -262,18 +334,15 @@ permalink: /
     };
   }
 
-  /* Spawn a fresh batch */
   function seed(n) {
     for (let i = 0; i < n; i++) {
       const f = makeFlower();
-      // stagger starts so they don't all bloom at once
       f.progress = Math.random();
       flowers.push(f);
     }
   }
-  seed(18); // initial population
+  seed(18);
 
-  /* Draw one flower */
   function drawFlower(f) {
     if (f.alpha <= 0) return;
     ctx.save();
@@ -281,18 +350,16 @@ permalink: /
     ctx.translate(f.x, f.y);
     ctx.rotate(f.rotation);
 
-    const r   = f.maxR * f.progress;   // current radius
-    const pr  = r * 0.55;              // petal offset
+    const r  = f.maxR * f.progress;
+    const pr = r * 0.55;
     const [c1, c2, c3] = f.palette;
 
-    // petals
     for (let p = 0; p < f.petals; p++) {
       const angle = (p / f.petals) * Math.PI * 2;
       const px = Math.cos(angle) * pr;
       const py = Math.sin(angle) * pr;
       ctx.beginPath();
       ctx.ellipse(px, py, r * 0.38, r * 0.24, angle, 0, Math.PI * 2);
-      // radial gradient per petal
       const g = ctx.createRadialGradient(px, py, 0, px, py, r * 0.4);
       g.addColorStop(0, c2);
       g.addColorStop(1, c1);
@@ -300,13 +367,11 @@ permalink: /
       ctx.fill();
     }
 
-    // centre dot
     ctx.beginPath();
     ctx.arc(0, 0, r * 0.22, 0, Math.PI * 2);
     ctx.fillStyle = c3;
     ctx.fill();
 
-    // tiny centre shadow ring
     ctx.beginPath();
     ctx.arc(0, 0, r * 0.22, 0, Math.PI * 2);
     ctx.strokeStyle = 'rgba(0,0,0,0.18)';
@@ -316,22 +381,16 @@ permalink: /
     ctx.restore();
   }
 
-  /* Animation loop */
   function tick() {
     ctx.clearRect(0, 0, W, H);
-
     flowers = flowers.filter(f => !f.done);
-
-    // keep at least 14 alive at all times
     while (flowers.length < 14) flowers.push(makeFlower());
 
     for (const f of flowers) {
       if (f.progress < 1) {
-        // sprouting phase
         f.progress = Math.min(1, f.progress + f.speed);
         f.alpha    = Math.min(0.75, f.alpha + f.speed * 2);
       } else {
-        // fully grown – wait, then fade
         f.waited++;
         if (f.waited > f.waitTicks) {
           f.alpha -= f.fadeSpeed;
@@ -350,7 +409,6 @@ permalink: /
   ───────────────────────────────────────────── */
   const cards = document.querySelectorAll('.reveal-card');
 
-  // Stagger delay so cards in the same row cascade nicely
   cards.forEach((card, i) => {
     card.style.transitionDelay = `${(i % 3) * 0.12}s`;
   });
@@ -360,7 +418,7 @@ permalink: /
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target); // animate once
+          observer.unobserve(entry.target);
         }
       });
     },
