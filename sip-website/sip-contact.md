@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Contact - Soroptimist International of Poway
+title: Contact
 description: Get involved or get help from Soroptimist International of Poway
 permalink: /sip/contact
 ---
@@ -111,6 +111,18 @@ permalink: /sip/contact
   .field-error.visible { display: block; }
 
   .form-group textarea { resize: vertical; min-height: 90px; }
+
+  /* Login prompt shown when not logged in */
+  .form-login-notice {
+    background: var(--blue-pale);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    color: var(--blue);
+    display: none;
+  }
+  .form-login-notice a { color: var(--blue); font-weight: 600; }
 
   .btn-involved {
     padding: 0.65rem 1.4rem;
@@ -678,6 +690,10 @@ permalink: /sip/contact
           <label for="inv-message">Message</label>
           <textarea id="inv-message" placeholder="Tell us a bit about yourself or your interest..."></textarea>
         </div>
+        <!-- shown when user is not logged in -->
+        <div class="form-login-notice" id="inv-login-notice">
+          Please <a id="inv-login-link" href="/login">log in</a> to submit this form.
+        </div>
         <div class="form-error-banner" id="err-involved"></div>
         <div class="form-success" id="success-involved">
           ✓ Thank you for reaching out. We will be in touch soon.
@@ -711,6 +727,10 @@ permalink: /sip/contact
         <div class="form-group">
           <label for="help-message">Message</label>
           <textarea id="help-message" placeholder="Describe your situation or question..."></textarea>
+        </div>
+        <!-- shown when user is not logged in -->
+        <div class="form-login-notice" id="help-login-notice">
+          Please <a id="help-login-link" href="/login">log in</a> to submit this form.
         </div>
         <div class="form-error-banner" id="err-help"></div>
         <div class="form-success" id="success-help">
@@ -876,21 +896,20 @@ permalink: /sip/contact
 
 <script>
   // ── Config ────────────────────────────────────────────────────
-  var API_BASE;
-  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-    API_BASE = 'http://localhost:8427';
-  } else {
-    API_BASE = 'https://sipoway.opencodingsociety.com';
-  }
+  // Mirrors the exact same pattern used in the blog page
+  var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://localhost:8427'
+    : 'https://sipoway.opencodingsociety.com';
 
   // ── State ─────────────────────────────────────────────────────
-  const today   = new Date();
-  let viewYear  = today.getFullYear();
-  let viewMonth = today.getMonth();
+  const today       = new Date();
+  let viewYear      = today.getFullYear();
+  let viewMonth     = today.getMonth();
   let MEETINGS      = [];
   let editingId     = null;
   let modalEventId  = null;
   let adminUnlocked = false;
+  let loggedIn      = false;   // true for any authenticated user (not just admin)
   let subPage       = 1;
   const SUB_PER_PAGE = 10;
 
@@ -911,6 +930,54 @@ permalink: /sip/contact
     const d = new Date(isoStr);
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
       + ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+
+  // ── Auth check ────────────────────────────────────────────────
+  // Uses credentials:'include' to send the jwt_token cookie —
+  // identical to how the blog page calls /api/id
+  function checkSession() {
+    fetch(`${API_BASE}/api/id`, { credentials: 'include' })
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(user => {
+        loggedIn = true;
+        setFormState(true);
+
+        if (user.is_admin) {
+          adminUnlocked = true;
+          document.getElementById('admin-username').textContent = user.name || user.uid;
+          document.getElementById('admin-toggle-row').style.display = 'block';
+          loadSubmissions(1);
+        }
+      })
+      .catch(status => {
+        loggedIn = false;
+        setFormState(false);
+
+        if (status === 401) {
+          // Show login prompt for calendar admin section
+          const loginLink = document.getElementById('admin-login-link');
+          loginLink.href = `/login?next=${encodeURIComponent(window.location.pathname)}`;
+          document.getElementById('admin-login-prompt').style.display = 'block';
+
+          // Show login notices on both forms
+          const next = encodeURIComponent(window.location.pathname);
+          document.getElementById('inv-login-link').href  = `/login?next=${next}`;
+          document.getElementById('help-login-link').href = `/login?next=${next}`;
+          document.getElementById('inv-login-notice').style.display  = 'block';
+          document.getElementById('help-login-notice').style.display = 'block';
+          document.getElementById('btn-involved').disabled = true;
+          document.getElementById('btn-help').disabled     = true;
+        }
+      });
+  }
+
+  function setFormState(isLoggedIn) {
+    // Hide/show login notices and enable/disable submit buttons
+    ['inv-login-notice','help-login-notice'].forEach(id => {
+      document.getElementById(id).style.display = isLoggedIn ? 'none' : 'block';
+    });
+    document.getElementById('btn-involved').disabled = !isLoggedIn;
+    document.getElementById('btn-help').disabled     = !isLoggedIn;
   }
 
   // ── Form helpers ──────────────────────────────────────────────
@@ -942,9 +1009,10 @@ permalink: /sip/contact
   }
 
   // ── Get Involved submission ───────────────────────────────────
-  // POSTs only { selection, message } — uid comes from the session cookie
+  // credentials:'include' sends the jwt_token cookie — same as blog page fetches
   function handleInvolvedSubmit(e) {
     e.preventDefault();
+    if (!loggedIn) return;
 
     const selection = document.getElementById('inv-type').value;
     const message   = document.getElementById('inv-message').value.trim();
@@ -971,9 +1039,9 @@ permalink: /sip/contact
   }
 
   // ── Get Help submission ───────────────────────────────────────
-  // POSTs only { selection, message } — uid comes from the session cookie
   function handleHelpSubmit(e) {
     e.preventDefault();
+    if (!loggedIn) return;
 
     const selection = document.getElementById('help-program').value;
     const message   = document.getElementById('help-message').value.trim();
@@ -997,30 +1065,6 @@ permalink: /sip/contact
     })
     .catch(err => showFormBanner('err-help', String(err)))
     .finally(() => setSubmitting('btn-help', 'spinner-help', false));
-  }
-
-  // ── Auth check ────────────────────────────────────────────────
-  function checkAdminSession() {
-    fetch(`${API_BASE}/api/id`, { credentials: 'include' })
-      .then(r => r.ok ? r.json() : Promise.reject(r.status))
-      .then(user => {
-        if (user.is_admin) {
-          adminUnlocked = true;
-          document.getElementById('admin-username').textContent = user.name || user.uid;
-          document.getElementById('admin-toggle-row').style.display = 'block';
-          renderAdminList();
-          loadSubmissions(1);
-        } else {
-          document.getElementById('admin-toggle-row').style.display = 'none';
-        }
-      })
-      .catch(status => {
-        if (status === 401) {
-          const loginLink = document.getElementById('admin-login-link');
-          loginLink.href = `/login?next=${encodeURIComponent(window.location.pathname)}`;
-          document.getElementById('admin-login-prompt').style.display = 'block';
-        }
-      });
   }
 
   // ── Admin panel ───────────────────────────────────────────────
@@ -1376,5 +1420,5 @@ permalink: /sip/contact
 
   renderDayNames();
   loadEvents();
-  checkAdminSession();
+  checkSession();   // replaces checkAdminSession — checks login state for forms AND admin
 </script>
