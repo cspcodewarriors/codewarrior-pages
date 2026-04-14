@@ -206,6 +206,7 @@ show_reading_time: false
     <p>You've just joined the Soroptimist community. Pick a sprite to represent you in our shared garden — a living symbol of every woman and girl we empower together.</p>
     <div id="sprite-grid"></div>
     <button id="popup-confirm" disabled>Plant Yourself in the Garden 🌻</button>
+    <p id="popup-status" style="min-height:1.1em; margin-top:0.8rem; font-size:0.85rem; color:#c0392b;"></p>
   </div>
 </div>
 
@@ -221,11 +222,7 @@ show_reading_time: false
   // New signup lands here with this key set; returning logins use sip_uid
   const newUserUID = sessionStorage.getItem('sip_new_user_uid') || null;
   sessionStorage.removeItem('sip_new_user_uid');
-
-  const loggedInUID = sessionStorage.getItem('sip_uid') || null;
-
-  // The active uid for this session — new signup takes priority
-  const activeUID = newUserUID || loggedInUID;
+  const popupStatus = document.getElementById('popup-status');
 
   async function fetchAllUsers() {
     try {
@@ -246,9 +243,12 @@ show_reading_time: false
     }
   }
 
-  async function fetchCurrentUser(uid) {
+  async function fetchCurrentUser() {
     try {
-      const res = await fetch(`${pythonURI}/api/user`, { ...fetchOptions, method: 'GET' });
+      const res = await fetch(`${pythonURI}/api/id`, { ...fetchOptions, method: 'GET' });
+      if (res.status === 401) {
+        return null; // Not authenticated or token missing
+      }
       if (!res.ok) {
         console.warn('fetchCurrentUser failed', res.status, await res.text());
         return null;
@@ -267,42 +267,48 @@ show_reading_time: false
         method: 'PUT',
         body: JSON.stringify({ garden_sprite: sprite })
       });
+      if (res.status === 401) {
+        setPopupStatus('Please log in again before planting yourself in the garden.');
+        return null;
+      }
       if (!res.ok) {
         console.error('saveSpriteToDB failed', res.status, await res.text());
+        setPopupStatus('We could not save your garden icon yet. Please try again.');
+        return null;
       }
+      return await res.json();
     } catch (e) {
       console.error('Failed to save sprite:', e);
+      setPopupStatus('We could not save your garden icon yet. Please try again.');
+      return null;
     }
   }
 
   async function init() {
     const allUsers = await fetchAllUsers();
-
-    if (newUserUID) {
-      // Brand new signup — show sprite picker, then build garden
-      document.getElementById('popup-name').textContent = newUserUID;
-      buildSpriteGrid(allUsers);
-      return;
-    }
-
-    if (loggedInUID) {
-      // Returning user — fetch their saved sprite from DB
-      const me = await fetchCurrentUser(loggedInUID);
-      const sprite = me && me.garden_sprite ? me.garden_sprite : null;
+    const me = await fetchCurrentUser();
+    if (me) {
+      sessionStorage.setItem('sip_uid', me.uid);
+      document.getElementById('popup-name').textContent = newUserUID || me.uid;
+      const sprite = me.garden_sprite ? me.garden_sprite : null;
 
       if (sprite) {
         document.getElementById('popup-overlay').style.display = 'none';
-        showGreeting(loggedInUID, sprite);
-        buildGarden({ name: loggedInUID, sprite }, allUsers);
+        showGreeting(me.uid, sprite);
+        buildGarden({ name: me.uid, sprite }, allUsers);
         return;
       }
 
       // Logged in but no sprite chosen yet — show picker
-      document.getElementById('popup-name').textContent = loggedInUID;
-      buildSpriteGrid(allUsers);
+      document.getElementById('popup-name').textContent = me.uid;
+      buildSpriteGrid(allUsers, me);
       return;
     }
 
+    if (newUserUID) {
+      console.warn('Garden signup flow reached without an authenticated session.');
+    }
+    sessionStorage.removeItem('sip_uid');
     // Not logged in — just show the garden with community sprites
     document.getElementById('popup-overlay').style.display = 'none';
     buildGarden(null, allUsers);
@@ -314,9 +320,17 @@ show_reading_time: false
     greet.style.display = 'block';
   }
 
-  function buildSpriteGrid(allUsers) {
+  function setPopupStatus(message = '') {
+    popupStatus.textContent = message;
+  }
+
+  function buildSpriteGrid(allUsers, currentUser) {
     const grid = document.getElementById('sprite-grid');
+    const confirmButton = document.getElementById('popup-confirm');
     let selectedSprite = null;
+
+    grid.innerHTML = '';
+    setPopupStatus('');
 
     SPRITES.forEach(emoji => {
       const btn = document.createElement('button');
@@ -326,20 +340,34 @@ show_reading_time: false
         document.querySelectorAll('.sprite-option').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
         selectedSprite = emoji;
-        document.getElementById('popup-confirm').disabled = false;
+        confirmButton.disabled = false;
+        setPopupStatus('');
       });
       grid.appendChild(btn);
     });
 
-    document.getElementById('popup-confirm').addEventListener('click', async () => {
-      await saveSpriteToDB(selectedSprite);
-      // Also update sessionStorage uid in case this was a new signup
-      if (newUserUID) sessionStorage.setItem('sip_uid', newUserUID);
+    confirmButton.addEventListener('click', async () => {
+      if (!selectedSprite) {
+        return;
+      }
+      if (!currentUser) {
+        setPopupStatus('Please log in before planting yourself in the garden.');
+        return;
+      }
+
+      confirmButton.disabled = true;
+      const savedUser = await saveSpriteToDB(selectedSprite);
+      if (!savedUser) {
+        confirmButton.disabled = false;
+        return;
+      }
+
+      sessionStorage.setItem('sip_uid', currentUser.uid);
       document.getElementById('popup-overlay').style.display = 'none';
       const greet = document.getElementById('greeting');
-      greet.innerHTML = `You're in the garden, <span>${activeUID}</span> ${selectedSprite}`;
+      greet.innerHTML = `You're in the garden, <span>${currentUser.uid}</span> ${savedUser.garden_sprite || selectedSprite}`;
       greet.style.display = 'block';
-      buildGarden({ name: activeUID, sprite: selectedSprite }, allUsers);
+      buildGarden({ name: currentUser.uid, sprite: savedUser.garden_sprite || selectedSprite }, allUsers);
     });
   }
 
