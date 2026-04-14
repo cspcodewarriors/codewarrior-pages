@@ -213,21 +213,8 @@ permalink: /sip/contact
   }
   .field-err.show { display: block; }
 
-  .form-group textarea { resize: vertical; min-height: 90px; }
-
-  /* Login prompt shown when not logged in */
-  .form-login-notice {
-    background: var(--blue-pale);
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    padding: 0.75rem 1rem;
-    font-size: 0.88rem;
-    color: var(--blue);
-    display: none;
-  }
-  .form-login-notice a { color: var(--blue); font-weight: 600; }
-
-  .btn-involved {
+  /* Buttons */
+  .btn-submit {
     padding: 0.65rem 1.4rem;
     border: none;
     border-radius: 6px;
@@ -1064,80 +1051,70 @@ permalink: /sip/contact
     <!-- ── Contact Forms ── -->
     <div class="forms-grid">
 
-    <!-- Get Involved -->
-    <div class="form-panel">
-      <div class="form-panel-header involved">
-        <h2>Get Involved</h2>
-        <p>Support our mission by donating, volunteering your time, or joining as a member.</p>
+      <!-- Get Involved -->
+      <div class="form-card" style="animation-delay:0s">
+        <div class="form-card-stripe stripe-blue"></div>
+        <div class="form-card-header">
+          <div class="form-card-icon icon-blue">🤝</div>
+          <h2>Get Involved</h2>
+          <p>Support our mission by volunteering your time or joining as a member.</p>
+        </div>
+        <div class="form-body">
+          <div class="field">
+            <label for="inv-type">How would you like to contribute?</label>
+            <select id="inv-type">
+              <option value="" disabled selected>Select an option</option>
+              <option value="volunteer">Volunteer</option>
+              <option value="member">Join as a Member</option>
+            </select>
+            <span class="field-err" id="inv-type-err">Please select an option.</span>
+          </div>
+          <div class="field">
+            <label for="inv-message">Message <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+            <textarea id="inv-message" placeholder="Tell us a bit about yourself or your interest…"></textarea>
+          </div>
+          <div class="banner banner-error"   id="err-involved"></div>
+          <div class="banner banner-success" id="ok-involved">✓ Thank you — we will be in touch soon.</div>
+          <button class="btn-submit btn-blue" id="btn-involved" onclick="handleInvolvedSubmit()">
+            <span class="spinner" id="sp-involved"></span>
+            Send Message
+          </button>
+        </div>
       </div>
-      <form id="form-involved" onsubmit="handleInvolvedSubmit(event)">
-        <div class="form-group">
-          <label for="inv-type">How would you like to contribute?</label>
-          <select id="inv-type" required>
-            <option value="" disabled selected>Select an option</option>
-            <option value="volunteer">Volunteer</option>
-            <option value="member">Join as a Member</option>
-          </select>
-          <span class="field-error" id="inv-type-err">Please select an option.</span>
-        </div>
-        <div class="form-group">
-          <label for="inv-message">Message</label>
-          <textarea id="inv-message" placeholder="Tell us a bit about yourself or your interest..."></textarea>
-        </div>
-        <!-- shown when user is not logged in -->
-        <div class="form-login-notice" id="inv-login-notice">
-          Please <a id="inv-login-link" href="/login">log in</a> to submit this form.
-        </div>
-        <div class="form-error-banner" id="err-involved"></div>
-        <div class="form-success" id="success-involved">
-          ✓ Thank you for reaching out. We will be in touch soon.
-        </div>
-        <button type="submit" class="btn-involved" id="btn-involved">
-          <span class="btn-spinner" id="spinner-involved"></span>
-          Send Message
-        </button>
-      </form>
-    </div>
 
-    <!-- Get Help -->
-    <div class="form-panel">
-      <div class="form-panel-header help">
-        <h2>Get Help</h2>
-        <p>Learn more about our programs, eligibility, and how to apply for support.</p>
+      <!-- Get Help -->
+      <div class="form-card" style="animation-delay:0.07s">
+        <div class="form-card-stripe stripe-gold"></div>
+        <div class="form-card-header">
+          <div class="form-card-icon icon-gold">💛</div>
+          <h2>Get Help</h2>
+          <p>Learn about our programs, eligibility, and how to apply for support.</p>
+        </div>
+        <div class="form-body">
+          <div class="field">
+            <label for="help-program">Program you are inquiring about</label>
+            <select id="help-program">
+              <option value="" disabled selected>Select a program</option>
+              <option value="transitional-housing">Transitional Housing</option>
+              <option value="live-your-dream">Live Your Dream</option>
+              <option value="dream-it-be-it">Dream It Be It</option>
+              <option value="abraxas">Abraxas Scholarship</option>
+              <option value="colegio">Colegio La Esperanza</option>
+            </select>
+            <span class="field-err" id="help-prog-err">Please select a program.</span>
+          </div>
+          <div class="field">
+            <label for="help-message">Message <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+            <textarea id="help-message" placeholder="Describe your situation or question…"></textarea>
+          </div>
+          <div class="banner banner-error"   id="err-help"></div>
+          <div class="banner banner-success" id="ok-help">✓ Thank you — we will be in touch soon.</div>
+          <button class="btn-submit btn-gold" id="btn-help" onclick="handleHelpSubmit()">
+            <span class="spinner" id="sp-help"></span>
+            Send Message
+          </button>
+        </div>
       </div>
-      <form id="form-help" onsubmit="handleHelpSubmit(event)">
-        <div class="form-group">
-          <label for="help-program">Program you are inquiring about</label>
-          <select id="help-program" required>
-            <option value="" disabled selected>Select a program</option>
-            <option value="transitional-housing">Transitional Housing</option>
-            <option value="live-your-dream">Live Your Dream</option>
-            <option value="dream-it-be-it">Dream It Be It</option>
-            <option value="abraxas">Abraxas Scholarship</option>
-            <option value="colegio">Colegio La Esperanza</option>
-          </select>
-          <span class="field-error" id="help-program-err">Please select a program.</span>
-        </div>
-        <div class="form-group">
-          <label for="help-message">Message</label>
-          <textarea id="help-message" placeholder="Describe your situation or question..."></textarea>
-        </div>
-        <!-- shown when user is not logged in -->
-        <div class="form-login-notice" id="help-login-notice">
-          Please <a id="help-login-link" href="/login">log in</a> to submit this form.
-        </div>
-        <div class="form-error-banner" id="err-help"></div>
-        <div class="form-success" id="success-help">
-          ✓ Thank you for reaching out. We will be in touch soon.
-        </div>
-        <button type="submit" class="btn-help" id="btn-help">
-          <span class="btn-spinner" id="spinner-help"></span>
-          Send Message
-        </button>
-      </form>
-    </div>
-
-  </div>
 
     </div><!-- /forms-grid -->
 
@@ -1346,98 +1323,159 @@ permalink: /sip/contact
 
 
 <script>
-  // ── Config ────────────────────────────────────────────────────
-  // Mirrors the exact same pattern used in the blog page
-  var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-    ? 'http://localhost:8427'
-    : 'https://sipoway.opencodingsociety.com';
+/* ═══════════════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════════════ */
+const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+  ? 'http://localhost:8427'
+  : 'https://sipoway.opencodingsociety.com';
 
-  // ── State ─────────────────────────────────────────────────────
-  const today       = new Date();
-  let viewYear      = today.getFullYear();
-  let viewMonth     = today.getMonth();
-  let MEETINGS      = [];
-  let editingId     = null;
-  let modalEventId  = null;
-  let adminUnlocked = false;
-  let loggedIn      = false;   // true for any authenticated user (not just admin)
-  let subPage       = 1;
-  const SUB_PER_PAGE = 10;
+/* ═══════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   FLOATING APPROVAL BUTTON
+═══════════════════════════════════════════════════ */
+let fabOpen = false;
 
-  // ── Utility ───────────────────────────────────────────────────
-  function escHtml(str) {
-    return String(str)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function toggleFabPanel() {
+  fabOpen = !fabOpen;
+  document.getElementById('sip-fab-panel').classList.toggle('open', fabOpen);
+}
+
+document.addEventListener('click', function(e) {
+  if (fabOpen && !e.target.closest('#sip-fab-wrap')) {
+    fabOpen = false;
+    document.getElementById('sip-fab-panel').classList.remove('open');
   }
+});
+
+function renderFabCards() {
+  const list  = document.getElementById('sip-fab-list');
+  const badge = document.getElementById('sip-fab-badge');
+  const count = document.getElementById('sip-fab-count');
+  if (!list) return;
+
+  const n = pendingItems.length;
+  badge.textContent = n > 99 ? '99+' : String(n);
+  badge.classList.toggle('show', n > 0);
+  count.textContent = n === 0 ? 'all caught up' : `${n} pending`;
+
+  if (!n) {
+    list.innerHTML = `<div style="padding:20px;text-align:center;font-size:13px;color:var(--text-muted)">
+      All caught up — no pending requests.</div>`;
+    return;
+  }
+
+  list.innerHTML = pendingItems.map(s => {
+    const init  = s.uid.slice(0, 2).toUpperCase();
+    const label = SEL_LABELS[s.selection] || s.selection;
+    return `
+      <div class="sip-fab-req-card" id="sip-fab-rc-${s.id}">
+        <div class="sip-fab-req-avatar">${esc(init)}</div>
+        <div class="sip-fab-req-info">
+          <div class="sip-fab-req-uid">${esc(s.uid)}</div>
+          <div class="sip-fab-req-meta">
+            <span class="appr-type-tag">${esc(label)}</span>
+            ${esc(fmtDT(s.created_at))}
+          </div>
+        </div>
+        <div class="sip-fab-req-btns">
+          <button class="sip-fab-btn-approve" onclick="fabResolve(${s.id},'approve')">Approve</button>
+          <button class="sip-fab-btn-decline" onclick="fabResolve(${s.id},'decline')">Decline</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function fabResolve(id, action) {
+  const card = document.getElementById(`sip-fab-rc-${id}`);
+  if (!card) return;
+
+  card.querySelectorAll('button').forEach(b => b.disabled = true);
+  const btns = card.querySelector('.sip-fab-req-btns');
+  const cls  = action === 'approve' ? 'chip-ok' : 'chip-no';
+  const lbl  = action === 'approve' ? '✓ Approved' : '✕ Declined';
+  if (btns) btns.innerHTML = `<span class="resolved-chip ${cls}">${lbl}</span>`;
+
+  setTimeout(() => {
+    card.style.transition    = 'opacity .3s, max-height .3s, padding .3s';
+    card.style.overflow      = 'hidden';
+    card.style.maxHeight     = card.scrollHeight + 'px';
+    card.style.opacity       = '0';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      card.style.maxHeight     = '0';
+      card.style.paddingTop    = '0';
+      card.style.paddingBottom = '0';
+    }));
+    setTimeout(() => {
+      pendingItems = pendingItems.filter(s => s.id !== id);
+      renderFabCards();
+    }, 320);
+  }, 700);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const btn    = document.getElementById('sip-fab-btn');
+  const footer = document.getElementById('sip-fab-footer');
+  if (btn)    btn.addEventListener('click', toggleFabPanel);
+  if (footer) footer.addEventListener('click', function() {
+    fabOpen = false;
+    document.getElementById('sip-fab-panel').classList.remove('open');
+    const adminPanel = document.getElementById('admin-panel');
+    if (adminPanel) {
+      adminPanel.classList.add('open');
+      adminPanel.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+const TODAY     = new Date();
+let viewYear    = TODAY.getFullYear();
+let viewMonth   = TODAY.getMonth();
+let MEETINGS    = [];
+let editingId   = null;
+let modalEvtId  = null;
+let isAdmin     = false;
+let subPage     = 1;
+let trayOpen    = false;
+let pendingItems = [];
+const PER_PAGE  = 10;
+
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+const DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+/* ═══════════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════════ */
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
 function fmtDate(dateStr) {
   const [y,m,d] = dateStr.split('-').map(Number);
   return `${MONTHS[m-1]} ${d}, ${y}`;
 }
 
-  function formatDateTime(isoStr) {
-    if (!isoStr) return '—';
-    const d = new Date(isoStr);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-      + ' ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-  }
+function fmtDT(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})
+       + ' · ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+}
 
-  // ── Auth check ────────────────────────────────────────────────
-  // Uses credentials:'include' to send the jwt_token cookie —
-  // identical to how the blog page calls /api/id
-  function checkSession() {
-    fetch(`${API_BASE}/api/id`, { credentials: 'include' })
-      .then(r => r.ok ? r.json() : Promise.reject(r.status))
-      .then(user => {
-        loggedIn = true;
-        setFormState(true);
-
-        if (user.is_admin) {
-          adminUnlocked = true;
-          document.getElementById('admin-username').textContent = user.name || user.uid;
-          document.getElementById('admin-toggle-row').style.display = 'block';
-          loadSubmissions(1);
-        }
-      })
-      .catch(status => {
-        loggedIn = false;
-        setFormState(false);
-
-        if (status === 401) {
-          // Show login prompt for calendar admin section
-          const loginLink = document.getElementById('admin-login-link');
-          loginLink.href = `/login?next=${encodeURIComponent(window.location.pathname)}`;
-          document.getElementById('admin-login-prompt').style.display = 'block';
-
-          // Show login notices on both forms
-          const next = encodeURIComponent(window.location.pathname);
-          document.getElementById('inv-login-link').href  = `/login?next=${next}`;
-          document.getElementById('help-login-link').href = `/login?next=${next}`;
-          document.getElementById('inv-login-notice').style.display  = 'block';
-          document.getElementById('help-login-notice').style.display = 'block';
-          document.getElementById('btn-involved').disabled = true;
-          document.getElementById('btn-help').disabled     = true;
-        }
-      });
-  }
-
-  function setFormState(isLoggedIn) {
-    // Hide/show login notices and enable/disable submit buttons
-    ['inv-login-notice','help-login-notice'].forEach(id => {
-      document.getElementById(id).style.display = isLoggedIn ? 'none' : 'block';
-    });
-    document.getElementById('btn-involved').disabled = !isLoggedIn;
-    document.getElementById('btn-help').disabled     = !isLoggedIn;
-  }
-
-  // ── Form helpers ──────────────────────────────────────────────
-  function setFieldError(fieldId, errId, show) {
-    const field = document.getElementById(fieldId);
-    const err   = document.getElementById(errId);
-    if (field) field.classList.toggle('error', show);
-    if (err)   err.classList.toggle('visible', show);
-  }
+/* ═══════════════════════════════════════════════════
+   FORM HELPERS
+═══════════════════════════════════════════════════ */
+function setErr(fieldId, errId, show) {
+  const f = document.getElementById(fieldId);
+  const e = document.getElementById(errId);
+  if (f) f.classList.toggle('has-error', show);
+  if (e) e.classList.toggle('show', show);
+}
 
 function setBanner(id, msg, type) {
   const el = document.getElementById(id);
@@ -1461,14 +1499,12 @@ function lockForm(formId) {
     .forEach(el => el.disabled = true);
 }
 
-  // ── Get Involved submission ───────────────────────────────────
-  // credentials:'include' sends the jwt_token cookie — same as blog page fetches
-  function handleInvolvedSubmit(e) {
-    e.preventDefault();
-    if (!loggedIn) return;
-
-    const selection = document.getElementById('inv-type').value;
-    const message   = document.getElementById('inv-message').value.trim();
+/* ═══════════════════════════════════════════════════
+   CONTACT FORM — GET INVOLVED
+═══════════════════════════════════════════════════ */
+function handleInvolvedSubmit() {
+  const sel = document.getElementById('inv-type').value;
+  const msg = document.getElementById('inv-message').value.trim();
 
   setErr('inv-type','inv-type-err', !sel);
   if (!sel) return;
@@ -1476,28 +1512,27 @@ function lockForm(formId) {
   setBanner('err-involved','','error');
   setLoading('btn-involved','sp-involved',true);
 
-    fetch(`${API_BASE}/api/sip/contact/involved`, {
-      method:      'POST',
-      credentials: 'include',
-      headers:     { 'Content-Type': 'application/json' },
-      body:        JSON.stringify({ selection, message }),
-    })
-    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Submission failed.')))
-    .then(() => {
-      document.getElementById('success-involved').style.display = 'block';
-      lockForm('form-involved');
-    })
-    .catch(err => showFormBanner('err-involved', String(err)))
-    .finally(() => setSubmitting('btn-involved', 'spinner-involved', false));
-  }
+  fetch(`${API_BASE}/api/sip/contact/involved`, {
+    method:'POST', credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({selection:sel, message:msg}),
+  })
+  .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message||'Submission failed.')))
+  .then(() => {
+    setBanner('ok-involved','✓ Thank you — we will be in touch soon.','success');
+    document.querySelectorAll('#inv-type,#inv-message').forEach(el => el.disabled=true);
+    document.getElementById('btn-involved').disabled = true;
+  })
+  .catch(err => setBanner('err-involved', String(err), 'error'))
+  .finally(() => setLoading('btn-involved','sp-involved',false));
+}
 
-  // ── Get Help submission ───────────────────────────────────────
-  function handleHelpSubmit(e) {
-    e.preventDefault();
-    if (!loggedIn) return;
-
-    const selection = document.getElementById('help-program').value;
-    const message   = document.getElementById('help-message').value.trim();
+/* ═══════════════════════════════════════════════════
+   CONTACT FORM — GET HELP
+═══════════════════════════════════════════════════ */
+function handleHelpSubmit() {
+  const sel = document.getElementById('help-program').value;
+  const msg = document.getElementById('help-message').value.trim();
 
   setErr('help-program','help-prog-err', !sel);
   if (!sel) return;
@@ -1505,20 +1540,49 @@ function lockForm(formId) {
   setBanner('err-help','','error');
   setLoading('btn-help','sp-help',true);
 
-    fetch(`${API_BASE}/api/sip/contact/help`, {
-      method:      'POST',
-      credentials: 'include',
-      headers:     { 'Content-Type': 'application/json' },
-      body:        JSON.stringify({ selection, message }),
+  fetch(`${API_BASE}/api/sip/contact/help`, {
+    method:'POST', credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({selection:sel, message:msg}),
+  })
+  .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message||'Submission failed.')))
+  .then(() => {
+    setBanner('ok-help','✓ Thank you — we will be in touch soon.','success');
+    document.querySelectorAll('#help-program,#help-message').forEach(el => el.disabled=true);
+    document.getElementById('btn-help').disabled = true;
+  })
+  .catch(err => setBanner('err-help', String(err), 'error'))
+  .finally(() => setLoading('btn-help','sp-help',false));
+}
+
+/* ═══════════════════════════════════════════════════
+   AUTH CHECK
+═══════════════════════════════════════════════════ */
+function checkAdminSession() {
+  fetch(`${API_BASE}/api/id`, {credentials:'include'})
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(user => {
+      if (user.is_admin) {
+        isAdmin = true;
+        const name = user.name || user.uid;
+        document.getElementById('admin-name').textContent       = name;
+        document.getElementById('admin-name-panel').textContent = name;
+        document.getElementById('admin-who').style.display      = 'inline';
+        document.getElementById('btn-toggle-admin').style.display = 'inline-flex';
+        renderAdminList();
+        document.getElementById('sip-fab-wrap').classList.add('visible');
+        loadSubmissions(1);
+        loadPendingRequests();
+      }
     })
-    .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message || 'Submission failed.')))
-    .then(() => {
-      document.getElementById('success-help').style.display = 'block';
-      lockForm('form-help');
-    })
-    .catch(err => showFormBanner('err-help', String(err)))
-    .finally(() => setSubmitting('btn-help', 'spinner-help', false));
-  }
+    .catch(status => {
+      if (status === 401) {
+        const link = document.getElementById('admin-login-link');
+        link.href = `/login?next=${encodeURIComponent(window.location.pathname)}`;
+        document.getElementById('admin-login-hint').style.display = 'block';
+      }
+    });
+}
 
 /* ═══════════════════════════════════════════════════
    ADMIN PANEL
@@ -1978,7 +2042,7 @@ function loadEvents() {
     });
 }
 
-  renderDayNames();
-  loadEvents();
-  checkSession();   // replaces checkAdminSession — checks login state for forms AND admin
+renderDayNames();
+loadEvents();
+checkAdminSession();
 </script>
