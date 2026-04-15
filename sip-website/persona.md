@@ -28,17 +28,79 @@ permalink: /sip/persona/
   #intro-section { animation: fadeUp 0.5s ease both; }
   .intro-eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: #e8836a; margin-bottom: 12px; }
   .intro-title   { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,5vw,2.8rem); font-weight: 600; color: #f5f0eb; margin-bottom: 14px; line-height: 1.2; }
-  .intro-body    { font-size: 0.95rem; color: #a0a0a0; line-height: 1.85; margin-bottom: 10px; max-width: 580px; }
-  .intro-note    { font-size: 0.82rem; color: #555; line-height: 1.7; margin-bottom: 36px; font-style: italic; }
-  .intro-start-btn {
+  .intro-body    { font-size: 0.95rem; color: #a0a0a0; line-height: 1.85; margin-bottom: 32px; max-width: 580px; }
+
+  /* ── Choice Cards ────────────────────── */
+  .choice-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; margin-bottom: 28px;
+  }
+  @media (max-width: 520px) { .choice-row { grid-template-columns: 1fr; } }
+  .choice-card {
+    background: rgba(255,255,255,0.02); border: 1.5px solid #222;
+    border-radius: 12px; padding: 24px 20px; cursor: pointer; text-align: left;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .choice-card:hover { border-color: rgba(232,131,106,0.5); background: rgba(232,131,106,0.04); transform: translateY(-2px); }
+  .choice-card.selected { border-color: #e8836a; background: rgba(232,131,106,0.08); }
+  .choice-card-icon  { font-size: 1.5rem; display: block; margin-bottom: 12px; }
+  .choice-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: #f5f0eb; margin-bottom: 8px; }
+  .choice-card-desc  { font-size: 0.82rem; color: #666; line-height: 1.65; }
+
+  .intro-cta-btn {
     font-family: 'Jost', sans-serif; font-size: 0.88rem; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 40px;
     border-radius: 4px; border: none; cursor: pointer;
     background: #e8836a; color: #111;
-    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s, opacity 0.15s;
     box-shadow: 0 4px 20px rgba(232,131,106,0.3);
   }
-  .intro-start-btn:hover { background: #f09a7e; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,131,106,0.4); }
+  .intro-cta-btn:hover:not(:disabled) { background: #f09a7e; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,131,106,0.4); }
+  .intro-cta-btn:disabled { opacity: 0.35; cursor: default; box-shadow: none; }
+
+  /* ── Browse Programs ─────────────────── */
+  #browse-section { display: none; animation: fadeUp 0.4s ease both; }
+  .browse-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: #555; background: none; border: none; cursor: pointer;
+    margin-bottom: 36px; padding: 0; transition: color 0.15s;
+  }
+  .browse-back:hover { color: #aaa; }
+  .browse-eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: #e8836a; margin-bottom: 12px; }
+  .browse-title   { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem,4vw,2.4rem); font-weight: 600; color: #f5f0eb; margin-bottom: 10px; line-height: 1.2; }
+  .browse-sub     { font-size: 0.9rem; color: #888; line-height: 1.8; margin-bottom: 32px; max-width: 540px; }
+
+  .prog-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .prog-card {
+    background: rgba(255,255,255,0.02); border: 1.5px solid #222;
+    border-radius: 12px; padding: 22px 18px; cursor: pointer;
+    transition: border-color 0.18s, transform 0.15s, box-shadow 0.15s;
+    text-decoration: none; display: block; color: inherit;
+    animation: revealUp 0.4s ease both;
+  }
+  .prog-card:nth-child(1){ animation-delay: 0.05s; }
+  .prog-card:nth-child(2){ animation-delay: 0.12s; }
+  .prog-card:nth-child(3){ animation-delay: 0.19s; }
+  .prog-card:nth-child(4){ animation-delay: 0.26s; }
+  .prog-card:nth-child(5){ animation-delay: 0.33s; }
+  .prog-card:nth-child(6){ animation-delay: 0.40s; }
+  .prog-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.4); text-decoration: none; color: inherit; }
+  .prog-card-icon    { font-size: 1.5rem; display: block; margin-bottom: 10px; }
+  .prog-card-eyebrow { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px; }
+  .prog-card-title   { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: #f5f0eb; margin-bottom: 8px; }
+  .prog-card-desc    { font-size: 0.79rem; color: #777; line-height: 1.6; margin-bottom: 14px; }
+  .persona-pill {
+    display: inline-block; font-size: 0.66rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .prog-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .prog-tag  { font-size: 0.66rem; padding: 2px 8px; border-radius: 12px; background: rgba(255,255,255,0.05); color: #555; }
+  .prog-learn { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
 
   /* ── Progress ────────────────────────── */
   .progress-wrap { margin-bottom: 36px; }
@@ -136,7 +198,7 @@ permalink: /sip/persona/
     padding: 16px 16px 10px; margin-bottom: 18px;
     min-height: 100px; transition: border-color 0.2s, background 0.2s;
   }
-  .mine-zone.dz-hover { border-color: #e8836a; background: rgba(232,131,106,0.05); }
+  .mine-zone.dz-hover  { border-color: #e8836a; background: rgba(232,131,106,0.05); }
   .mine-zone.dz-filled { border-color: rgba(232,131,106,0.3); }
   .zone-label {
     font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.14em;
@@ -193,7 +255,6 @@ permalink: /sip/persona/
     font-family: 'Jost', sans-serif;
   }
   .r-arrow:hover { color: #e8836a; }
-  /* Rank colouring */
   .rk-1 .r-num { border-color: #e8836a; color: #e8836a; background: rgba(232,131,106,0.12); }
   .rk-1 .r-text { color: #f0ece6; }
   .rk-2 .r-num { border-color: rgba(232,131,106,0.65); color: rgba(232,131,106,0.65); }
@@ -259,16 +320,38 @@ permalink: /sip/persona/
 <div class="quiz-page">
   <a href="{{ site.baseurl }}/" class="sip-back">← Back to Programs</a>
 
-  <!-- ── Intro ─────────────────────────────── -->
+  <!-- ── Intro / Choice ────────────────────── -->
   <div id="intro-section">
     <p class="intro-eyebrow">We're Here to Help</p>
     <h1 class="intro-title">Let's find the right support for you.</h1>
-    <p class="intro-body">Soroptimist International of Poway offers six programs serving women and communities in different ways. Answer a few honest questions about your situation and what you need most — we'll point you to the program that fits.</p>
-    <p class="intro-note">Your answers are private and used only to match you with the right program. There are no wrong answers.</p>
-    <button class="intro-start-btn" onclick="startQuiz()">Find My Program →</button>
+    <p class="intro-body">Soroptimist International of Poway offers six programs serving women and communities in different ways. How would you like to find yours?</p>
+
+    <div class="choice-row">
+      <div class="choice-card" id="choice-browse" onclick="selectChoice('browse')">
+        <span class="choice-card-icon">🗂</span>
+        <div class="choice-card-title">Browse Programs</div>
+        <div class="choice-card-desc">See all six programs and their personas side by side — pick the one that speaks to you.</div>
+      </div>
+      <div class="choice-card" id="choice-quiz" onclick="selectChoice('quiz')">
+        <span class="choice-card-icon">✦</span>
+        <div class="choice-card-title">Take the Survey</div>
+        <div class="choice-card-desc">Answer a few honest questions and we'll match you with the best-fit program for your situation.</div>
+      </div>
+    </div>
+
+    <button class="intro-cta-btn" id="intro-cta" disabled onclick="proceedFromIntro()">Continue →</button>
   </div>
 
-  <!-- ── Game ──────────────────────────────── -->
+  <!-- ── Browse Programs ───────────────────── -->
+  <div id="browse-section">
+    <button class="browse-back" onclick="goBackToIntro()">← Back</button>
+    <p class="browse-eyebrow">All Programs</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:600;color:#f5f0eb;margin-bottom:10px;line-height:1.2;">Choose the program that fits.</h2>
+    <p class="browse-sub">Each program is designed for a different situation and goal. Read through and click the one that resonates most with where you are right now.</p>
+    <div class="prog-grid" id="prog-grid"></div>
+  </div>
+
+  <!-- ── Survey ────────────────────────────── -->
   <div id="game-section" style="display:none;">
     <div class="progress-wrap">
       <div class="progress-steps" id="progress-steps"></div>
@@ -309,9 +392,17 @@ const PERSONAS = {
   solana: { title: 'The Bridge',      color: '#b07de8', desc: 'You carry two worlds inside you. You believe education is the most powerful gift — and that geography should never determine a child\'s future.', archetypes: ['Empathetic', 'Cross-cultural', 'Connector'] },
 };
 
-// ── Game Data ─────────────────────────────────────────────────────────────────
+// Map program id → persona alias for the browse grid
+const PROGRAM_PERSONA = {
+  'transitional-housing': 'haven',
+  'live-your-dream':      'rosa',
+  'dream-it-be-it':       'luna',
+  'stat':                 'voice',
+  'abraxas-scholarship':  'merit',
+  'colegio-la-esperanza': 'solana',
+};
 
-// Three sliders — each captures one axis of the program space
+// ── Game Data ─────────────────────────────────────────────────────────────────
 const SLIDERS = [
   {
     question: 'Right now, what feels most urgent?',
@@ -342,7 +433,6 @@ const SLIDERS = [
   },
 ];
 
-// Bucket toss — drawn from Q4 "What is most missing"
 const BUCKET_ITEMS = [
   { id: 'b1', icon: '💸', text: 'Financial support to pursue education or job training without sacrificing what my family needs.', scores: { rosa: 3, 'live-your-dream': 4 } },
   { id: 'b2', icon: '🏘️', text: 'A safe, stable home where my family can breathe and rebuild.', scores: { haven: 3, 'transitional-housing': 4 } },
@@ -352,7 +442,6 @@ const BUCKET_ITEMS = [
   { id: 'b6', icon: '🎒', text: 'A way to bring education and opportunity to children who have been left behind.', scores: { solana: 3, 'colegio-la-esperanza': 4 } },
 ];
 
-// Card sort — drawn from Q6 "A year from now, what do you most hope has changed?"
 const SORT_ITEMS = [
   { id: 's1', icon: '📈', text: 'I am enrolled in a program moving my career forward and my family is more financially stable.', scores: { rosa: 3, 'live-your-dream': 4 } },
   { id: 's2', icon: '🌅', text: 'My family has a safe, stable home and we are no longer living in fear of what tomorrow looks like.', scores: { haven: 3, 'transitional-housing': 4 } },
@@ -367,20 +456,72 @@ let sliderValues  = [50, 50, 50];
 let currentSlider = 0;
 let bucketMine    = new Set();
 let sortOrder     = SORT_ITEMS.map(s => s.id);
-let phase         = 'sliders'; // 'sliders' | 'buckets' | 'cardsort'
+let phase         = 'sliders';
 let dragSrcId     = null;
-const TOTAL_STEPS = 5; // 3 sliders + bucket + cardsort
+const TOTAL_STEPS = 5;
 
 function stepIndex() {
-  if (phase === 'sliders')  return currentSlider;
-  if (phase === 'buckets')  return 3;
+  if (phase === 'sliders') return currentSlider;
+  if (phase === 'buckets') return 3;
   return 4;
 }
 
-// ── Boot ──────────────────────────────────────────────────────────────────────
-window.startQuiz = function () {
+// ── Intro / Choice ────────────────────────────────────────────────────────────
+let introChoice = null;
+
+window.selectChoice = function(val) {
+  introChoice = val;
+  document.getElementById('choice-browse').classList.toggle('selected', val === 'browse');
+  document.getElementById('choice-quiz').classList.toggle('selected', val === 'quiz');
+  const btn = document.getElementById('intro-cta');
+  btn.disabled = false;
+  btn.textContent = val === 'browse' ? 'Browse Programs →' : 'Start Survey →';
+};
+
+window.proceedFromIntro = function() {
+  if (!introChoice) return;
   document.getElementById('intro-section').style.display = 'none';
-  document.getElementById('game-section').style.display  = 'block';
+  if (introChoice === 'browse') {
+    showBrowse();
+  } else {
+    startQuiz();
+  }
+};
+
+window.goBackToIntro = function() {
+  document.getElementById('browse-section').style.display = 'none';
+  document.getElementById('intro-section').style.display  = 'block';
+};
+
+// ── Browse Programs ───────────────────────────────────────────────────────────
+function showBrowse() {
+  const section = document.getElementById('browse-section');
+  section.style.display = 'block';
+  const grid = document.getElementById('prog-grid');
+  grid.innerHTML = PROGRAMS.map(p => {
+    const alias   = PROGRAM_PERSONA[p.id];
+    const persona = PERSONAS[alias];
+    const pillBg  = p.color + '22';
+    const tags    = persona.archetypes.map(t => `<span class="prog-tag">${t}</span>`).join('');
+    return `
+      <a href="${baseurl}${p.url}" class="prog-card" style="border-color:${p.color}44;">
+        <span class="prog-card-icon">${p.icon}</span>
+        <div class="prog-card-eyebrow" style="color:${p.color};">${p.eyebrow}</div>
+        <div class="prog-card-title">${p.title}</div>
+        <div class="prog-card-desc">${p.desc}</div>
+        <div class="persona-pill" style="background:${pillBg};color:${p.color};">You are ${persona.title}</div>
+        <div style="font-size:0.78rem;color:#888;line-height:1.65;margin-bottom:10px;">${persona.desc}</div>
+        <div class="prog-tags">${tags}</div>
+        <div class="prog-learn" style="color:${p.color};margin-top:12px;">Learn more →</div>
+      </a>`;
+  }).join('');
+}
+
+// ── Survey Boot ───────────────────────────────────────────────────────────────
+window.startQuiz = function () {
+  document.getElementById('intro-section').style.display  = 'none';
+  document.getElementById('browse-section').style.display = 'none';
+  document.getElementById('game-section').style.display   = 'block';
   phase = 'sliders'; currentSlider = 0;
   buildDots();
   renderSlider();
@@ -411,8 +552,8 @@ function renderSlider() {
   syncProgress();
   const s   = SLIDERS[currentSlider];
   const val = sliderValues[currentSlider];
-  document.getElementById('nav-hint').textContent  = s.hint;
-  document.getElementById('btn-next').textContent  = 'Next →';
+  document.getElementById('nav-hint').textContent = s.hint;
+  document.getElementById('btn-next').textContent = 'Next →';
 
   document.getElementById('game-area').innerHTML = `
     <div class="question-slide">
@@ -483,7 +624,6 @@ function renderBuckets() {
       <div class="round-tag">⬇ Toss into Bucket · Round 2</div>
       <h2 class="question-text">What is most missing from your life right now?</h2>
       <p class="question-sub">Drag any statements that resonate into the bucket below. Leave the rest.</p>
-
       <div class="mine-zone ${mineItems.length ? 'dz-filled' : ''}" id="mine-zone">
         <div class="zone-label">This is me</div>
         ${mineItems.length
@@ -491,7 +631,6 @@ function renderBuckets() {
           : '<div class="zone-empty-msg">Drop statements here ↓</div>'
         }
       </div>
-
       <div class="chip-pool" id="chip-pool">
         ${poolItems.map(chipHTML).join('')}
       </div>
@@ -525,7 +664,6 @@ function setupBucketEvents() {
     chip.addEventListener('dragend', () => chip.classList.remove('chip-drag'));
   });
 
-  // Mine zone as drop target
   mineZone.addEventListener('dragover',  e => { e.preventDefault(); mineZone.classList.add('dz-hover'); });
   mineZone.addEventListener('dragleave', () => mineZone.classList.remove('dz-hover'));
   mineZone.addEventListener('drop', e => {
@@ -534,7 +672,6 @@ function setupBucketEvents() {
     if (dragSrcId && !bucketMine.has(dragSrcId)) { bucketMine.add(dragSrcId); renderBuckets(); }
   });
 
-  // Pool as drop target (remove from mine)
   pool.addEventListener('dragover',  e => { e.preventDefault(); pool.style.outline = '1px dashed #383838'; });
   pool.addEventListener('dragleave', () => pool.style.outline = '');
   pool.addEventListener('drop', e => {
@@ -658,19 +795,16 @@ function calcScores() {
     }
   }
 
-  // Sliders: 0 = full left, 100 = full right
   SLIDERS.forEach((s, i) => {
     const v = sliderValues[i] / 100;
     add(s.leftScores,  5 * (1 - v));
     add(s.rightScores, 5 * v);
   });
 
-  // Bucket: each item in mine contributes its scores
   BUCKET_ITEMS.forEach(item => {
     if (bucketMine.has(item.id)) add(item.scores);
   });
 
-  // Card sort: rank 1 (index 0) = highest multiplier
   sortOrder.forEach((id, rank) => {
     const item = SORT_ITEMS.find(s => s.id === id);
     add(item.scores, (SORT_ITEMS.length - rank) / SORT_ITEMS.length);
@@ -765,7 +899,14 @@ window._retake = function () {
   bucketMine    = new Set();
   sortOrder     = SORT_ITEMS.map(s => s.id);
   phase         = 'sliders';
+  introChoice   = null;
   document.getElementById('results-section').style.display = 'none';
+  document.getElementById('browse-section').style.display  = 'none';
+  document.getElementById('game-section').style.display    = 'none';
   document.getElementById('intro-section').style.display   = 'block';
+  document.getElementById('choice-browse').classList.remove('selected');
+  document.getElementById('choice-quiz').classList.remove('selected');
+  document.getElementById('intro-cta').disabled = true;
+  document.getElementById('intro-cta').textContent = 'Continue →';
 };
 </script>
