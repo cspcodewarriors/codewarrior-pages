@@ -130,6 +130,48 @@ permalink: /sip/persona/
   }
   .slider-reading.leaning { color: rgba(232,131,106,0.85); }
 
+  .compass-wrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .compass-grid {
+    width: 100%; max-width: 520px; aspect-ratio: 1 / 1;
+    border: 1.5px solid #222; border-radius: 20px;
+    background: radial-gradient(circle at center, rgba(232,131,106,0.05), transparent 42%);
+    position: relative; overflow: hidden;
+  }
+  .compass-grid::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(232,131,106,0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(232,131,106,0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .compass-grid::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(232,131,106,0.28) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(232,131,106,0.28) 1px, transparent 1px);
+    background-position: 50% 0, 0 50%;
+  }
+  .compass-point {
+    position: absolute; width: 18px; height: 18px;
+    border-radius: 50%; background: #e8836a;
+    border: 3px solid #111; box-shadow: 0 0 0 10px rgba(232,131,106,0.12);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .compass-axis-label {
+    position: absolute; color: #d0ccc8; font-size: 0.8rem; max-width: 44%;
+    line-height: 1.25; font-weight: 500;
+  }
+  .compass-axis-label.compass-left  { left: 16px; top: 50%; transform: translateY(-50%); text-align: left; }
+  .compass-axis-label.compass-right { right: 16px; top: 50%; transform: translateY(-50%); text-align: right; }
+  .compass-axis-label.compass-top   { top: 16px; left: 50%; transform: translateX(-50%); text-align: center; }
+  .compass-axis-label.compass-bottom{ bottom: 16px; left: 50%; transform: translateX(-50%); text-align: center; }
+  .compass-reading {
+    text-align: center; font-size: 0.88rem; color: #888; max-width: 560px;
+  }
+
   /* ── BUCKET TOSS ─────────────────────── */
   .mine-zone {
     border: 2px dashed #282828; border-radius: 14px;
@@ -311,7 +353,7 @@ const PERSONAS = {
 
 // ── Game Data ─────────────────────────────────────────────────────────────────
 
-// Three sliders — each captures one axis of the program space
+// Three sliders plus one compass-style values question
 const SLIDERS = [
   {
     question: 'Right now, what feels most urgent?',
@@ -340,6 +382,20 @@ const SLIDERS = [
     rightScores: { solana: 5, 'colegio-la-esperanza': 5 },
     hint: 'Where does your heart pull you?',
   },
+  {
+    question: 'Where do your values fall on this compass?',
+    type: 'compass',
+    leftIcon: '👥', rightIcon: '📚',
+    leftLabel: 'Shared safety and community support are most important',
+    rightLabel: 'Personal education and opportunity are most important',
+    yTopLabel: 'Immediate protection and safety',
+    yBottomLabel: 'Long-term growth and empowerment',
+    leftScores:  { haven: 4, 'transitional-housing': 4, voice: 2, stat: 2 },
+    rightScores: { rosa: 4, 'live-your-dream': 4, luna: 3, 'dream-it-be-it': 3, merit: 3, 'abraxas-scholarship': 3 },
+    topScores:  { haven: 4, 'transitional-housing': 4, voice: 2, stat: 2 },
+    bottomScores: { rosa: 4, 'live-your-dream': 4, luna: 3, 'dream-it-be-it': 3, merit: 3, 'abraxas-scholarship': 3 },
+    hint: 'Drag the point to the quadrant that best matches your values.',
+  },
 ];
 
 // Bucket toss — drawn from Q4 "What is most missing"
@@ -364,17 +420,18 @@ const SORT_ITEMS = [
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let sliderValues  = [50, 50, 50];
+let compassValues = { x: 50, y: 50 };
 let currentSlider = 0;
 let bucketMine    = new Set();
 let sortOrder     = SORT_ITEMS.map(s => s.id);
 let phase         = 'sliders'; // 'sliders' | 'buckets' | 'cardsort'
 let dragSrcId     = null;
-const TOTAL_STEPS = 5; // 3 sliders + bucket + cardsort
+const TOTAL_STEPS = 6; // 3 sliders + compass + bucket + cardsort
 
 function stepIndex() {
   if (phase === 'sliders')  return currentSlider;
-  if (phase === 'buckets')  return 3;
-  return 4;
+  if (phase === 'buckets')  return 4;
+  return 5;
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
@@ -409,14 +466,19 @@ function syncProgress() {
 function renderSlider() {
   phase = 'sliders';
   syncProgress();
-  const s   = SLIDERS[currentSlider];
-  const val = sliderValues[currentSlider];
-  document.getElementById('nav-hint').textContent  = s.hint;
-  document.getElementById('btn-next').textContent  = 'Next →';
+  const s = SLIDERS[currentSlider];
+  document.getElementById('nav-hint').textContent = s.hint;
+  document.getElementById('btn-next').textContent = 'Next →';
 
+  if (s.type === 'compass') {
+    renderCompass(s);
+    return;
+  }
+
+  const val = sliderValues[currentSlider];
   document.getElementById('game-area').innerHTML = `
     <div class="question-slide">
-      <div class="round-tag">⟵⟶ Drag the Slider · ${currentSlider + 1} of 3</div>
+      <div class="round-tag">⟵⟶ Drag the Slider · ${currentSlider + 1} of ${SLIDERS.length}</div>
       <h2 class="question-text">${s.question}</h2>
       <div class="slider-poles">
         <div class="pole-card ${val < 50 ? 'pole-lit' : ''}" id="pole-left">
@@ -439,6 +501,66 @@ function renderSlider() {
     </div>`;
 
   updateSliderTrack(val);
+}
+
+function renderCompass(s) {
+  const { x, y } = compassValues;
+  document.getElementById('game-area').innerHTML = `
+    <div class="question-slide">
+      <div class="round-tag">🧭 Compass Question · ${currentSlider + 1} of ${SLIDERS.length}</div>
+      <h2 class="question-text">${s.question}</h2>
+      <div class="compass-wrap">
+        <div class="compass-grid" id="compass-grid">
+          <div class="compass-point" id="compass-point" style="left:${x}%; top:${100 - y}%"></div>
+          <div class="compass-axis-label compass-left">${s.leftLabel}</div>
+          <div class="compass-axis-label compass-right">${s.rightLabel}</div>
+          <div class="compass-axis-label compass-top">${s.yTopLabel}</div>
+          <div class="compass-axis-label compass-bottom">${s.yBottomLabel}</div>
+        </div>
+        <div class="slider-reading compass-reading" id="compass-read">
+          ${compassReadText(x, y)}
+        </div>
+      </div>
+    </div>`;
+
+  setupCompassEvents();
+}
+
+function setupCompassEvents() {
+  const grid = document.getElementById('compass-grid');
+  const point = document.getElementById('compass-point');
+
+  function setPosition(clientX, clientY) {
+    const rect = grid.getBoundingClientRect();
+    let x = Math.round(((clientX - rect.left) / rect.width) * 100);
+    let y = Math.round(((rect.bottom - clientY) / rect.height) * 100);
+    x = Math.max(0, Math.min(100, x));
+    y = Math.max(0, Math.min(100, y));
+    compassValues.x = x;
+    compassValues.y = y;
+    point.style.left = `${x}%`;
+    point.style.top = `${100 - y}%`;
+    document.getElementById('compass-read').textContent = compassReadText(x, y);
+  }
+
+  grid.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    grid.setPointerCapture(e.pointerId);
+    setPosition(e.clientX, e.clientY);
+  });
+  grid.addEventListener('pointermove', e => {
+    if (e.buttons !== 1) return;
+    setPosition(e.clientX, e.clientY);
+  });
+  grid.addEventListener('pointerup', e => {
+    grid.releasePointerCapture(e.pointerId);
+  });
+}
+
+function compassReadText(x, y) {
+  const horiz = x < 40 ? 'Community-focused' : x > 60 ? 'Opportunity-focused' : 'Balanced between community and opportunity';
+  const vert  = y < 40 ? 'Long-term growth and empowerment' : y > 60 ? 'Immediate protection and safety' : 'Balanced between safety and growth';
+  return `${horiz}. ${vert}.`;
 }
 
 window._sliderMove = function (raw) {
@@ -660,6 +782,15 @@ function calcScores() {
 
   // Sliders: 0 = full left, 100 = full right
   SLIDERS.forEach((s, i) => {
+    if (s.type === 'compass') {
+      const x = compassValues.x / 100;
+      add(s.leftScores,  5 * (1 - x));
+      add(s.rightScores, 5 * x);
+      const y = compassValues.y / 100;
+      add(s.topScores,    5 * (1 - y));
+      add(s.bottomScores, 5 * y);
+      return;
+    }
     const v = sliderValues[i] / 100;
     add(s.leftScores,  5 * (1 - v));
     add(s.rightScores, 5 * v);

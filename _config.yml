@@ -125,5 +125,6 @@ minima:
   nav_pages:
     - sip-website/blog-page.md
     - sip-website/sip-contact.md
+    - sip-website/garden.md
 
 gemini_api_key: AIzaSyBWEz5qHeWx5buC4I4dZ2fllaMk3z8k_-w

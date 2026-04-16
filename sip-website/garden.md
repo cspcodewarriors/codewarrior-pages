@@ -1,16 +1,11 @@
 ---
-layout: none
-title: Welcome to the Garden
+layout: page
+title: Garden
 permalink: /sip/garden/
 search_exclude: true
 show_reading_time: false
 ---
 
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welcome to the Garden — Soroptimist International of Poway</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,11 +17,18 @@ show_reading_time: false
     --gold:         #C8973A;
   }
 
-  html, body { width:100%; height:100%; overflow:hidden; font-family:'Nunito',sans-serif; }
+  html, body { width:100%; min-height:100vh; margin:0; overflow-x:hidden; font-family:'Nunito',sans-serif; }
+  .page-content { padding: 0 !important; }
+  .page-content .wrapper { width:100vw; max-width:none; padding:0; margin:0; }
+  .opencs_root { width:100vw; max-width:none; }
+  .post-title { display: none !important; }
 
   #garden-wrap {
     position: relative;
-    width: 100vw; height: 100vh;
+    width:100vw;
+    margin: 0;
+    min-height: calc(100vh - 5rem);
+    height: calc(100vh - 5rem);
     background: linear-gradient(180deg, #b8e4f7 0%, #d4f1c0 52%, var(--grass-mid) 52%);
     overflow: hidden;
   }
@@ -125,7 +127,7 @@ show_reading_time: false
 
   /* Enter button */
   #enter-btn {
-    position:fixed; top:1.2rem; right:1.5rem;
+    position:fixed; top:5.5rem; right:1.5rem;
     background:var(--gold); color:#fff;
     font-family:'Nunito',sans-serif; font-size:0.92rem; font-weight:700;
     padding:0.55rem 1.3rem; border-radius:30px; border:none; cursor:pointer;
@@ -177,7 +179,7 @@ show_reading_time: false
 
   /* Greeting */
   #greeting {
-    position:fixed; top:1.2rem; left:50%; transform:translateX(-50%);
+    position:fixed; top:5.5rem; left:50%; transform:translateX(-50%);
     background:rgba(255,255,255,0.93); border-radius:30px;
     padding:0.45rem 1.4rem;
     font-family:'Playfair Display',serif; font-size:1rem; color:var(--grass-dark);
@@ -186,8 +188,6 @@ show_reading_time: false
   }
   #greeting span { color:var(--gold); font-style:italic; }
 </style>
-</head>
-<body>
 
 <div id="garden-wrap">
   <div class="cloud c1"></div>
@@ -197,7 +197,6 @@ show_reading_time: false
   <div id="garden-canvas"></div>
 </div>
 
-<a href="/" id="enter-btn">🌸 Enter the Site</a>
 <div id="greeting"></div>
 
 <div id="popup-overlay">
@@ -469,5 +468,3 @@ show_reading_time: false
 
   init();
 </script>
-</body>
-</html>
