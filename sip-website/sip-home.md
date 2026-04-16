@@ -159,6 +159,101 @@ permalink: /
     transform: translateY(0);
   }
 
+  /* ── Profile Setup Popup ── */
+  #profile-setup-popup {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 320px;
+    background: #111118;
+    border: 1px solid #e8836a;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(232,131,106,0.2);
+    z-index: 200;
+    animation: slideInUp 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+    font-family: 'Georgia', serif;
+  }
+  #profile-setup-popup.hidden {
+    display: none;
+  }
+  .popup-icon {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  .popup-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #f0ece6;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .popup-desc {
+    font-size: 0.82rem;
+    color: #aaa;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .popup-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .popup-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .popup-btn-primary {
+    background: #e8836a;
+    color: #111;
+  }
+  .popup-btn-primary:hover {
+    opacity: 0.88;
+  }
+  .popup-btn-dismiss {
+    background: transparent;
+    color: #666;
+    border: 1px solid #333;
+  }
+  .popup-btn-dismiss:hover {
+    color: #aaa;
+    border-color: #555;
+  }
+  .popup-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.15s;
+  }
+  .popup-close:hover {
+    color: #aaa;
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* ── Main content sits above canvas ── */
   #sip-main {
     position: relative;
@@ -168,6 +263,18 @@ permalink: /
 
 <!-- Flower background canvas -->
 <canvas id="flower-canvas"></canvas>
+
+<!-- Profile Setup Popup -->
+<div id="profile-setup-popup" class="hidden">
+  <button class="popup-close" onclick="dismissProfilePopup()">✕</button>
+  <div class="popup-icon">👤</div>
+  <div class="popup-title">Finish Your Profile</div>
+  <div class="popup-desc">Complete the persona quiz to discover which program fits you best and get personalized support.</div>
+  <div class="popup-actions">
+    <a href="/sip/persona/" class="popup-btn popup-btn-primary">Start Quiz</a>
+    <button class="popup-btn popup-btn-dismiss" onclick="dismissProfilePopup()">Later</button>
+  </div>
+</div>
 
 <!-- Sticky nav -->
 <nav id="sip-nav">
@@ -290,6 +397,82 @@ permalink: /
 
 <script>
 (function () {
+  /* ─────────────────────────────────────────────
+     PROFILE SETUP POPUP
+  ───────────────────────────────────────────── */
+  async function checkAndShowProfilePopup() {
+    try {
+      console.log('[Popup] Starting profile check...');
+      
+      // Dynamically load the config module to get pythonURI and fetchOptions
+      const config = await import('{{ site.baseurl }}/assets/js/api/config.js');
+      const { pythonURI, fetchOptions } = config;
+      
+      console.log('[Popup] Config loaded, pythonURI:', pythonURI);
+      
+      // Check if user is logged in
+      console.log('[Popup] Checking if user is logged in...');
+      const idCheck = await fetch(`${pythonURI}/api/id`, fetchOptions);
+      console.log('[Popup] /api/id response status:', idCheck.status);
+      
+      if (!idCheck.ok) {
+        console.log('[Popup] User not logged in');
+        return;
+      }
+
+      // User is logged in, check if they have a persona saved
+      console.log('[Popup] User is logged in, checking for saved personas...');
+      const userRes = await fetch(`${pythonURI}/api/user/persona`, fetchOptions);
+      console.log('[Popup] /api/user/persona response status:', userRes.status);
+      
+      if (userRes.ok) {
+        const userPersonas = await userRes.json();
+        console.log('[Popup] User personas:', userPersonas);
+        
+        // If they have at least one persona, they've completed or chosen
+        if (userPersonas && Array.isArray(userPersonas) && userPersonas.length > 0) {
+          console.log('[Popup] User already has persona(s), not showing popup');
+          return;
+        }
+      } else {
+        console.log('[Popup] Failed to fetch personas, status:', userRes.status);
+      }
+
+      // User is logged in but has no persona - show popup
+      console.log('[Popup] User logged in with no persona, showing popup');
+      const popup = document.getElementById('profile-setup-popup');
+      if (popup) {
+        popup.classList.remove('hidden');
+        console.log('[Popup] Popup displayed');
+      } else {
+        console.log('[Popup] ERROR: Popup element not found');
+      }
+    } catch (e) {
+      console.error('[Popup] Error checking profile status:', e);
+    }
+  }
+
+  window.dismissProfilePopup = function () {
+    const popup = document.getElementById('profile-setup-popup');
+    if (popup) {
+      popup.style.animation = 'slideInUp 0.3s cubic-bezier(0.64,0,0.78,0) reverse both';
+      setTimeout(() => {
+        popup.classList.add('hidden');
+        popup.style.animation = '';
+      }, 300);
+    }
+    // Store in sessionStorage to not show again this session
+    sessionStorage.setItem('profile-popup-dismissed', 'true');
+  };
+
+  // Check after a short delay to ensure config is loaded
+  if (sessionStorage.getItem('profile-popup-dismissed') !== 'true') {
+    console.log('[Popup] Scheduling popup check in 500ms...');
+    setTimeout(checkAndShowProfilePopup, 500);
+  } else {
+    console.log('[Popup] Popup already dismissed this session');
+  }
+
   /* ─────────────────────────────────────────────
      FLOWER CANVAS
   ───────────────────────────────────────────── */
