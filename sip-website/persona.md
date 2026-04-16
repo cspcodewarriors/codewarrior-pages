@@ -265,7 +265,10 @@ permalink: /sip/persona/
     <h1 class="intro-title">Let's find the right support for you.</h1>
     <p class="intro-body">Soroptimist International of Poway offers six programs serving women and communities in different ways. Answer a few honest questions about your situation and what you need most — we'll point you to the program that fits.</p>
     <p class="intro-note">Your answers are private and used only to match you with the right program. There are no wrong answers.</p>
-    <button class="intro-start-btn" onclick="startQuiz()">Find My Program →</button>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="intro-start-btn" onclick="startQuiz()">Find My Program →</button>
+      <button class="intro-start-btn" style="background:#3b3b3b;color:#f0ece6;box-shadow:none" onclick="startChooser()">Choose Myself</button>
+    </div>
   </div>
 
   <!-- ── Game ──────────────────────────────── -->
@@ -384,6 +387,138 @@ window.startQuiz = function () {
   phase = 'sliders'; currentSlider = 0;
   buildDots();
   renderSlider();
+};
+
+// ── Manual chooser (new) ───────────────────────────────────────────────────
+let chooserState = { persona: null, program: null }; // Track user selections
+
+window.startChooser = function () {
+  document.getElementById('intro-section').style.display = 'none';
+  document.getElementById('game-section').style.display  = 'block';
+  document.getElementById('progress-steps').innerHTML = '';
+  document.getElementById('progress-bar').style.width = '100%';
+  document.getElementById('btn-back').style.visibility = 'visible';
+  document.getElementById('btn-next').style.visibility = 'hidden';
+  
+  chooserState = { persona: null, program: null };
+  renderChoosePersona();
+};
+
+function renderChoosePersona() {
+  const area = document.getElementById('game-area');
+  document.getElementById('nav-hint').textContent = 'Step 1 of 2: Pick a persona that resonates with you';
+  
+  const personaCards = Object.entries(PERSONAS).map(([alias,p]) => {
+    return `
+      <div class="other-card" role="button" tabindex="0" style="border-color:${p.color}33;cursor:pointer" onclick="onSelectPersona('${alias}')">
+        <div class="other-card-icon">👤</div>
+        <div class="other-card-eyebrow" style="color:${p.color};">Persona</div>
+        <div class="other-card-title">${p.title}</div>
+        <div class="other-card-desc">${p.desc}</div>
+      </div>`;
+  }).join('');
+
+  area.innerHTML = `
+    <div style="animation:slideIn 0.35s both">
+      <div class="question-text">Which persona fits you best?</div>
+      <p class="question-sub">Choose the one that resonates most with your situation.</p>
+      <div class="other-grid">${personaCards}</div>
+    </div>`;
+}
+
+function renderChooseProgram() {
+  const area = document.getElementById('game-area');
+  document.getElementById('nav-hint').textContent = 'Step 2 of 2: Pick a program that matches your needs';
+  
+  const programCards = PROGRAMS.map(p => `
+    <div class="other-card" role="button" tabindex="0" style="border-color:${p.color}33;cursor:pointer" onclick="onSelectProgram('${p.id}')">
+      <div class="other-card-icon">${p.icon}</div>
+      <div class="other-card-eyebrow" style="color:${p.color};">${p.eyebrow}</div>
+      <div class="other-card-title">${p.title}</div>
+      <div class="other-card-desc">${p.desc}</div>
+    </div>
+  `).join('');
+
+  area.innerHTML = `
+    <div style="animation:slideIn 0.35s both">
+      <div class="question-text">Which program do you need?</div>
+      <p class="question-sub">Choose the one that best addresses your situation.</p>
+      <div class="other-grid">${programCards}</div>
+    </div>`;
+}
+
+function renderChooseReview() {
+  const area = document.getElementById('game-area');
+  document.getElementById('nav-hint').textContent = 'Review and confirm your selections';
+  
+  const persona = PERSONAS[chooserState.persona];
+  const program = PROGRAMS.find(p => p.id === chooserState.program);
+  
+  area.innerHTML = `
+    <div style="animation:fadeUp 0.35s both;">
+      <div class="question-text">You've chosen:</div>
+      
+      <div class="persona-reveal" style="margin-top:20px;">
+        <div class="persona-result-card" style="background:${persona.color};">
+          <div class="persona-result-label">Your Persona</div>
+          <div class="persona-result-title">${persona.title}</div>
+          <div class="persona-result-desc">${persona.desc}</div>
+          <div class="persona-archetypes">${(persona.archetypes||[]).map(a=>`<span class="archetype-tag">${a}</span>`).join('')}</div>
+        </div>
+      </div>
+
+      <div class="program-reveal" style="margin-top:12px;">
+        <a href="${baseurl}${program.url}" class="top-program-card" style="background:${program.color};text-decoration:none;">
+          <div class="top-program-eyebrow">${program.eyebrow}</div>
+          <div class="top-program-title">${program.title}</div>
+          <div class="top-program-desc">${program.desc}</div>
+          <span class="top-program-cta">Learn more →</span>
+        </a>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:20px;">
+        <button class="quiz-btn quiz-btn-back" onclick="renderChooseProgram()">← Change Program</button>
+        <button class="quiz-btn quiz-btn-next" onclick="finalizeChoices()">Save & Continue →</button>
+      </div>
+      <div class="save-notice" id="chooser-save-notice"></div>
+    </div>`;
+}
+
+window.onSelectPersona = function (alias) {
+  chooserState.persona = alias;
+  renderChooseProgram();
+};
+
+window.onSelectProgram = function (id) {
+  chooserState.program = id;
+  renderChooseReview();
+};
+
+window.finalizeChoices = function () {
+  const noticeEl = document.getElementById('chooser-save-notice');
+  if (noticeEl) noticeEl.textContent = '';
+  
+  // Save the persona using the existing endpoint
+  savePersona(chooserState.persona).then(success => {
+    if (success) {
+      noticeEl.textContent = '✓ Your persona and program have been saved to your profile.';
+      // Optionally navigate after a delay
+      setTimeout(() => {
+        window.location.href = `${baseurl}${PROGRAMS.find(p => p.id === chooserState.program).url}`;
+      }, 2000);
+    } else {
+      noticeEl.textContent = 'Log in to save your selections to your profile.';
+    }
+  }).catch(() => {
+    noticeEl.textContent = 'Log in to save your selections to your profile.';
+  });
+};
+
+window._chooserBack = function () {
+  document.getElementById('game-section').style.display = 'none';
+  document.getElementById('intro-section').style.display = 'block';
+  document.getElementById('btn-next').style.visibility = 'visible';
+  chooserState = { persona: null, program: null };
 };
 
 function buildDots() {
@@ -742,21 +877,29 @@ async function showResults() {
 }
 
 async function savePersona(alias) {
-  const notice = document.getElementById('save-notice');
+  // Returns true when saved, false otherwise. Writes to #save-notice or #chooser-save-notice if present.
+  const writeNotice = msg => {
+    const n = document.getElementById('save-notice') || document.getElementById('chooser-save-notice');
+    if (n) n.textContent = msg;
+  };
   try {
     const check = await fetch(`${pythonURI}/api/id`, fetchOptions);
-    if (!check.ok) { notice.textContent = 'Log in to save your results to your profile.'; return; }
+    if (!check.ok) { writeNotice('Log in to save your results to your profile.'); return false; }
     const allRes = await fetch(`${pythonURI}/api/persona`, fetchOptions);
-    if (!allRes.ok) return;
+    if (!allRes.ok) { return false; }
     const all = await allRes.json();
     const persona = all.find(p => p.alias === alias);
-    if (!persona) return;
+    if (!persona) { return false; }
     const res = await fetch(`${pythonURI}/api/user/persona`, {
       ...fetchOptions, method: 'POST',
       body: JSON.stringify({ persona_id: persona.id, weight: 2 }),
     });
-    if (res.ok || res.status === 200) notice.textContent = '✓ Your results have been saved to your profile.';
-  } catch(e) {}
+    if (res.ok || res.status === 200) {
+      writeNotice('✓ Your results have been saved to your profile.');
+      return true;
+    }
+    return false;
+  } catch(e) { return false; }
 }
 
 window._retake = function () {
