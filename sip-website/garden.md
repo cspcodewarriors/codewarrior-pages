@@ -152,11 +152,41 @@ show_reading_time: false
     text-align:center;
     box-shadow:0 12px 48px rgba(0,0,0,0.3);
     animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    font-family:'Nunito',sans-serif;
+    color:#111 !important;
   }
   @keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
-  #popup h2 { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--grass-dark); margin-bottom:0.3rem; }
-  #popup .welcome-name { font-style:italic; color:var(--gold); }
-  #popup p { font-size:0.9rem; color:#555; line-height:1.6; margin:0.75rem 0 1rem; }
+  #popup h2 {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.25rem;
+    font-family:'Playfair Display',serif;
+    font-size:1.5rem;
+    color:#111 !important;
+    margin:0 0 0.8rem;
+    line-height:1.1;
+    text-align:center;
+  }
+  #popup .welcome-name {
+    display:inline-block;
+    font-style:normal;
+    font-weight:700;
+    color:#111 !important;
+  }
+  #popup .welcome-user {
+    display:inline-flex;
+    align-items:center;
+    gap:0.15rem;
+    color:#111 !important;
+  }
+  #popup p { font-size:0.95rem; color:#111 !important; line-height:1.75; margin:0.75rem 0 1rem; }
+  #popup span,
+  #popup button,
+  #popup label,
+  #popup li {
+    color:#111 !important;
+  }
 
   #sprite-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem; margin:0.25rem 0 1.2rem; }
   .sprite-option {
@@ -201,7 +231,10 @@ show_reading_time: false
 
 <div id="popup-overlay">
   <div id="popup">
-    <h2>Welcome to the Garden, <span class="welcome-name" id="popup-name">friend</span>! 🌱</h2>
+    <h2>
+      <span class="welcome-lead">Welcome to the Garden,</span>
+      <span class="welcome-user"><span class="welcome-name" id="popup-name">friend</span>! 🌱</span>
+    </h2>
     <p>You've just joined the Soroptimist community. Pick a sprite to represent you in our shared garden — a living symbol of every woman and girl we empower together.</p>
     <div id="sprite-grid"></div>
     <button id="popup-confirm" disabled>Plant Yourself in the Garden 🌻</button>
