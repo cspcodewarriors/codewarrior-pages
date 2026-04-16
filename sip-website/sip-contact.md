@@ -1318,7 +1318,6 @@ permalink: /sip/contact
       <span class="sip-fab-badge" id="sip-fab-badge">0</span>
     </button>
   </div>
-</div>
 
 <!-- Event detail modal -->
 <div class="modal-bg" id="event-modal" onclick="closeModalOutside(event)">
