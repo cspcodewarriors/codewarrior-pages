@@ -124,38 +124,54 @@ permalink: /sip/colegio-la-esparanza/
 </div>
 
 <script>
-  (function loadRelatedBlogs() {
-    const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-      ? 'http://localhost:8427'
-      : 'https://sipoway.opencodingsociety.com';
-    const TAG = 'Colegio La Esperanza';
+(function() {
+  const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8427'
+    : 'https://sipoway.opencodingsociety.com';
 
-    fetch(`${API_BASE}/api/blog`, { credentials: 'include' })
-      .then(r => r.ok ? r.json() : [])
-      .then(posts => {
-        const filtered = posts.filter(p => p.published && p.program_tag === TAG);
-        const container = document.getElementById('relatedBlogContainer');
-
-        if (filtered.length === 0) {
-          container.innerHTML = '<div class="sip-blog-empty">No posts yet</div>';
-          return;
-        }
-
-        container.innerHTML = filtered.map(post => {
-          const date = post.event_date ? new Date(...post.event_date.split('-').map((d, i) => i === 1 ? parseInt(d) - 1 : parseInt(d)))
-            .toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'No date';
-          return `<a href="/codewarrior-pages/sip/blog/" class="sip-blog-item">
-            <span class="sip-blog-item-date">${date}</span>
-            <span class="sip-blog-item-title">${escapeHtml(post.title)}</span>
-          </a>`;
-        }).join('');
-      })
-      .catch(e => { console.error('Error loading blog posts:', e); });
-
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
+  async function fetchRelatedBlogs() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/blog`);
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
+      const blogs = await response.json();
+      
+      const filteredBlogs = blogs.filter(blog => 
+        blog.published && blog.program_tag && blog.program_tag.includes('Colegio La Esperanza')
+      ).slice(0, 3);
+      
+      const container = document.getElementById('relatedBlogContainer');
+      if (filteredBlogs.length === 0) {
+        container.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No updates available yet.</p>';
+        return;
+      }
+      
+      container.innerHTML = filteredBlogs.map(blog => {
+        const date = new Date(blog.date);
+        const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+        const desc = (blog.description || '').substring(0, 120);
+        const fullDesc = desc.length < (blog.description || '').length ? desc + '...' : desc;
+        
+        return `
+          <div style="padding: 16px; background: #1a1a1a; border-left: 3px solid #b07de8; border-radius: 4px;">
+            <div style="font-size: 0.75rem; color: #b07de8; margin-bottom: 6px;">${dateStr}</div>
+            <div style="font-size: 1rem; font-weight: 500; margin-bottom: 8px; color: #fff;">${escapeHtml(blog.title)}</div>
+            <div style="font-size: 0.9rem; color: #ccc; margin-bottom: 10px; line-height: 1.5;">${escapeHtml(fullDesc)}</div>
+            <a href="/#/blog/${escapeHtml(blog.slug || blog.title.toLowerCase().replace(/\s+/g, '-'))}" style="font-size: 0.9rem; color: #b07de8; text-decoration: none; cursor: pointer;">Read full post →</a>
+          </div>
+        `;
+      }).join('');
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      document.getElementById('relatedBlogContainer').innerHTML = '<p style="color: #666; font-size: 0.9rem;">Unable to load updates.</p>';
     }
-  })();
+  }
+  
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+  
+  fetchRelatedBlogs();
+})();
 </script>
