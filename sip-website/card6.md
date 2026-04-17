@@ -8,6 +8,7 @@ permalink: /sip/colegio-la-esparanza/
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap');
 
   .sip-page { font-family: 'Jost', sans-serif; max-width: 860px; margin: 0 auto; padding: 48px 24px 72px; color: #d0ccc8; }
+  .sip-main { }
   .sip-back { display: inline-flex; align-items: center; gap: 8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #777; text-decoration: none; margin-bottom: 48px; transition: color 0.15s; }
   .sip-back:hover { color: #b07de8; }
   .sip-eyebrow { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; color: #b07de8; margin: 0 0 14px 0; }
@@ -33,6 +34,15 @@ permalink: /sip/colegio-la-esparanza/
   .sip-cta { display: inline-block; background: #b07de8; color: #111; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 4px; text-decoration: none; transition: background 0.15s, transform 0.15s; margin-top: 16px; }
   .sip-cta:hover { background: #c495f0; transform: translateY(-2px); }
   .sip-footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid #2a2a2a; font-size: 0.78rem; color: #555; text-transform: uppercase; letter-spacing: 0.07em; text-align: center; }
+  .sip-sidebar { position: sticky; top: 24px; height: fit-content; max-height: calc(100vh - 48px); display: flex; flex-direction: column; }
+  .sip-blog-container { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .sip-blog-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #b07de8; margin: 0 0 12px; font-weight: 600; }
+  .sip-blog-list { overflow-y: auto; flex: 1; }
+  .sip-blog-item { display: flex; flex-direction: column; gap: 4px; padding: 12px; background: rgba(176,125,232,0.05); border: 1px solid rgba(176,125,232,0.15); border-radius: 4px; text-decoration: none; transition: all 0.2s; cursor: pointer; }
+  .sip-blog-item:hover { background: rgba(176,125,232,0.12); border-color: rgba(176,125,232,0.3); }
+  .sip-blog-item-date { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: #b07de8; font-weight: 600; }
+  .sip-blog-item-title { font-size: 0.75rem; line-height: 1.3; color: #d0ccc8; }
+  .sip-blog-empty { font-size: 0.75rem; color: #666; text-align: center; padding: 20px 0; }
 </style>
 
 <div class="sip-page">
@@ -104,5 +114,48 @@ permalink: /sip/colegio-la-esparanza/
 
   <a href="http://paypal.com/us/fundraiser/charity/4220142" class="sip-cta">Support This Program</a>
 
+  <!-- RELATED BLOG POSTS -->
+  <div id="relatedBlogSection" style="margin-top: 64px; padding-top: 32px; border-top: 1px solid #2a2a2a;">
+    <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #b07de8; margin: 0 0 18px;">📰 Related Updates</p>
+    <div id="relatedBlogContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
+  </div>
+
   <div class="sip-footer">Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls</div>
 </div>
+
+<script>
+  (function loadRelatedBlogs() {
+    const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'http://localhost:8427'
+      : 'https://sipoway.opencodingsociety.com';
+    const TAG = 'Colegio La Esperanza';
+
+    fetch(`${API_BASE}/api/blog`, { credentials: 'include' })
+      .then(r => r.ok ? r.json() : [])
+      .then(posts => {
+        const filtered = posts.filter(p => p.published && p.program_tag === TAG);
+        const container = document.getElementById('relatedBlogContainer');
+
+        if (filtered.length === 0) {
+          container.innerHTML = '<div class="sip-blog-empty">No posts yet</div>';
+          return;
+        }
+
+        container.innerHTML = filtered.map(post => {
+          const date = post.event_date ? new Date(...post.event_date.split('-').map((d, i) => i === 1 ? parseInt(d) - 1 : parseInt(d)))
+            .toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'No date';
+          return `<a href="/codewarrior-pages/sip/blog/" class="sip-blog-item">
+            <span class="sip-blog-item-date">${date}</span>
+            <span class="sip-blog-item-title">${escapeHtml(post.title)}</span>
+          </a>`;
+        }).join('');
+      })
+      .catch(e => { console.error('Error loading blog posts:', e); });
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  })();
+</script>
