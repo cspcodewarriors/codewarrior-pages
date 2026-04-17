@@ -33,8 +33,12 @@ permalink: /sip/stat/
 <div class="sip-page">
 
   <a href="/" class="sip-back">← Back to Programs</a>
-
-  <p class="sip-eyebrow">🩺 Anti-Trafficking Initiative</p>
+  <br>
+  <div style="display: flex; justify-content: center;">
+    <img src="{{site:baseurl}}/sip-website/sip-images/STAT-logo-only.avif">
+</div>
+  <br>
+  <p class="sip-eyebrow">Anti-Trafficking Initiative</p>
   <h1 class="sip-title">STAT!</h1>
   <p class="sip-subtitle">Soroptimists Together Against Trafficking</p>
   <div class="sip-rule"></div>
