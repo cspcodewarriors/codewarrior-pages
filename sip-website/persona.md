@@ -158,10 +158,17 @@ permalink: /sip/persona/
     border-radius: 50%; background: #e8836a;
     border: 3px solid #111; box-shadow: 0 0 0 10px rgba(232,131,106,0.12);
     transform: translate(-50%, -50%);
-    pointer-events: none;
+    pointer-events: none; z-index: 1;
   }
+  .quadrant {
+    position: absolute; width: 50%; height: 50%;
+  }
+  .quadrant-tl { top: 0; left: 0; }
+  .quadrant-tr { top: 0; right: 0; }
+  .quadrant-bl { bottom: 0; left: 0; }
+  .quadrant-br { bottom: 0; right: 0; }
   .compass-axis-label {
-    position: absolute; color: #d0ccc8; font-size: 0.8rem; max-width: 44%;
+    position: absolute; color: #000; font-size: 0.8rem; max-width: 44%;
     line-height: 1.25; font-weight: 500;
   }
   .compass-axis-label.compass-left  { left: 16px; top: 50%; transform: translateY(-50%); text-align: left; }
@@ -169,7 +176,7 @@ permalink: /sip/persona/
   .compass-axis-label.compass-top   { top: 16px; left: 50%; transform: translateX(-50%); text-align: center; }
   .compass-axis-label.compass-bottom{ bottom: 16px; left: 50%; transform: translateX(-50%); text-align: center; }
   .compass-reading {
-    text-align: center; font-size: 0.88rem; color: #888; max-width: 560px;
+    text-align: center; font-size: 0.88rem; color: #000; max-width: 560px;
   }
 
   /* ── BUCKET TOSS ─────────────────────── */
@@ -322,7 +329,7 @@ permalink: /sip/persona/
     <div id="game-area"></div>
     <div class="quiz-nav">
       <button class="quiz-btn quiz-btn-back" id="btn-back" style="visibility:hidden;" onclick="window._gameBack()">← Back</button>
-      <span id="nav-hint" style="font-size:0.74rem;color:#444;text-align:center;flex:1;"></span>
+      <span id="nav-hint" style="font-size:1rem;color:#f5f0eb;text-align:center;flex:1;font-weight:600;"></span>
       <button class="quiz-btn quiz-btn-next" id="btn-next" onclick="window._gameNext()">Next →</button>
     </div>
   </div>
@@ -359,45 +366,46 @@ const PERSONAS = {
 // Three sliders plus one compass-style values question
 const SLIDERS = [
   {
-    question: 'Right now, what feels most urgent?',
-    leftIcon: '🏠', rightIcon: '🎓',
-    leftLabel: 'Safe, stable housing for my family',
-    rightLabel: 'Financial support to pursue my education',
-    leftScores:  { haven: 5, 'transitional-housing': 5 },
-    rightScores: { rosa: 5, 'live-your-dream': 5 },
-    hint: 'Drag toward whichever end feels truer',
-  },
-  {
-    question: 'Which path fits where you are in life?',
-    leftIcon: '✨', rightIcon: '🎓',
-    leftLabel: "I'm a young woman figuring out my career path",
-    rightLabel: 'I work hard in school and serve my community',
-    leftScores:  { luna: 5, 'dream-it-be-it': 5 },
-    rightScores: { merit: 5, 'abraxas-scholarship': 5 },
-    hint: 'Neither is wrong — be honest',
-  },
-  {
-    question: 'What cause speaks to you most deeply?',
-    leftIcon: '🛡️', rightIcon: '🌎',
-    leftLabel: 'Stopping trafficking and protecting the vulnerable',
-    rightLabel: 'Bringing education to underserved communities abroad',
-    leftScores:  { voice: 5, stat: 5 },
-    rightScores: { solana: 5, 'colegio-la-esperanza': 5 },
-    hint: 'Where does your heart pull you?',
-  },
-  {
-    question: 'Where do your values fall on this compass?',
+    question: 'Where do your economic and social values fall?',
     type: 'compass',
-    leftIcon: '👥', rightIcon: '📚',
-    leftLabel: 'Shared safety and community support are most important',
-    rightLabel: 'Personal education and opportunity are most important',
-    yTopLabel: 'Immediate protection and safety',
-    yBottomLabel: 'Long-term growth and empowerment',
-    leftScores:  { haven: 4, 'transitional-housing': 4, voice: 2, stat: 2 },
-    rightScores: { rosa: 4, 'live-your-dream': 4, luna: 3, 'dream-it-be-it': 3, merit: 3, 'abraxas-scholarship': 3 },
-    topScores:  { haven: 4, 'transitional-housing': 4, voice: 2, stat: 2 },
-    bottomScores: { rosa: 4, 'live-your-dream': 4, luna: 3, 'dream-it-be-it': 3, merit: 3, 'abraxas-scholarship': 3 },
+    leftLabel: 'Collectivist / Community-focused',
+    rightLabel: 'Individualist / Opportunity-focused',
+    yTopLabel: 'Authoritarian / Structured',
+    yBottomLabel: 'Libertarian / Flexible',
+    quadrantColors: { tl: '#e8836a', tr: '#6ab0e8', bl: '#5ecb8a', br: '#d4b84a' },
+    tlScores: { haven: 4, 'transitional-housing': 4, voice: 2, stat: 2 },
+    trScores: { rosa: 4, 'live-your-dream': 4 },
+    blScores: { luna: 3, 'dream-it-be-it': 3 },
+    brScores: { merit: 3, 'abraxas-scholarship': 3, solana: 3, 'colegio-la-esperanza': 3 },
     hint: 'Drag the point to the quadrant that best matches your values.',
+  },
+  {
+    question: 'Where do your priorities fall on this compass?',
+    type: 'compass',
+    leftLabel: 'Local community issues',
+    rightLabel: 'Global humanitarian issues',
+    yTopLabel: 'Protection and safety',
+    yBottomLabel: 'Education and opportunity',
+    quadrantColors: { tl: '#e86a6a', tr: '#b07de8', bl: '#d4b84a', br: '#5ecb8a' },
+    tlScores: { voice: 4, stat: 4 },
+    trScores: { solana: 4, 'colegio-la-esperanza': 4 },
+    blScores: { haven: 3, 'transitional-housing': 3 },
+    brScores: { rosa: 3, 'live-your-dream': 3, luna: 3, 'dream-it-be-it': 3, merit: 3, 'abraxas-scholarship': 3 },
+    hint: 'Drag the point to the quadrant that best matches your priorities.',
+  },
+  {
+    question: 'Where do your life stage and goals align?',
+    type: 'compass',
+    leftLabel: 'Youth and emerging careers',
+    rightLabel: 'Adults and established paths',
+    yTopLabel: 'Career development',
+    yBottomLabel: 'Academic scholarships',
+    quadrantColors: { tl: '#6ab0e8', tr: '#e8836a', bl: '#b07de8', br: '#e86a6a' },
+    tlScores: { luna: 4, 'dream-it-be-it': 4 },
+    trScores: { rosa: 4, 'live-your-dream': 4, merit: 3, 'abraxas-scholarship': 3 },
+    blScores: { solana: 3, 'colegio-la-esperanza': 3 },
+    brScores: { voice: 3, stat: 3, haven: 3, 'transitional-housing': 3 },
+    hint: 'Drag the point to the quadrant that best matches your situation.',
   },
 ];
 
@@ -423,13 +431,13 @@ const SORT_ITEMS = [
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let sliderValues  = [50, 50, 50];
-let compassValues = { x: 50, y: 50 };
+let compassValues = [{ x: 50, y: 50 }, { x: 50, y: 50 }, { x: 50, y: 50 }];
 let currentSlider = 0;
 let bucketMine    = new Set();
 let sortOrder     = SORT_ITEMS.map(s => s.id);
 let phase         = 'sliders'; // 'sliders' | 'buckets' | 'cardsort'
 let dragSrcId     = null;
-const TOTAL_STEPS = 6; // 3 sliders + compass + bucket + cardsort
+const TOTAL_STEPS = 5; // 3 compass + bucket + cardsort
 
 function stepIndex() {
   if (phase === 'sliders')  return currentSlider;
@@ -639,25 +647,27 @@ function renderSlider() {
 }
 
 function renderCompass(s) {
-  const { x, y } = compassValues;
+  const { x, y } = compassValues[currentSlider];
   document.getElementById('game-area').innerHTML = `
     <div class="question-slide">
       <div class="round-tag">🧭 Compass Question · ${currentSlider + 1} of ${SLIDERS.length}</div>
       <h2 class="question-text">${s.question}</h2>
       <div class="compass-wrap">
         <div class="compass-grid" id="compass-grid">
-          <div class="compass-point" id="compass-point" style="left:${x}%; top:${100 - y}%"></div>
+          <div class="quadrant quadrant-tl" style="background:${s.quadrantColors.tl};"></div>
+          <div class="quadrant quadrant-tr" style="background:${s.quadrantColors.tr};"></div>
+          <div class="quadrant quadrant-bl" style="background:${s.quadrantColors.bl};"></div>
+          <div class="quadrant quadrant-br" style="background:${s.quadrantColors.br};"></div>
+          <div class="compass-point" id="compass-point" style="left:${x}%; top:${100 - y}%; z-index:1;"></div>
           <div class="compass-axis-label compass-left">${s.leftLabel}</div>
           <div class="compass-axis-label compass-right">${s.rightLabel}</div>
           <div class="compass-axis-label compass-top">${s.yTopLabel}</div>
           <div class="compass-axis-label compass-bottom">${s.yBottomLabel}</div>
         </div>
-        <div class="slider-reading compass-reading" id="compass-read">
-          ${compassReadText(x, y)}
-        </div>
       </div>
     </div>`;
 
+  document.getElementById('nav-hint').textContent = compassReadText(x, y, s);
   setupCompassEvents();
 }
 
@@ -671,11 +681,11 @@ function setupCompassEvents() {
     let y = Math.round(((rect.bottom - clientY) / rect.height) * 100);
     x = Math.max(0, Math.min(100, x));
     y = Math.max(0, Math.min(100, y));
-    compassValues.x = x;
-    compassValues.y = y;
+    compassValues[currentSlider].x = x;
+    compassValues[currentSlider].y = y;
     point.style.left = `${x}%`;
     point.style.top = `${100 - y}%`;
-    document.getElementById('compass-read').textContent = compassReadText(x, y);
+    document.getElementById('nav-hint').textContent = compassReadText(x, y, SLIDERS[currentSlider]);
   }
 
   grid.addEventListener('pointerdown', e => {
@@ -692,10 +702,16 @@ function setupCompassEvents() {
   });
 }
 
-function compassReadText(x, y) {
-  const horiz = x < 40 ? 'Community-focused' : x > 60 ? 'Opportunity-focused' : 'Balanced between community and opportunity';
-  const vert  = y < 40 ? 'Long-term growth and empowerment' : y > 60 ? 'Immediate protection and safety' : 'Balanced between safety and growth';
-  return `${horiz}. ${vert}.`;
+function compassReadText(x, y, s) {
+  let quadrant = '';
+  if (x < 50 && y > 50) quadrant = 'Top-Left';
+  else if (x > 50 && y > 50) quadrant = 'Top-Right';
+  else if (x < 50 && y < 50) quadrant = 'Bottom-Left';
+  else quadrant = 'Bottom-Right';
+
+  const horiz = x < 50 ? s.leftLabel.split(' / ')[0] : s.rightLabel.split(' / ')[0];
+  const vert = y > 50 ? s.yTopLabel.split(' / ')[0] : s.yBottomLabel.split(' / ')[0];
+  return `${quadrant} Quadrant: ${horiz} and ${vert}`;
 }
 
 window._sliderMove = function (raw) {
@@ -918,12 +934,12 @@ function calcScores() {
   // Sliders: 0 = full left, 100 = full right
   SLIDERS.forEach((s, i) => {
     if (s.type === 'compass') {
-      const x = compassValues.x / 100;
-      add(s.leftScores,  5 * (1 - x));
-      add(s.rightScores, 5 * x);
-      const y = compassValues.y / 100;
-      add(s.topScores,    5 * (1 - y));
-      add(s.bottomScores, 5 * y);
+      const { x, y } = compassValues[i];
+      const quadrant = (x < 50 ? 'l' : 'r') + (y > 50 ? 't' : 'b');
+      if (quadrant === 'lt') add(s.tlScores);
+      else if (quadrant === 'rt') add(s.trScores);
+      else if (quadrant === 'lb') add(s.blScores);
+      else if (quadrant === 'rb') add(s.brScores);
       return;
     }
     const v = sliderValues[i] / 100;
