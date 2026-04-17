@@ -756,10 +756,12 @@ permalink: /sip/blog
             <label for="sipPostTag">Program Tag</label>
             <select id="sipPostTag">
               <option value="">— None —</option>
+              <option value="Transactional Housing">Transactional Housing</option>
               <option value="Live Your Dream">Live Your Dream</option>
               <option value="Dream It Be It">Dream It Be It</option>
               <option value="STAT!">STAT!</option>
               <option value="Abraxas Scholarship">Abraxas Scholarship</option>
+              <option value="Colegio La Esperanz">Colegio La Esperanz</option>
               <option value="Announcement">Announcement</option>
             </select>
           </div>
