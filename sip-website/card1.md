@@ -31,7 +31,7 @@ permalink: /sip/transitional-housing/
     <p class="sip-eyebrow">🏠 What We Do</p>
     <h1 class="sip-title">Transitional<br>Housing Program</h1>
     <div class="sip-rule" style="background: #e8836a;"></div>
-
+      <img src="{{ site.baseurl }}/sip-website/sip-images/thp.avif" alt="Transitional Housing Program" style="width:100%; border-radius:8px; margin-bottom:32px; object-fit:cover; max-height:260px;">
     <p class="sip-lead">Working together, the Poway and North San Diego Soroptimist clubs have been helping domestic violence survivors reclaim their lives in a positive, supportive environment since 1997.</p>
 
     <div class="sip-stat-row">
@@ -67,7 +67,12 @@ permalink: /sip/transitional-housing/
       <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #e8836a; margin: 0 0 18px;">📰 Related Updates</p>
       <div id="relatedBlogContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
     </div>
-
+    <div style="display:flex; gap:12px; margin:32px 0; flex-wrap:wrap;">
+      <img src="{{ site.baseurl }}/sip-website/sip-images/thp1.avif" alt="Transitional Housing Program" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:220px;">
+      <img src="{{ site.baseurl }}/sip-website/sip-images/thp2.avif" alt="Transitional Housing Program" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:220px;">
+      <img src="{{ site.baseurl }}/sip-website/sip-images/thp3.avif" alt="Transitional Housing Program" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:220px;">
+      <img src="{{ site.baseurl }}/sip-website/sip-images/thp4.avif" alt="Transitional Housing Program" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:220px;">
+    </div>
   <div class="sip-footer">Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls</div>
 
 <script>

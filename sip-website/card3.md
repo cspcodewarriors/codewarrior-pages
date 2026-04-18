@@ -27,7 +27,7 @@ permalink: /sip/dreamit-beit/
   .sip-stat-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #777; }
   .sip-schools { display: flex; flex-direction: column; gap: 10px; margin: 28px 0; }
   .sip-school { background: rgba(255,255,255,0.03); border-left: 3px solid #d4b84a; border-radius: 0 6px 6px 0; padding: 14px 18px; font-size: 0.92rem; color: #b0a880; }
-  .sip-cta { display: inline-block; background: #d4b84a; color: #111; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 4px; text-decoration: none; transition: background 0.15s, transform 0.15s; margin-top: 16px; }
+  .sip-cta { display: inline-block; background: #d4b84a; color: white; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 4px; text-decoration: none; transition: background 0.15s, transform 0.15s; margin-top: 16px; }
   .sip-cta:hover { background: #e0cc6a; transform: translateY(-2px); }
   .sip-footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid #2a2a2a; font-size: 0.78rem; color: #555; text-transform: uppercase; letter-spacing: 0.07em; text-align: center; }
   .sip-sidebar { position: sticky; top: 24px; height: fit-content; max-height: calc(100vh - 48px); display: flex; flex-direction: column; }
@@ -48,7 +48,7 @@ permalink: /sip/dreamit-beit/
   <p class="sip-eyebrow">✨ Career Development for Girls</p>
   <h1 class="sip-title">Dream It,<br>Be It</h1>
   <div class="sip-rule"></div>
-
+  <img src="{{ site.baseurl }}/sip-website/sip-images/dibi3.avif" alt="Dream It, Be It" style="width:55%; border-radius:8px; object-fit:cover; max-height:220px; display:block; margin: 0 auto 32px;">
   <p class="sip-lead">Dream It, Be It is a career support program for girls — giving them the tools they need to achieve their education and career goals, empowering them to break cycles of poverty, violence, and abuse.</p>
 
   <div class="sip-stat-row">
@@ -93,7 +93,10 @@ permalink: /sip/dreamit-beit/
     <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #d4b84a; margin: 0 0 18px;">📰 Related Updates</p>
     <div id="relatedBlogContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
   </div>
-
+  <div style="display:flex; gap:12px; margin:32px 0; flex-wrap:wrap;">
+    <img src="{{ site.baseurl }}/sip-website/sip-images/dibi2.avif" alt="Dream It, Be It" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:180px;">
+    <img src="{{ site.baseurl }}/sip-website/sip-images/dibi1.avif" alt="Dream It, Be It" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:180px;">
+  </div>
   <div class="sip-footer">Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls</div>
 </div>
 

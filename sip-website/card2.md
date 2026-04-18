@@ -29,9 +29,9 @@ permalink: /sip/live-your-dream/
   .sip-level-amount { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: #f0ece6; }
   .sip-level-desc { font-size: 0.82rem; color: #777; margin-top: 4px; }
   .sip-cta-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
-  .sip-cta { display: inline-block; background: #6ab0e8; color: #111; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 4px; text-decoration: none; transition: background 0.15s, transform 0.15s; }
+  .sip-cta { display: inline-block; background: #6ab0e8; color: white; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 4px; text-decoration: none; transition: background 0.15s, transform 0.15s; }
   .sip-cta:hover { background: #89c4f0; transform: translateY(-2px); }
-  .sip-cta-secondary { display: inline-block; border: 1px solid #6ab0e8; color: #6ab0e8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 4px; text-decoration: none; transition: background 0.15s, transform 0.15s; }
+  .sip-cta-secondary { display: inline-block; border: 1px solid #6ab0e8; color: white; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 13px 28px; border-radius: 4px; text-decoration: none; transition: background 0.15s, transform 0.15s; }
   .sip-cta-secondary:hover { background: rgba(106,176,232,0.1); transform: translateY(-2px); }
   .sip-footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid #2a2a2a; font-size: 0.78rem; color: #555; text-transform: uppercase; letter-spacing: 0.07em; text-align: center; }
   .sip-sidebar { position: sticky; top: 24px; height: fit-content; max-height: calc(100vh - 48px); display: flex; flex-direction: column; }
@@ -52,7 +52,7 @@ permalink: /sip/live-your-dream/
   <p class="sip-eyebrow">⭐ Education &amp; Training Grants</p>
   <h1 class="sip-title">Live Your<br>Dream Award</h1>
   <div class="sip-rule"></div>
-
+  <img src="{{ site.baseurl }}/sip-website/sip-images/lyd1.avif" alt="Live Your Dream Award" style="width:55%; border-radius:8px; object-fit:cover; max-height:220px; display:block; margin: 0 auto 32px;">
   <p class="sip-lead">The Live Your Dream Award assists women who provide the primary source of financial support for their families by giving them the resources they need to improve their education, employment prospects, and standard of living.</p>
 
   <div class="sip-stat-row">
@@ -124,7 +124,7 @@ permalink: /sip/live-your-dream/
     <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6ab0e8; margin: 0 0 18px;">📰 Related Updates</p>
     <div id="relatedBlogContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
   </div>
-
+  <img src="{{ site.baseurl }}/sip-website/sip-images/lyd.avif" alt="Live Your Dream Award" style="width:100%; border-radius:8px; object-fit:cover; max-height:320px; display:block; margin: 32px auto;">
   <div class="sip-footer">Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls</div>
 </div>
 
