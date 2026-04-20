@@ -51,6 +51,8 @@ permalink: /sip/dreamit-beit/
   <img src="{{ site.baseurl }}/sip-website/sip-images/dibi3.avif" alt="Dream It, Be It" style="width:55%; border-radius:8px; object-fit:cover; max-height:220px; display:block; margin: 0 auto 32px;">
   <p class="sip-lead">Dream It, Be It is a career support program for girls — giving them the tools they need to achieve their education and career goals, empowering them to break cycles of poverty, violence, and abuse.</p>
 
+  <img src="{{ site.baseurl }}/sip-website/sip-images/dibi2.avif" alt="Dream It, Be It" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:180px;">
+
   <div class="sip-stat-row">
     <div class="sip-stat">
       <span class="sip-stat-num">23K+</span>
@@ -69,6 +71,8 @@ permalink: /sip/dreamit-beit/
   <div class="sip-body">
     <p>We work in small groups in a classroom setting to provide girls with the information and resources they want and need to be successful. Each presentation is tailored to the specific needs of the students.</p>
   </div>
+
+  <img src="{{ site.baseurl }}/sip-website/sip-images/dibi1.avif" alt="Dream It, Be It" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:180px;">
 
   <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 14px;">Topics Covered</p>
   <div class="sip-topics">
@@ -94,8 +98,6 @@ permalink: /sip/dreamit-beit/
     <div id="relatedBlogContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
   </div>
   <div style="display:flex; gap:12px; margin:32px 0; flex-wrap:wrap;">
-    <img src="{{ site.baseurl }}/sip-website/sip-images/dibi2.avif" alt="Dream It, Be It" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:180px;">
-    <img src="{{ site.baseurl }}/sip-website/sip-images/dibi1.avif" alt="Dream It, Be It" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:180px;">
   </div>
   <div class="sip-footer">Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls</div>
 </div>
