@@ -53,6 +53,8 @@ permalink: /sip/colegio-la-esparanza/
   <h1 class="sip-title">Colegio<br>La Esperanza</h1>
   <div class="sip-rule"></div>
 
+  <img src="{{site.baseurl}}/sip-website/sip-images/card6.png" alt="Colegio La Esperanza" style="width: 100%; max-width: 300px; height: auto; border-radius: 8px; margin-bottom: 32px; display: block;">
+
   <p class="sip-lead">Since the early 1990s, SIP has adopted Colegio La Esperanza as its international project — supporting girls' education and opportunity across the border in Tijuana, Mexico.</p>
 
   <div class="sip-stat-row">
