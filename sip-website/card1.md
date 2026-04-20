@@ -55,8 +55,21 @@ permalink: /sip/transitional-housing/
 
     <div class="sip-body">
       <p>This twelve-month program moves families from dependency and abuse to a safe, self-sustaining life by providing housing, mentorship, and financial help.</p>
+
+      <div style="display:flex; gap:12px; margin-bottom:24px;">
+        <img src="{{ site.baseurl }}/sip-website/sip-images/thp1.avif" alt="Transitional Housing Program" style="width:50%; border-radius:8px; object-fit:cover; max-height:220px;">
+        <img src="{{ site.baseurl }}/sip-website/sip-images/thp2.avif" alt="Transitional Housing Program" style="width:50%; border-radius:8px; object-fit:cover; max-height:220px;">
+      </div>
+
       <p>Our members come together to subsidize, clean, furnish, and decorate each apartment. This includes not only beds, couches, tables, chairs, televisions, and vacuums, but a fully stocked food pantry, linens, kitchen items, and cleaning supplies.</p>
+
+      <div style="display:flex; gap:12px; margin-bottom:24px;">
+        <img src="{{ site.baseurl }}/sip-website/sip-images/thp3.avif" alt="Transitional Housing Program" style="width:50%; border-radius:8px; object-fit:cover; max-height:220px;">
+        <img src="{{ site.baseurl }}/sip-website/sip-images/thp4.avif" alt="Transitional Housing Program" style="width:50%; border-radius:8px; object-fit:cover; max-height:220px;">
+      </div>
+
       <p>While participating in the program, most women pursue higher education or job training. Upon graduation from our program, the family moves into their own apartment — often in the same community where they have become established — and they can take everything with them.</p>
+
       <p>It costs approximately <strong style="color:#f0ece6;">$16,000 annually</strong> to support one family in the program. The success of this program would not be possible without the generosity of our Celebration of Courage sponsors, community groups, and numerous individuals.</p>
     </div>
 
@@ -66,12 +79,6 @@ permalink: /sip/transitional-housing/
     <div id="relatedBlogSection" style="margin-top: 64px; padding-top: 32px; border-top: 1px solid #2a2a2a;">
       <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #e8836a; margin: 0 0 18px;">📰 Related Updates</p>
       <div id="relatedBlogContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
-    </div>
-    <div style="display:flex; gap:12px; margin:32px 0; flex-wrap:wrap;">
-      <img src="{{ site.baseurl }}/sip-website/sip-images/thp1.avif" alt="Transitional Housing Program" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:220px;">
-      <img src="{{ site.baseurl }}/sip-website/sip-images/thp2.avif" alt="Transitional Housing Program" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:220px;">
-      <img src="{{ site.baseurl }}/sip-website/sip-images/thp3.avif" alt="Transitional Housing Program" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:220px;">
-      <img src="{{ site.baseurl }}/sip-website/sip-images/thp4.avif" alt="Transitional Housing Program" style="width:calc(50% - 6px); border-radius:8px; object-fit:cover; max-height:220px;">
     </div>
   <div class="sip-footer">Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls</div>
 
