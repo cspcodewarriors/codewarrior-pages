@@ -55,6 +55,12 @@ permalink: /sip/live-your-dream/
   <img src="{{ site.baseurl }}/sip-website/sip-images/lyd1.avif" alt="Live Your Dream Award" style="width:55%; border-radius:8px; object-fit:cover; max-height:220px; display:block; margin: 0 auto 32px;">
   <p class="sip-lead">The Live Your Dream Award assists women who provide the primary source of financial support for their families by giving them the resources they need to improve their education, employment prospects, and standard of living.</p>
 
+  <div style="background: rgba(106,176,232,0.06); border: 1px solid rgba(106,176,232,0.2); border-radius: 6px; padding: 24px; margin: 36px 0;">
+    <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6ab0e8; margin: 0 0 12px;">Application Window</p>
+    <p style="font-size: 1.1rem; color: #f0ece6; font-family: 'Cormorant Garamond', serif; margin: 0 0 8px;">August 1 — November 15</p>
+    <p style="font-size: 0.88rem; color: #888; margin: 0;">If you qualify and live in Soroptimist International of Poway's service area, we encourage you to apply for one of our <strong style="color: #b0c8e0;">$1,000 Live Your Dream awards</strong>.</p>
+  </div>
+  
   <div class="sip-stat-row">
     <div class="sip-stat">
       <span class="sip-stat-num">$2.9M+</span>
@@ -79,11 +85,7 @@ permalink: /sip/live-your-dream/
     <p>In addition to providing the primary financial support for their families, eligible applicants must be enrolled in — or accepted to — a vocational/skills training program or undergraduate degree program, and must demonstrate financial need.</p>
   </div>
 
-  <div style="background: rgba(106,176,232,0.06); border: 1px solid rgba(106,176,232,0.2); border-radius: 6px; padding: 24px; margin: 36px 0;">
-    <p style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6ab0e8; margin: 0 0 12px;">Application Window</p>
-    <p style="font-size: 1.1rem; color: #f0ece6; font-family: 'Cormorant Garamond', serif; margin: 0 0 8px;">August 1 — November 15</p>
-    <p style="font-size: 0.88rem; color: #888; margin: 0;">If you qualify and live in Soroptimist International of Poway's service area, we encourage you to apply for one of our <strong style="color: #b0c8e0;">$1,000 Live Your Dream awards</strong>.</p>
-  </div>
+ <img src="{{ site.baseurl }}/sip-website/sip-images/lyd.avif" alt="Live Your Dream Award" style="width:100%; border-radius:8px; object-fit:cover; max-height:320px; display:block; margin: 32px auto;">
 
   <p style="font-size: 0.88rem; color: #888; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em;">Award Levels</p>
   <div class="sip-levels">
@@ -124,7 +126,6 @@ permalink: /sip/live-your-dream/
     <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6ab0e8; margin: 0 0 18px;">📰 Related Updates</p>
     <div id="relatedBlogContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
   </div>
-  <img src="{{ site.baseurl }}/sip-website/sip-images/lyd.avif" alt="Live Your Dream Award" style="width:100%; border-radius:8px; object-fit:cover; max-height:320px; display:block; margin: 32px auto;">
   <div class="sip-footer">Soroptimist International of Poway &nbsp;·&nbsp; Empowering Women &amp; Girls</div>
 </div>
 
