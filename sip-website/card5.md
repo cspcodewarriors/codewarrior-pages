@@ -46,9 +46,12 @@ permalink: /sip/abraxas-scholarship/
   <h1 class="sip-title">Abraxas High School<br>Scholarships &amp; Programs</h1>
   <div class="sip-rule"></div>
 
+  <img src="{{site:baseurl}}/sip-website/sip-images/abraxss.avif">
+
   <p class="sip-lead">For over 25 years, Soroptimist International of Poway has partnered with Abraxas High School through hands-on service projects and meaningful scholarship support.</p>
 
   <div class="sip-body">
+  <img src="{{site:baseurl}}/sip-website/sip-images/a.avif">
     <p>Our long-standing relationship with Abraxas High School reflects our deep commitment to supporting young women in our community — particularly those who demonstrate resilience, purpose, and a commitment to growth.</p>
   </div>
 
