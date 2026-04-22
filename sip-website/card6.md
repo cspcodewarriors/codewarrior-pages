@@ -53,9 +53,9 @@ permalink: /sip/colegio-la-esparanza/
   <h1 class="sip-title">Colegio<br>La Esperanza</h1>
   <div class="sip-rule"></div>
 
-  <img src="{{site.baseurl}}/sip-website/sip-images/card6.png" alt="Colegio La Esperanza" style="width: 100%; max-width: 300px; height: auto; border-radius: 8px; margin-bottom: 32px; display: block;">
-
   <p class="sip-lead">Since the early 1990s, SIP has adopted Colegio La Esperanza as its international project — supporting girls' education and opportunity across the border in Tijuana, Mexico.</p>
+
+  <img src="{{site.baseurl}}/sip-website/sip-images/card6.png" alt="Colegio La Esperanza" style="width: 100%; max-width: 300px; height: auto; border-radius: 8px; margin-bottom: 32px; display: block;">
 
   <div class="sip-stat-row">
     <div class="sip-stat">
@@ -126,54 +126,41 @@ permalink: /sip/colegio-la-esparanza/
 </div>
 
 <script>
-(function() {
-  const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:8427'
-    : 'https://sipoway.opencodingsociety.com';
+  (function loadRelatedBlogs() {
+    const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'http://localhost:8427'
+      : 'https://sipoway.opencodingsociety.com';
+    const TAG = 'Colegio La Esperanza';
 
-  async function fetchRelatedBlogs() {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/blog`);
-      if (!response.ok) throw new Error(`API error: ${response.status}`);
-      const blogs = await response.json();
-      
-      const filteredBlogs = blogs.filter(blog => 
-        blog.published && blog.program_tag && blog.program_tag.includes('Colegio La Esperanza')
-      ).slice(0, 3);
-      
-      const container = document.getElementById('relatedBlogContainer');
-      if (filteredBlogs.length === 0) {
-        container.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No updates available yet.</p>';
-        return;
-      }
-      
-      container.innerHTML = filteredBlogs.map(blog => {
-        const date = new Date(blog.date);
-        const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
-        const desc = (blog.description || '').substring(0, 120);
-        const fullDesc = desc.length < (blog.description || '').length ? desc + '...' : desc;
+    fetch(`${API_BASE}/api/blog`, { credentials: 'include' })
+      .then(r => r.ok ? r.json() : [])
+      .then(posts => {
+        const filtered = posts.filter(p => p.published && p.program_tag === TAG);
+        const container = document.getElementById('relatedBlogContainer');
         
-        return `
-          <div style="padding: 16px; background: #1a1a1a; border-left: 3px solid #b07de8; border-radius: 4px;">
-            <div style="font-size: 0.75rem; color: #b07de8; margin-bottom: 6px;">${dateStr}</div>
-            <div style="font-size: 1rem; font-weight: 500; margin-bottom: 8px; color: #fff;">${escapeHtml(blog.title)}</div>
-            <div style="font-size: 0.9rem; color: #ccc; margin-bottom: 10px; line-height: 1.5;">${escapeHtml(fullDesc)}</div>
-            <a href="/#/blog/${escapeHtml(blog.slug || blog.title.toLowerCase().replace(/\s+/g, '-'))}" style="font-size: 0.9rem; color: #b07de8; text-decoration: none; cursor: pointer;">Read full post →</a>
-          </div>
-        `;
-      }).join('');
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
-      document.getElementById('relatedBlogContainer').innerHTML = '<p style="color: #666; font-size: 0.9rem;">Unable to load updates.</p>';
+        if (filtered.length === 0) {
+          document.getElementById('relatedBlogSection').style.display = 'none';
+          return;
+        }
+
+        container.innerHTML = filtered.map(post => {
+          const date = post.event_date ? new Date(...post.event_date.split('-').map((d, i) => i === 1 ? parseInt(d) - 1 : parseInt(d)))
+            .toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'No date';
+          return `
+            <div style="background: rgba(176,125,232,0.05); border: 1px solid rgba(176,125,232,0.15); border-radius: 6px; padding: 18px 20px;">
+              <p style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #b07de8; margin: 0 0 6px;">${date}</p>
+              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: #f5f0eb; margin: 0 0 8px; line-height: 1.3;">${escapeHtml(post.title)}</h3>
+              <p style="font-size: 0.92rem; color: #a0a0a0; margin: 0 0 12px; line-height: 1.6;">${escapeHtml(post.description.substring(0, 120))}${post.description.length > 120 ? '...' : ''}</p>
+              <a href="/sip/blog/" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #b07de8; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#c495f0'" onmouseout="this.style.color='#b07de8'">Read full post →</a>
+            </div>`;
+        }).join('');
+      })
+      .catch(e => { console.error('Error loading blog posts:', e); document.getElementById('relatedBlogSection').style.display = 'none'; });
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
-  }
-  
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-  
-  fetchRelatedBlogs();
-})();
+  })();
 </script>

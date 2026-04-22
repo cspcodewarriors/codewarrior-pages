@@ -60,7 +60,7 @@ permalink: /sip/live-your-dream/
     <p style="font-size: 1.1rem; color: #f0ece6; font-family: 'Cormorant Garamond', serif; margin: 0 0 8px;">August 1 — November 15</p>
     <p style="font-size: 0.88rem; color: #888; margin: 0;">If you qualify and live in Soroptimist International of Poway's service area, we encourage you to apply for one of our <strong style="color: #b0c8e0;">$1,000 Live Your Dream awards</strong>.</p>
   </div>
-  
+
   <div class="sip-stat-row">
     <div class="sip-stat">
       <span class="sip-stat-num">$2.9M+</span>
@@ -155,7 +155,7 @@ permalink: /sip/live-your-dream/
               <p style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6ab0e8; margin: 0 0 6px;">${date}</p>
               <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: #f5f0eb; margin: 0 0 8px; line-height: 1.3;">${escapeHtml(post.title)}</h3>
               <p style="font-size: 0.92rem; color: #a0a0a0; margin: 0 0 12px; line-height: 1.6;">${escapeHtml(post.description.substring(0, 120))}${post.description.length > 120 ? '...' : ''}</p>
-              <a href="/codewarrior-pages/sip/blog/" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6ab0e8; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#89c4f0'" onmouseout="this.style.color='#6ab0e8'">Read full post →</a>
+              <a href="/sip/blog/" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6ab0e8; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#89c4f0'" onmouseout="this.style.color='#6ab0e8'">Read full post →</a>
             </div>`;
         }).join('');
       })
