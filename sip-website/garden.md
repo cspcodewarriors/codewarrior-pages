@@ -217,6 +217,19 @@ show_reading_time: false
     display:none; z-index:100; white-space:nowrap;
   }
   #greeting span { color:var(--gold); font-style:italic; }
+
+  /* Chat stuff */
+  #chat-window {
+    position: fixed;
+    top: 5vh;
+    left: 2vw;
+    border-style: solid;
+    border-radius: 1vw;
+    background-color: rgb(50, 50, 50);
+    padding: 1vw;
+    width: 20vw;
+    max-width: 20vw;
+  }
 </style>
 
 <div id="garden-wrap">
@@ -241,6 +254,14 @@ show_reading_time: false
     <p id="popup-status" style="min-height:1.1em; margin-top:0.8rem; font-size:0.85rem; color:#c0392b;"></p>
   </div>
 </div>
+
+<div id="chat-window">
+  <p id="chat-title"><strong>Garden Chat</strong></p>
+  <ul id="chat" style="background-color: rgb(30, 30, 30); border-radius: 0.25vw;"><li>Example Message</li></ul>
+  <input type="text" id="msg"> <button id="send-message" onclick="sendMsg();">Send</button>
+</div>
+
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script> <!-- look I know this looks sketchy but we need it for WebSockets to work ok -->
 
 <script type="module">
 
@@ -500,4 +521,20 @@ show_reading_time: false
   }
 
   init();
+</script>
+<script type="module">
+    const socket = io("http://127.0.0.1:8427");
+
+    function sendMsg() {
+      const input = document.getElementById("msg");
+      socket.send(input.value);
+      input.value = "";
+    }
+
+    socket.on('message', function(msg) {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      document.getElementById("chat").appendChild(li);
+    });
+    
 </script>
