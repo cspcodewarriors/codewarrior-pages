@@ -177,12 +177,13 @@ permalink: /sip/blog
       .posts-wrap { padding: 8px 20px 48px; }
       .post-gallery-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
-  </div>
   </style>
 </head>
 <body>
 
 <canvas id="flower-canvas"></canvas>
+
+<div style="position: relative; z-index: 1;">
 
 <!-- NAV -->
 <nav class="nav">
@@ -239,6 +240,8 @@ permalink: /sip/blog
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+</div>
 
 <script>
   /* ── CONFIG ── */
