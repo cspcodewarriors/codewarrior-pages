@@ -85,7 +85,7 @@ permalink: /sip/blog
     .posts-empty { text-align: center; padding: 80px 24px; color: var(--text-muted); font-size: 0.9rem; letter-spacing: 0.04em; }
     .posts-empty .empty-icon { font-size: 2rem; margin-bottom: 16px; opacity: 0.4; }
 
-    .post-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 32px; margin-bottom: 20px; position: relative; transition: border-color 0.2s, transform 0.2s; animation: fadeSlideIn 0.4s ease both; }
+    .post-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 32px; margin-bottom: 20px; position: relative; transition: border-color 0.2s, transform 0.2s; animation: fadeSlideIn 0.4s ease both; }
     .post-card:hover { border-color: rgba(232,131,106,0.25); transform: translateY(-2px); }
     .post-card.draft { border-color: rgba(255,255,255,0.12); opacity: 0.75; }
     @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -183,7 +183,7 @@ permalink: /sip/blog
 
 <canvas id="flower-canvas"></canvas>
 
-<div style="position: relative; z-index: 1;">
+<div style="position: relative; z-index: 2; isolation: isolate;">
 
 <!-- NAV -->
 <nav class="nav">
