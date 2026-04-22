@@ -12,6 +12,13 @@ permalink: /sip/blog
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
+    #flower-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -164,16 +171,18 @@ permalink: /sip/blog
     .admin-badge { display: none; align-items: center; gap: 6px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); padding: 4px 10px; border: 1px solid rgba(232,131,106,0.3); border-radius: 20px; }
     .admin-badge.visible { display: flex; }
     .admin-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-
-    @media (max-width: 600px) {
+       @media (max-width: 600px) {
       .nav { padding: 16px 20px; }
       .hero { padding: 40px 20px 32px; }
       .posts-wrap { padding: 8px 20px 48px; }
       .post-gallery-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
+  </div>
   </style>
 </head>
 <body>
+
+<canvas id="flower-canvas"></canvas>
 
 <!-- NAV -->
 <nav class="nav">
@@ -1093,6 +1102,121 @@ permalink: /sip/blog
 
   /* ── INIT ── */
   checkAdminSession();
+</script>
+
+<script>
+  (function () {
+    const canvas = document.getElementById('flower-canvas');
+    const ctx    = canvas.getContext('2d');
+
+    const PETAL_PALETTES = [
+      ['#e8836a','#f0a080','#ffd0bb'],
+      ['#6ab0e8','#90c8f8','#c0e0ff'],
+      ['#d4b84a','#f0d870','#fff0a0'],
+      ['#5ecb8a','#80e8a8','#b0f8cc'],
+      ['#e86a6a','#f89090','#ffbbbb'],
+      ['#b07de8','#cc9eff','#e8d0ff'],
+    ];
+
+    let flowers = [];
+    let W, H;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function makeFlower() {
+      const palette = PETAL_PALETTES[Math.floor(Math.random() * PETAL_PALETTES.length)];
+      return {
+        x:         Math.random() * W,
+        y:         Math.random() * H,
+        progress:  0,
+        speed:     0.004 + Math.random() * 0.008,
+        maxR:      14 + Math.random() * 22,
+        petals:    4 + Math.floor(Math.random() * 4),
+        palette,
+        rotation:  Math.random() * Math.PI * 2,
+        waitTicks: 180 + Math.random() * 300,
+        waited:    0,
+        fadeSpeed: 0.003 + Math.random() * 0.004,
+        alpha:     0,
+        done:      false,
+      };
+    }
+
+    function seed(n) {
+      for (let i = 0; i < n; i++) {
+        const f = makeFlower();
+        f.progress = Math.random();
+        flowers.push(f);
+      }
+    }
+    seed(18);
+
+    function drawFlower(f) {
+      if (f.alpha <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = f.alpha;
+      ctx.translate(f.x, f.y);
+      ctx.rotate(f.rotation);
+
+      const r  = f.maxR * f.progress;
+      const pr = r * 0.55;
+      const [c1, c2, c3] = f.palette;
+
+      for (let p = 0; p < f.petals; p++) {
+        const angle = (p / f.petals) * Math.PI * 2;
+        const px = Math.cos(angle) * pr;
+        const py = Math.sin(angle) * pr;
+        ctx.beginPath();
+        ctx.ellipse(px, py, r * 0.38, r * 0.24, angle, 0, Math.PI * 2);
+        const g = ctx.createRadialGradient(px, py, 0, px, py, r * 0.4);
+        g.addColorStop(0, c2);
+        g.addColorStop(1, c1);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.22, 0, Math.PI * 2);
+      ctx.fillStyle = c3;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.22, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+      ctx.lineWidth = r * 0.06;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+      flowers = flowers.filter(f => !f.done);
+      while (flowers.length < 14) flowers.push(makeFlower());
+
+      for (const f of flowers) {
+        if (f.progress < 1) {
+          f.progress = Math.min(1, f.progress + f.speed);
+          f.alpha    = Math.min(0.75, f.alpha + f.speed * 2);
+        } else {
+          f.waited++;
+          if (f.waited > f.waitTicks) {
+            f.alpha -= f.fadeSpeed;
+            if (f.alpha <= 0) { f.done = true; continue; }
+          }
+        }
+        drawFlower(f);
+      }
+
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
 </script>
 </body>
 </html>
