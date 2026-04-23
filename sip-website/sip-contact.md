@@ -1075,6 +1075,234 @@ permalink: /sip/contact
     .appr-card { flex-wrap: wrap; }
     .appr-btns { width: 100%; justify-content: flex-end; }
   }
+
+  /* ── User notification bell FAB ── */
+  .sip-notif-wrap {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    z-index: 1499;
+  }
+  .sip-notif-wrap.visible    { display: flex; }
+  .sip-notif-wrap.shift-left { right: 90px; }
+
+  .sip-notif-btn {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(106,176,232,0.4);
+    transition: transform .15s, box-shadow .15s;
+    position: relative; flex-shrink: 0;
+  }
+  .sip-notif-btn:hover  { transform: scale(1.08); box-shadow: 0 6px 28px rgba(106,176,232,0.5); }
+  .sip-notif-btn:active { transform: scale(0.97); }
+
+  .sip-notif-badge {
+    position: absolute; top: -3px; right: -3px;
+    background: var(--danger); color: #fff;
+    font-size: 9px; font-weight: 800;
+    border-radius: 99px; min-width: 17px; height: 17px;
+    display: none; align-items: center; justify-content: center;
+    padding: 0 3px; border: 2px solid var(--bg-primary);
+  }
+  .sip-notif-badge.show { display: flex; }
+
+  .sip-notif-panel {
+    width: 310px;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-hover);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    overflow: hidden;
+    display: none;
+    transform-origin: bottom right;
+  }
+  .sip-notif-panel.open { display: block; }
+
+  .sip-notif-panel-head {
+    background: rgba(106,176,232,0.1);
+    border-bottom: 1px solid var(--border);
+    padding: 11px 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sip-notif-panel-title {
+    flex: 1; font-size: 12px; font-weight: 700;
+    color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  .sip-notif-panel-body { max-height: 300px; overflow-y: auto; }
+
+  .sip-notif-card {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card); transition: background .12s;
+    cursor: pointer;
+  }
+  .sip-notif-card:hover       { background: rgba(255,255,255,0.03); }
+  .sip-notif-card:last-child  { border-bottom: none; }
+  .sip-notif-card.unread      { background: rgba(106,176,232,0.06); }
+  .sip-notif-card.unread:hover{ background: rgba(106,176,232,0.1); }
+
+  .sip-notif-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--blue); flex-shrink: 0;
+    margin-top: 4px; opacity: 0; transition: opacity .15s;
+  }
+  .sip-notif-card.unread .sip-notif-dot { opacity: 1; }
+
+  .sip-notif-card-title { font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+  .sip-notif-card-body  { font-size: 11px; color: var(--text-muted); line-height: 1.45; }
+  .sip-notif-card-time  { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+
+  .sip-notif-panel-footer {
+    padding: 9px 14px;
+    border-top: 1px solid var(--border);
+    font-size: 11px; font-weight: 700; color: var(--blue);
+    text-align: center; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--bg-card); transition: background .12s;
+  }
+  .sip-notif-panel-footer:hover { background: rgba(255,255,255,0.03); }
+
+  /* ── View toggle ── */
+  .view-toggle {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.25rem;
+    margin-bottom: 1.25rem;
+    width: fit-content;
+  }
+
+  .view-toggle-btn {
+    padding: 0.4rem 1.1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    cursor: pointer;
+    background: none;
+    color: var(--text-muted);
+    transition: background 0.15s, color 0.15s;
+    font-family: 'Georgia', serif;
+  }
+  .view-toggle-btn:hover { color: var(--text-primary); }
+  .view-toggle-btn.active { background: var(--coral-dim); color: var(--coral); }
+
+  /* ── Meetings list view ── */
+  .meetings-list { margin-bottom: 2rem; }
+
+  .meetings-list-empty {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+  }
+
+  .meetings-month-group { margin-bottom: 1.75rem; }
+
+  .meetings-month-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meeting-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  }
+  .meeting-row:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+  .meeting-row.is-today-event { border-color: var(--coral); }
+
+  .meeting-date-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 46px;
+    height: 46px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .blue-badge { background: var(--blue-dim); }
+  .gold-badge { background: var(--gold-dim); }
+
+  .badge-day {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .blue-badge .badge-day { color: var(--blue); }
+  .gold-badge .badge-day { color: var(--gold); }
+
+  .badge-dow {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+  .blue-badge .badge-dow { color: var(--blue); opacity: 0.75; }
+  .gold-badge .badge-dow { color: var(--gold); opacity: 0.75; }
+
+  .meeting-row-info { flex: 1; min-width: 0; }
+
+  .meeting-row-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    font-family: 'Georgia', serif;
+  }
+
+  .meeting-row-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .meeting-row-type {
+    display: inline-block;
+    border-radius: 3px;
+    padding: 0.1rem 0.45rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .blue-type { background: var(--blue-dim); color: var(--blue); }
+  .gold-type { background: var(--gold-dim); color: var(--gold); }
 </style>
 
 <!-- Flower background canvas (matches home page) -->
@@ -1275,18 +1503,32 @@ permalink: /sip/contact
         </div>
       </div>
 
-      <!-- Calendar nav -->
-      <div class="cal-toolbar">
-        <div class="cal-nav">
-          <button class="cal-nav-btn" onclick="changeMonth(-1)">←</button>
-          <span class="cal-month-label" id="cal-month-label"></span>
-          <button class="cal-nav-btn" onclick="changeMonth(1)">→</button>
-        </div>
-        <span class="cal-status-msg" id="cal-status"></span>
+      <!-- View toggle -->
+      <div class="view-toggle">
+        <button class="view-toggle-btn active" id="btn-view-cal" onclick="switchView('calendar')">Calendar</button>
+        <button class="view-toggle-btn"        id="btn-view-list" onclick="switchView('list')">List</button>
       </div>
 
-      <div class="cal-grid" id="cal-day-names"></div>
-      <div class="cal-grid" id="cal-cells"></div>
+      <!-- Calendar nav -->
+      <div id="cal-view">
+        <div class="cal-toolbar">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="changeMonth(-1)">←</button>
+            <span class="cal-month-label" id="cal-month-label"></span>
+            <button class="cal-nav-btn" onclick="changeMonth(1)">→</button>
+          </div>
+          <span class="cal-status-msg" id="cal-status"></span>
+        </div>
+        <div class="cal-grid" id="cal-day-names"></div>
+        <div class="cal-grid" id="cal-cells"></div>
+      </div>
+
+      <!-- List view -->
+      <div id="list-view" class="meetings-list" style="display:none">
+        <div id="meetings-list-body">
+          <div class="meetings-list-empty">Loading…</div>
+        </div>
+      </div>
 
     </div>
 
@@ -1318,6 +1560,25 @@ permalink: /sip/contact
       <span class="sip-fab-badge" id="sip-fab-badge">0</span>
     </button>
   </div>
+
+<!-- User notification bell -->
+<div class="sip-notif-wrap" id="sip-notif-wrap">
+  <div class="sip-notif-panel" id="sip-notif-panel">
+    <div class="sip-notif-panel-head">
+      <span class="sip-notif-panel-title">Notifications</span>
+    </div>
+    <div class="sip-notif-panel-body" id="sip-notif-list"></div>
+    <div class="sip-notif-panel-footer" id="sip-notif-mark-all">Mark all as read</div>
+  </div>
+  <button class="sip-notif-btn" id="sip-notif-btn" title="Your notifications">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+        stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg>
+    <span class="sip-notif-badge" id="sip-notif-badge">0</span>
+  </button>
+</div>
 
 <!-- Event detail modal -->
 <div class="modal-bg" id="event-modal" onclick="closeModalOutside(event)">
@@ -1356,18 +1617,21 @@ const API_BASE = (location.hostname === 'localhost' || location.hostname === '12
   : 'https://sipoway.opencodingsociety.com';
 
 /* ── STATE ── */
-let fabOpen     = false;
-const TODAY     = new Date();
-let viewYear    = TODAY.getFullYear();
-let viewMonth   = TODAY.getMonth();
-let MEETINGS    = [];
-let editingId   = null;
-let modalEvtId  = null;
-let isAdmin     = false;
-let subPage     = 1;
-let trayOpen    = false;
+let fabOpen      = false;
+let notifOpen    = false;
+let notifItems   = [];
+const TODAY      = new Date();
+let viewYear     = TODAY.getFullYear();
+let viewMonth    = TODAY.getMonth();
+let MEETINGS     = [];
+let editingId    = null;
+let modalEvtId   = null;
+let isAdmin      = false;
+let subPage      = 1;
+let trayOpen     = false;
 let pendingItems = [];
-const PER_PAGE  = 10;
+let calView      = 'calendar';
+const PER_PAGE   = 10;
 
 const MONTHS = ['January','February','March','April','May','June',
                 'July','August','September','October','November','December'];
@@ -1545,8 +1809,14 @@ function checkAdminSession() {
   fetch(`${API_BASE}/api/id`, {credentials:'include'})
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(user => {
+      // Show notification bell for every logged-in user
+      document.getElementById('sip-notif-wrap').classList.add('visible');
+      loadUserNotifications();
+
       if (user.is_admin) {
         isAdmin = true;
+        // Shift bell left so it doesn't overlap the admin FAB
+        document.getElementById('sip-notif-wrap').classList.add('shift-left');
         const name = user.name || user.uid;
         document.getElementById('admin-name').textContent       = name;
         document.getElementById('admin-name-panel').textContent = name;
@@ -1658,7 +1928,7 @@ function saveEvent() {
     } else {
       MEETINGS.push(evt);
     }
-    cancelEdit(); renderCalendar(); renderAdminList();
+    cancelEdit(); renderCalendar(); renderAdminList(); if (calView === 'list') renderList();
     showAdminMsg(isEdit ? 'Event updated.' : 'Event added.', 'ok');
   })
   .catch(err => showAdminMsg(String(err),'err'))
@@ -1671,7 +1941,7 @@ function deleteEvent(id) {
     .then(r => r.ok ? r.json() : r.json().then(d => Promise.reject(d.message||'Error')))
     .then(() => {
       MEETINGS = MEETINGS.filter(e => e.id !== id);
-      renderCalendar(); renderAdminList();
+      renderCalendar(); renderAdminList(); if (calView === 'list') renderList();
       showAdminMsg('Event deleted.','ok');
     })
     .catch(err => showAdminMsg(String(err),'err'));
@@ -1759,6 +2029,83 @@ document.addEventListener('DOMContentLoaded', function() {
     const ap = document.getElementById('admin-panel');
     if (ap) { ap.classList.add('open'); ap.scrollIntoView({behavior:'smooth'}); }
   });
+
+  const notifBtn    = document.getElementById('sip-notif-btn');
+  const notifFooter = document.getElementById('sip-notif-mark-all');
+  if (notifBtn)    notifBtn.addEventListener('click', toggleNotifPanel);
+  if (notifFooter) notifFooter.addEventListener('click', markAllNotifsRead);
+});
+
+/* ── USER NOTIFICATIONS ── */
+function loadUserNotifications() {
+  fetch(`${API_BASE}/api/notifications`, {credentials:'include'})
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => {
+      notifItems = data.items || [];
+      const unread = data.unread || 0;
+      const badge  = document.getElementById('sip-notif-badge');
+      badge.textContent = unread > 99 ? '99+' : String(unread);
+      badge.classList.toggle('show', unread > 0);
+      if (notifOpen) renderNotifPanel();
+    })
+    .catch(() => {});
+}
+
+function renderNotifPanel() {
+  const list = document.getElementById('sip-notif-list');
+  if (!notifItems.length) {
+    list.innerHTML = `<div style="padding:18px;text-align:center;font-size:12px;color:var(--text-dim)">No notifications yet.</div>`;
+    return;
+  }
+  list.innerHTML = notifItems.map(n => `
+    <div class="sip-notif-card ${n.is_read ? '' : 'unread'}" onclick="markNotifRead(${n.id}, this)">
+      <div class="sip-notif-dot"></div>
+      <div style="flex:1;min-width:0">
+        <div class="sip-notif-card-title">${esc(n.title)}</div>
+        ${n.body ? `<div class="sip-notif-card-body">${esc(n.body)}</div>` : ''}
+        <div class="sip-notif-card-time">${fmtDT(n.created_at)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleNotifPanel() {
+  notifOpen = !notifOpen;
+  document.getElementById('sip-notif-panel').classList.toggle('open', notifOpen);
+  if (notifOpen) renderNotifPanel();
+}
+
+function markNotifRead(id, cardEl) {
+  const n = notifItems.find(x => x.id === id);
+  if (n && n.is_read) return;
+  fetch(`${API_BASE}/api/notifications/${id}/read`, {method:'PATCH', credentials:'include'})
+    .then(r => r.ok ? r.json() : null)
+    .then(() => {
+      if (n) n.is_read = true;
+      if (cardEl) cardEl.classList.remove('unread');
+      const unread = notifItems.filter(x => !x.is_read).length;
+      const badge  = document.getElementById('sip-notif-badge');
+      badge.textContent = unread > 99 ? '99+' : String(unread);
+      badge.classList.toggle('show', unread > 0);
+    })
+    .catch(() => {});
+}
+
+function markAllNotifsRead() {
+  fetch(`${API_BASE}/api/notifications/read-all`, {method:'POST', credentials:'include'})
+    .then(r => r.ok ? r.json() : null)
+    .then(() => {
+      notifItems.forEach(n => n.is_read = true);
+      document.getElementById('sip-notif-badge').classList.remove('show');
+      renderNotifPanel();
+    })
+    .catch(() => {});
+}
+
+document.addEventListener('click', function(e) {
+  if (notifOpen && !e.target.closest('#sip-notif-wrap')) {
+    notifOpen = false;
+    document.getElementById('sip-notif-panel').classList.remove('open');
+  }
 });
 
 /* ── APPROVAL TRAY ── */
@@ -1956,6 +2303,63 @@ function deleteSub(id) {
     .catch(err => showAdminMsg(String(err),'err'));
 }
 
+/* ── VIEW TOGGLE ── */
+function switchView(v) {
+  calView = v;
+  document.getElementById('cal-view').style.display   = v === 'calendar' ? '' : 'none';
+  document.getElementById('list-view').style.display  = v === 'list'     ? '' : 'none';
+  document.getElementById('btn-view-cal').classList.toggle('active',  v === 'calendar');
+  document.getElementById('btn-view-list').classList.toggle('active', v === 'list');
+  if (v === 'list') renderList();
+}
+
+function renderList() {
+  const c = document.getElementById('meetings-list-body');
+  if (!MEETINGS.length) {
+    c.innerHTML = '<div class="meetings-list-empty">No meetings scheduled yet.</div>';
+    return;
+  }
+  const sorted = [...MEETINGS].sort((a, b) => a.date.localeCompare(b.date));
+  const todayStr = `${TODAY.getFullYear()}-${String(TODAY.getMonth()+1).padStart(2,'0')}-${String(TODAY.getDate()).padStart(2,'0')}`;
+
+  // Group by month
+  const groups = {};
+  for (const m of sorted) {
+    const [y, mo] = m.date.split('-').map(Number);
+    const key = `${y}-${String(mo).padStart(2,'0')}`;
+    if (!groups[key]) groups[key] = { label: `${MONTHS[mo-1]} ${y}`, events: [] };
+    groups[key].events.push(m);
+  }
+
+  c.innerHTML = Object.values(groups).map(g => `
+    <div class="meetings-month-group">
+      <div class="meetings-month-label">${g.label}</div>
+      ${g.events.map(m => {
+        const [, , d] = m.date.split('-').map(Number);
+        const dow = DAYS[new Date(m.date + 'T12:00:00').getDay()];
+        const badgeCls = m.eventType === 'gold' ? 'gold-badge' : 'blue-badge';
+        const typeCls  = m.eventType === 'gold' ? 'gold-type'  : 'blue-type';
+        const typeLabel = m.eventType === 'gold' ? 'Board / Committee' : 'General';
+        const isToday  = m.date === todayStr ? 'is-today-event' : '';
+        return `
+          <div class="meeting-row ${isToday}" onclick="openModal(${m.id})">
+            <div class="meeting-date-badge ${badgeCls}">
+              <span class="badge-day">${d}</span>
+              <span class="badge-dow">${dow}</span>
+            </div>
+            <div class="meeting-row-info">
+              <div class="meeting-row-title">${esc(m.title)}</div>
+              <div class="meeting-row-meta">
+                <span>${esc(m.startTime)} – ${esc(m.endTime)}</span>
+                <span>${esc(m.location)}</span>
+                <span class="meeting-row-type ${typeCls}">${typeLabel}</span>
+              </div>
+            </div>
+          </div>`;
+      }).join('')}
+    </div>`).join('');
+}
+
 /* ── CALENDAR ── */
 function renderDayNames() {
   document.getElementById('cal-day-names').innerHTML =
@@ -2053,6 +2457,7 @@ function loadEvents() {
       MEETINGS = data;
       document.getElementById('cal-status').textContent = '';
       renderCalendar();
+      if (calView === 'list') renderList();
       if (isAdmin) renderAdminList();
     })
     .catch(() => {
