@@ -185,7 +185,7 @@ show_reading_time: false
   #popup button,
   #popup label,
   #popup li {
-    color:#111 !important;
+    color:#111;
   }
 
   #sprite-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:0.5rem; margin:0.25rem 0 1.2rem; }
@@ -250,7 +250,7 @@ show_reading_time: false
     margin: 0 0 0.75rem;
     font-family: 'Playfair Display', serif;
     font-size: 1.15rem;
-    color: #2f2f2f;
+    color: #2f2f2f !important;
     letter-spacing: 0.02em;
   }
 
@@ -275,7 +275,7 @@ show_reading_time: false
     padding: 0.65rem 0.8rem;
     border-radius: 14px;
     background: rgba(255,255,255,0.82);
-    color: #3f3f3f;
+    color: #3f3f3f !important;
     line-height: 1.4;
     font-size: 0.94rem;
     box-shadow: 0 6px 16px rgba(45, 106, 45, 0.08);
@@ -299,7 +299,7 @@ show_reading_time: false
   }
 
   #msg::placeholder {
-    color: #7a7a7a;
+    color: rgb(100, 100, 100);
   }
 
   #msg:focus {
@@ -314,7 +314,7 @@ show_reading_time: false
     border-radius: 999px;
     padding: 0.8rem 1rem;
     background: linear-gradient(135deg, var(--gold) 0%, #b78325 100%);
-    color: #fff;
+    color: rbg(50, 50, 50);
     font: inherit;
     font-weight: 700;
     cursor: pointer;
@@ -401,7 +401,7 @@ show_reading_time: false
 
 <div id="chat-window">
   <p id="chat-title"><strong>Garden Chat</strong></p>
-  <ul id="chat"><li>Example Message</li></ul>
+  <ul id="chat"></ul>
   <input type="text" id="msg" placeholder="Share a note with the garden">
   <button id="send-message">Send</button>
 </div>
