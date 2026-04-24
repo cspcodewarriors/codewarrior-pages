@@ -651,7 +651,7 @@ show_reading_time: false
 
   init();
 
-  const socket = io("http://127.0.0.1:8427");
+  const socket = io(pythonURI);
 
   function sendMsg() {
     const input = document.getElementById("msg");
