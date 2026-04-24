@@ -379,23 +379,7 @@ show_reading_time: false
 </div>
 
 <script type="module">
-    const socket = io("http://127.0.0.1:8427");
-
-    function sendMsg() {
-      const input = document.getElementById("msg");
-      socket.send(input.value);
-      input.value = "";
-    }
-
-    socket.on('message', function(msg) {
-      const li = document.createElement("li");
-      li.textContent = msg;
-      document.getElementById("chat").appendChild(li);
-    });
-
-    document.getElementById("send-message").onclick = () => {
-      sendMsg();
-    }
+    
     
 </script>
 
@@ -666,4 +650,22 @@ show_reading_time: false
   }
 
   init();
+
+  const socket = io("http://127.0.0.1:8427");
+
+  function sendMsg() {
+    const input = document.getElementById("msg");
+    socket.send(input.value);
+    input.value = "";
+  }
+
+  socket.on('message', function(msg) {
+    const li = document.createElement("li");
+    li.textContent = msg;
+    document.getElementById("chat").appendChild(li);
+  });
+
+  document.getElementById("send-message").onclick = () => {
+    sendMsg();
+  }
 </script>
