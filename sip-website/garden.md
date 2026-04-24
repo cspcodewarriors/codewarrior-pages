@@ -217,6 +217,142 @@ show_reading_time: false
     display:none; z-index:100; white-space:nowrap;
   }
   #greeting span { color:var(--gold); font-style:italic; }
+
+  /* Chat stuff */
+  #chat-window {
+    position: fixed;
+    top: 6.25rem;
+    left: 1.5rem;
+    width: min(24rem, 28vw);
+    max-width: calc(100vw - 3rem);
+    padding: 1rem;
+    border: 1px solid rgba(200, 151, 58, 0.28);
+    border-radius: 24px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(245, 251, 240, 0.94) 100%);
+    box-shadow:
+      0 18px 44px rgba(31, 60, 32, 0.18),
+      inset 0 1px 0 rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    z-index: 110;
+    overflow: hidden;
+  }
+
+  #chat-window::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), #e7c66f, var(--grass-bright));
+  }
+
+  #chat-title {
+    margin: 0 0 0.75rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: #2f2f2f;
+    letter-spacing: 0.02em;
+  }
+
+  #chat {
+    list-style: none;
+    margin: 0 0 0.85rem;
+    padding: 0.9rem 0.85rem;
+    min-height: 12rem;
+    max-height: 38vh;
+    overflow-y: auto;
+    border: 1px solid rgba(58, 138, 58, 0.14);
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(234, 245, 228, 0.92) 100%);
+    box-shadow: inset 0 1px 2px rgba(45, 106, 45, 0.08);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(58, 138, 58, 0.55) rgba(255,255,255,0.35);
+  }
+
+  #chat li {
+    margin: 0 0 0.55rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.82);
+    color: #3f3f3f;
+    line-height: 1.4;
+    font-size: 0.94rem;
+    box-shadow: 0 6px 16px rgba(45, 106, 45, 0.08);
+  }
+
+  #chat li:last-child {
+    margin-bottom: 0;
+  }
+
+  #msg {
+    width: 100%;
+    margin: 0 0 0.65rem;
+    padding: 0.8rem 0.95rem;
+    border: 1px solid rgba(58, 138, 58, 0.22);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.92);
+    color: #2f2f2f;
+    font: inherit;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+  }
+
+  #msg::placeholder {
+    color: #7a7a7a;
+  }
+
+  #msg:focus {
+    border-color: rgba(58, 138, 58, 0.55);
+    box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.16);
+    background: #fff;
+  }
+
+  #send-message {
+    width: 100%;
+    border: none;
+    border-radius: 999px;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, var(--gold) 0%, #b78325 100%);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(184, 131, 37, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  }
+
+  #send-message:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(184, 131, 37, 0.34);
+    filter: saturate(1.05);
+  }
+
+  #send-message:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    #chat-window {
+      top: auto;
+      bottom: 1rem;
+      left: 1rem;
+      width: min(30rem, calc(100vw - 2rem));
+      max-width: calc(100vw - 2rem);
+    }
+  }
+
+  @media (max-width: 640px) {
+    #chat-window {
+      padding: 0.9rem;
+      border-radius: 20px;
+    }
+
+    #chat {
+      min-height: 9.5rem;
+      max-height: 28vh;
+    }
+  }
 </style>
 
 <div id="garden-wrap">
@@ -241,6 +377,36 @@ show_reading_time: false
     <p id="popup-status" style="min-height:1.1em; margin-top:0.8rem; font-size:0.85rem; color:#c0392b;"></p>
   </div>
 </div>
+
+<script type="module">
+    const socket = io("http://127.0.0.1:8427");
+
+    function sendMsg() {
+      const input = document.getElementById("msg");
+      socket.send(input.value);
+      input.value = "";
+    }
+
+    socket.on('message', function(msg) {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      document.getElementById("chat").appendChild(li);
+    });
+
+    document.getElementById("send-message").onclick = () => {
+      sendMsg();
+    }
+    
+</script>
+
+<div id="chat-window">
+  <p id="chat-title"><strong>Garden Chat</strong></p>
+  <ul id="chat"><li>Example Message</li></ul>
+  <input type="text" id="msg" placeholder="Share a note with the garden">
+  <button id="send-message">Send</button>
+</div>
+
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script> <!-- look I know this looks sketchy but we need it for WebSockets to work ok -->
 
 <script type="module">
 
