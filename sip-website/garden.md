@@ -653,17 +653,43 @@ show_reading_time: false
 
   const socket = io(pythonURI);
 
+  function getChatUsername() {
+    return sessionStorage.getItem('sip_uid') || 'guest';
+  }
+
   function sendMsg() {
     const input = document.getElementById("msg");
-    socket.send(input.value);
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    socket.send({
+      user: getChatUsername(),
+      text
+    });
+
     input.value = "";
   }
 
   socket.on('message', function(msg) {
     const li = document.createElement("li");
-    li.textContent = msg;
+
+    if (typeof msg === 'object' && msg.user && msg.text) {
+      const tag = document.createElement("strong");
+      tag.className = "chat-user-tag";
+      tag.textContent = `${msg.user}: `;
+
+      const text = document.createTextNode(msg.text);
+
+      li.appendChild(tag);
+      li.appendChild(text);
+    } else {
+      li.textContent = msg;
+    }
+
     document.getElementById("chat").appendChild(li);
   });
+
 
   document.getElementById("send-message").onclick = () => {
     sendMsg();
