@@ -64,14 +64,14 @@ permalink: /sip/blog
     .btn-admin-out:hover { background: rgba(232,131,106,0.2); }
 
     /* ── HERO ── */
-    .hero { max-width: 860px; margin: 0 auto; padding: 64px 24px 48px; }
+    .hero { max-width: 1100px; margin: 0 auto; padding: 64px 24px 48px; }
     .eyebrow { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 14px; }
     .hero-title { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 600; color: var(--text-primary); line-height: 1.15; margin-bottom: 20px; }
     .hero-rule { width: 56px; height: 3px; background: var(--accent); margin-bottom: 28px; }
     .hero-lead { font-size: 1.05rem; line-height: 1.82; color: var(--text-lead); max-width: 620px; }
 
     /* ── ADMIN BAR ── */
-    .admin-bar { max-width: 860px; margin: 0 auto 8px; padding: 0 24px; display: none; }
+    .admin-bar { max-width: 1100px; margin: 0 auto 8px; padding: 0 24px; display: none; }
     .admin-bar.visible { display: flex; justify-content: flex-end; }
     .btn-new-post { background: var(--accent); color: #111; font-family: var(--sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 11px 24px; border-radius: 4px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.15s, transform 0.15s; }
     .btn-new-post:hover { background: var(--accent-hover); transform: translateY(-1px); }
@@ -80,8 +80,19 @@ permalink: /sip/blog
     .btn-admin-login { background: rgba(232,131,106,0.12); border: 1px solid rgba(232,131,106,0.3); color: var(--accent); font-family: var(--sans); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 8px 18px; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background 0.15s; }
     .btn-admin-login:hover { background: rgba(232,131,106,0.22); }
 
-    /* ── POSTS GRID ── */
-    .posts-wrap { max-width: 860px; margin: 0 auto; padding: 8px 24px 72px; }
+    /* ── TWO-COLUMN LAYOUT ── */
+    .content-layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 8px 24px 72px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* ── POSTS GRID (left column) ── */
+    .posts-wrap { min-width: 0; }
     .posts-empty { text-align: center; padding: 80px 24px; color: var(--text-muted); font-size: 0.9rem; letter-spacing: 0.04em; }
     .posts-empty .empty-icon { font-size: 2rem; margin-bottom: 16px; opacity: 0.4; }
 
@@ -100,43 +111,15 @@ permalink: /sip/blog
 
     /* ── POST IMAGE GALLERY ── */
     .post-gallery { margin-top: 20px; }
-    .post-gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 10px;
-    }
-    .gallery-img-wrap {
-      position: relative;
-      border-radius: 5px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.04);
-      aspect-ratio: 1;
-      cursor: pointer;
-    }
-    .gallery-img-wrap img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.2s;
-    }
+    .post-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .gallery-img-wrap { position: relative; border-radius: 5px; overflow: hidden; background: rgba(255,255,255,0.04); aspect-ratio: 1; cursor: pointer; }
+    .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s; }
     .gallery-img-wrap:hover img { transform: scale(1.04); }
-    .gallery-img-delete {
-      position: absolute; top: 5px; right: 5px;
-      background: rgba(0,0,0,0.7); border: none;
-      color: #fff; font-size: 0.65rem;
-      border-radius: 3px; padding: 3px 6px;
-      cursor: pointer; opacity: 0;
-      transition: opacity 0.15s;
-      text-transform: uppercase; letter-spacing: 0.06em;
-    }
+    .gallery-img-delete { position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); border: none; color: #fff; font-size: 0.65rem; border-radius: 3px; padding: 3px 6px; cursor: pointer; opacity: 0; transition: opacity 0.15s; text-transform: uppercase; letter-spacing: 0.06em; }
     .gallery-img-wrap:hover .gallery-img-delete { opacity: 1; }
 
     /* ── LIGHTBOX ── */
-    #sipLightbox {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.92); z-index: 2147483647;
-      align-items: center; justify-content: center;
-    }
+    #sipLightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 2147483647; align-items: center; justify-content: center; }
     #sipLightbox.open { display: flex; }
     #sipLightbox img { max-width: 90vw; max-height: 88vh; border-radius: 6px; object-fit: contain; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
     .lb-close { position: absolute; top: 20px; right: 28px; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; opacity: 0.7; transition: opacity 0.15s; }
@@ -160,6 +143,220 @@ permalink: /sip/blog
     .btn-publish-toggle.published { color: var(--text-muted); }
     .btn-publish-toggle.published:hover { border-color: var(--text-muted); background: none; }
 
+    /* ── SIDEBAR (right column) ── */
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── INSTAGRAM WIDGET ── */
+    .ig-widget {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .ig-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border2);
+    }
+
+    .ig-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ig-logo {
+      width: 22px; height: 22px;
+      flex-shrink: 0;
+    }
+
+    .ig-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-label);
+    }
+
+    .ig-follow-link {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .ig-follow-link:hover { color: var(--accent-hover); }
+
+    /* ── LATEST POST DISPLAY ── */
+    .ig-post-img-wrap {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--surface2);
+      cursor: pointer;
+    }
+
+    .ig-post-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .ig-post-img-wrap:hover img { transform: scale(1.04); }
+
+    .ig-post-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.25s;
+      display: flex;
+      align-items: flex-end;
+      padding: 14px;
+    }
+    .ig-post-img-wrap:hover .ig-post-overlay { opacity: 1; }
+
+    .ig-overlay-text {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .ig-post-meta {
+      padding: 14px 18px 16px;
+    }
+
+    .ig-post-caption {
+      font-size: 0.83rem;
+      color: var(--text-body);
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .ig-post-stats {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .ig-stat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .ig-post-date {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-left: auto;
+      letter-spacing: 0.05em;
+    }
+
+    .ig-view-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      background: none;
+      border: none;
+      border-top: 1px solid var(--border2);
+      color: var(--accent);
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ig-view-btn:hover { background: rgba(232,131,106,0.07); color: var(--accent-hover); }
+
+    /* ── PLACEHOLDER / LOADING STATES ── */
+    .ig-placeholder {
+      aspect-ratio: 1;
+      background: var(--surface2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-muted);
+    }
+
+    .ig-placeholder svg { opacity: 0.25; }
+
+    .ig-placeholder-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-align: center;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    .ig-no-token {
+      padding: 22px 18px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .ig-no-token a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .ig-no-token a:hover { text-decoration: underline; }
+
+    .ig-token-hint {
+      margin: 12px 18px 16px;
+      padding: 10px 14px;
+      background: rgba(232,131,106,0.07);
+      border: 1px solid rgba(232,131,106,0.18);
+      border-radius: 6px;
+      font-size: 0.72rem;
+      color: var(--text-label);
+      line-height: 1.6;
+    }
+
+    .ig-token-hint code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.68rem;
+      color: var(--accent);
+      background: rgba(232,131,106,0.12);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    /* ── PULSE SHIMMER for loading ── */
+    @keyframes igShimmer {
+      0% { opacity: 0.5; }
+      50% { opacity: 0.9; }
+      100% { opacity: 0.5; }
+    }
+    .ig-loading { animation: igShimmer 1.6s ease-in-out infinite; }
+
     /* ── TOAST ── */
     .toast { position: fixed; bottom: 32px; right: 32px; background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; padding: 14px 22px; font-size: 0.85rem; color: var(--text-primary); z-index: 999999; transform: translateY(20px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; pointer-events: none; }
     .toast.show { transform: translateY(0); opacity: 1; }
@@ -171,10 +368,22 @@ permalink: /sip/blog
     .admin-badge { display: none; align-items: center; gap: 6px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); padding: 4px 10px; border: 1px solid rgba(232,131,106,0.3); border-radius: 20px; }
     .admin-badge.visible { display: flex; }
     .admin-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-       @media (max-width: 600px) {
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .content-layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        order: -1; /* show Instagram above posts on mobile */
+      }
+    }
+
+    @media (max-width: 600px) {
       .nav { padding: 16px 20px; }
       .hero { padding: 40px 20px 32px; }
-      .posts-wrap { padding: 8px 20px 48px; }
+      .content-layout { padding: 8px 20px 48px; }
       .post-gallery-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
   </style>
@@ -187,9 +396,9 @@ permalink: /sip/blog
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="/" class="nav-logo">Soroptimist <span>·</span> Poway</a>
+  <a href="/sip/home/" class="nav-logo">Soroptimist <span>·</span> Poway</a>
   <div class="nav-actions">
-    <a href="/" class="nav-back">← Programs</a>
+    <a href="/sip/home/" class="nav-back">← Programs</a>
     <div class="admin-badge" id="adminBadge"><span class="admin-dot"></span>Admin</div>
     <button class="btn-admin btn-admin-out" id="adminBtn" style="display:none" onclick="logout()">Sign Out</button>
   </div>
@@ -217,13 +426,73 @@ permalink: /sip/blog
   </a>
 </div>
 
-<!-- POSTS -->
-<main class="posts-wrap" id="postsWrap">
-  <div class="posts-empty" id="emptyState">
-    <div class="empty-icon">📝</div>
-    No posts yet. Check back soon for updates from our community.
-  </div>
-</main>
+<!-- TWO-COLUMN LAYOUT: Posts + Sidebar -->
+<div class="content-layout">
+
+  <!-- LEFT: POSTS -->
+  <main class="posts-wrap" id="postsWrap">
+    <div class="posts-empty" id="emptyState">
+      <div class="empty-icon">📝</div>
+      No posts yet. Check back soon for updates from our community.
+    </div>
+  </main>
+
+  <!-- RIGHT: SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- ── INSTAGRAM WIDGET ── -->
+    <div class="ig-widget" id="igWidget">
+
+      <div class="ig-header">
+        <div class="ig-header-left">
+          <!-- Instagram gradient icon -->
+          <svg class="ig-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="igGrad" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f09433"/>
+                <stop offset="0.25" stop-color="#e6683c"/>
+                <stop offset="0.5" stop-color="#dc2743"/>
+                <stop offset="0.75" stop-color="#cc2366"/>
+                <stop offset="1" stop-color="#bc1888"/>
+              </linearGradient>
+            </defs>
+            <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#igGrad)"/>
+            <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="1.5" fill="none"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="white"/>
+          </svg>
+          <span class="ig-label">Latest on Instagram</span>
+        </div>
+         <!-- STEP 1: Replace YOUR_INSTAGRAM_USERNAME with the account handle (no @) -->
+        <a class="ig-follow-link" href="https://instagram.com/YOUR_INSTAGRAM_USERNAME" target="_blank" rel="noopener">Follow →</a>
+      </div>
+
+      <!-- Post image / placeholder -->
+      <div id="igPostImageArea">
+        <!-- Filled by JS when token is present; placeholder shown until then -->
+        <div class="ig-placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          <p class="ig-placeholder-label">Instagram feed coming soon</p>
+        </div>
+      </div>
+
+      <div id="igPostMetaArea"></div>
+
+      <!-- STEP 2: Replace YOUR_INSTAGRAM_USERNAME below (same handle, no @) -->
+      <a class="ig-view-btn" href="https://instagram.com/YOUR_INSTAGRAM_USERNAME" target="_blank" rel="noopener">
+        View on Instagram ↗
+      </a>
+
+    </div>
+    <!-- end .ig-widget -->
+
+  </aside>
+
+</div>
+<!-- end .content-layout -->
 
 <!-- LIGHTBOX -->
 <div id="sipLightbox">
@@ -244,6 +513,81 @@ permalink: /sip/blog
 </div>
 
 <script>
+(function () {
+  var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://localhost:8427'
+    : 'https://sipoway.opencodingsociety.com';
+
+  var imgArea  = document.getElementById('igPostImageArea');
+  var metaArea = document.getElementById('igPostMetaArea');
+
+  imgArea.innerHTML = '<div class="ig-placeholder ig-loading"><p class="ig-placeholder-label">Loading…</p></div>';
+
+  fetch(API_BASE + '/api/ig/token')
+    .then(function (r) { return r.ok ? r.json() : Promise.reject('no token'); })
+    .then(function (d) { return loadLatestPost(d.token); })
+    .catch(function () {
+      imgArea.innerHTML = [
+        '<div class="ig-placeholder">',
+          '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">',
+            '<rect x="2" y="2" width="20" height="20" rx="5"/>',
+            '<circle cx="12" cy="12" r="4"/>',
+            '<circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',
+          '</svg>',
+          '<p class="ig-placeholder-label">Instagram feed coming soon</p>',
+        '</div>'
+      ].join('');
+    });
+
+  function loadLatestPost(token) {
+    var url = 'https://graph.instagram.com/me/media'
+      + '?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count'
+      + '&limit=1&access_token=' + token;
+
+    return fetch(url)
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (data) {
+        var post = data && data.data && data.data[0];
+        if (!post) throw new Error('No posts');
+
+        var imgSrc  = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
+        var caption = post.caption || '';
+        var short   = caption.length > 120 ? caption.slice(0, 117) + '…' : caption;
+        var dateStr = '';
+        if (post.timestamp) {
+          dateStr = new Date(post.timestamp).toLocaleDateString('en-US',
+            { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        imgArea.innerHTML = [
+          '<div class="ig-post-img-wrap" onclick="window.open(\'' + esc(post.permalink) + '\',\'_blank\')">',
+            '<img src="' + esc(imgSrc) + '" alt="Latest Instagram post" loading="lazy" />',
+            '<div class="ig-post-overlay"><p class="ig-overlay-text">' + escHtml(caption) + '</p></div>',
+          '</div>'
+        ].join('');
+
+        metaArea.innerHTML = [
+          '<div class="ig-post-meta">',
+            short ? '<p class="ig-post-caption">' + escHtml(short) + '</p>' : '',
+            '<div class="ig-post-stats">',
+              post.like_count     != null ? '<span class="ig-stat">♥ '  + post.like_count     + '</span>' : '',
+              post.comments_count != null ? '<span class="ig-stat">💬 ' + post.comments_count + '</span>' : '',
+              dateStr ? '<span class="ig-post-date">' + dateStr + '</span>' : '',
+            '</div>',
+          '</div>'
+        ].join('');
+      })
+      .catch(function () {
+        imgArea.innerHTML = '<div class="ig-placeholder"><p class="ig-placeholder-label">Couldn\'t load post.<br>Check your token.</p></div>';
+      });
+  }
+
+  function esc(s)     { return String(s).replace(/"/g, '&quot;'); }
+  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+})();
+</script>
+
+<script>
   /* ── CONFIG ── */
   var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
     ? 'http://localhost:8427'
@@ -253,12 +597,8 @@ permalink: /sip/blog
   let isAdmin        = false;
   let posts          = [];
   let editingPostId  = null;
-
-  // Images staged inside the post modal (new uploads not yet sent)
-  let uploadQueue    = [];   // Array of { dataURL, name }
-  let postImages     = {};   // { [postId]: [ { filename, data } ] }
-
-  // Lightbox state
+  let uploadQueue    = [];
+  let postImages     = {};
   let lbImages       = [];
   let lbIndex        = 0;
 
@@ -358,10 +698,7 @@ permalink: /sip/blog
         </div>
         <h2 class="post-title">${escHtml(p.title || 'Untitled')}</h2>
         <div class="post-body clamped" id="${bodyId}">${escHtml(p.description || '')}</div>
-
-        <!-- image gallery slot -->
         <div class="post-gallery" id="${galleryId}"></div>
-
         <div class="post-footer">
           <span class="post-author">By ${escHtml(p.author || 'SIP Admin')}</span>
           <div class="post-actions">
@@ -381,7 +718,6 @@ permalink: /sip/blog
       wrap.appendChild(card);
     });
 
-    // Populate galleries from cache
     Object.keys(postImages).forEach(id => renderGallery(Number(id)));
   }
 
@@ -466,12 +802,11 @@ permalink: /sip/blog
     const post = posts.find(p => p.id === id);
     if (!confirm(`Delete "${post ? post.title : 'this post'}"? This cannot be undone.`)) return;
 
-    // Also delete all images for this post
     fetch(`${API_BASE}/api/blog/images/all`, {
       method: 'DELETE', credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ post_id: id }),
-    }).catch(() => {}); // best-effort; don't block post deletion
+    }).catch(() => {});
 
     fetch(`${API_BASE}/api/blog`, {
       method: 'DELETE', credentials: 'include',
@@ -503,7 +838,6 @@ permalink: /sip/blog
     .then(() => {
       postImages[postId] = (postImages[postId] || []).filter(i => i.filename !== filename);
       renderGallery(postId);
-      // Also refresh the in-modal existing photos if this post is being edited
       refreshModalExistingPhotos(postId);
       showToast('Photo removed.');
     })
@@ -545,10 +879,8 @@ permalink: /sip/blog
      MODAL BOOTSTRAP
   ═══════════════════════════════════════════════ */
   (function bootstrapModals() {
-    /* ── shared styles ── */
     const style = document.createElement('style');
     style.textContent = `
-      /* ── POST MODAL ── */
       #sipPostModal {
         display: none; position: fixed; inset: 0;
         background: rgba(0,0,0,0.82); z-index: 2147483647;
@@ -618,137 +950,38 @@ permalink: /sip/blog
         transition: border-color 0.15s, color 0.15s; white-space: nowrap;
       }
       #sipPostModal .sip-btn-cancel:hover { border-color: #aaa; color: #f5f0eb; }
-
-      /* ── PHOTO SECTION INSIDE POST MODAL ── */
-      .sip-photo-section {
-        margin-bottom: 18px;
-        border-top: 1px solid rgba(255,255,255,0.07);
-        padding-top: 18px;
-      }
-      .sip-photo-section-header {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 12px;
-      }
-      .sip-photo-section-label {
-        font-size: 0.72rem; text-transform: uppercase;
-        letter-spacing: 0.1em; color: #777;
-        display: flex; align-items: center; gap: 8px;
-        margin: 0;
-      }
+      .sip-photo-section { margin-bottom: 18px; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 18px; }
+      .sip-photo-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+      .sip-photo-section-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #777; display: flex; align-items: center; gap: 8px; margin: 0; }
       .sip-photo-section-label span { color: #555; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.7rem; }
-
-      /* + add photos button */
-      #sipPhotoAddBtn {
-        display: inline-flex; align-items: center; gap: 6px;
-        background: rgba(232,131,106,0.1); border: 1px solid rgba(232,131,106,0.3);
-        color: #e8836a; font-family: 'Jost', sans-serif;
-        font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-        letter-spacing: 0.08em; padding: 5px 12px; border-radius: 4px;
-        cursor: pointer; transition: background 0.15s, border-color 0.15s;
-        flex-shrink: 0;
-      }
+      #sipPhotoAddBtn { display: inline-flex; align-items: center; gap: 6px; background: rgba(232,131,106,0.1); border: 1px solid rgba(232,131,106,0.3); color: #e8836a; font-family: 'Jost', sans-serif; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 5px 12px; border-radius: 4px; cursor: pointer; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
       #sipPhotoAddBtn:hover { background: rgba(232,131,106,0.2); border-color: rgba(232,131,106,0.5); }
-      #sipPhotoAddBtn .plus-icon {
-        font-size: 1rem; line-height: 1; font-weight: 400;
-        transition: transform 0.25s ease;
-      }
+      #sipPhotoAddBtn .plus-icon { font-size: 1rem; line-height: 1; font-weight: 400; transition: transform 0.25s ease; }
       #sipPhotoAddBtn.open .plus-icon { transform: rotate(45deg); }
-
-      /* collapsible drop zone wrapper */
-      #sipModalDropWrapper {
-        overflow: hidden;
-        max-height: 0;
-        opacity: 0;
-        transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
-        margin-top: 0;
-      }
-      #sipModalDropWrapper.expanded {
-        max-height: 200px;
-        opacity: 1;
-        margin-top: 10px;
-      }
-
-      /* existing photos strip */
-      #sipModalExistingGrid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 7px; margin-bottom: 14px;
-      }
-      .existing-img-wrap {
-        position: relative; border-radius: 5px;
-        overflow: hidden; aspect-ratio: 1;
-        background: rgba(255,255,255,0.04);
-      }
+      #sipModalDropWrapper { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease; margin-top: 0; }
+      #sipModalDropWrapper.expanded { max-height: 200px; opacity: 1; margin-top: 10px; }
+      #sipModalExistingGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 7px; margin-bottom: 14px; }
+      .existing-img-wrap { position: relative; border-radius: 5px; overflow: hidden; aspect-ratio: 1; background: rgba(255,255,255,0.04); }
       .existing-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .existing-remove {
-        position: absolute; top: 4px; right: 4px;
-        background: rgba(180,40,40,0.82); border: none;
-        color: #fff; font-size: 0.62rem; border-radius: 3px;
-        padding: 2px 5px; cursor: pointer; opacity: 0;
-        transition: opacity 0.15s;
-      }
+      .existing-remove { position: absolute; top: 4px; right: 4px; background: rgba(180,40,40,0.82); border: none; color: #fff; font-size: 0.62rem; border-radius: 3px; padding: 2px 5px; cursor: pointer; opacity: 0; transition: opacity 0.15s; }
       .existing-img-wrap:hover .existing-remove { opacity: 1; }
-
-      /* drop zone */
-      #sipModalDropZone {
-        border: 2px dashed rgba(232,131,106,0.28);
-        border-radius: 7px; padding: 20px 16px;
-        text-align: center; cursor: pointer;
-        transition: border-color 0.2s, background 0.2s;
-      }
-      #sipModalDropZone:hover,
-      #sipModalDropZone.drag-over { border-color: #e8836a; background: rgba(232,131,106,0.05); }
+      #sipModalDropZone { border: 2px dashed rgba(232,131,106,0.28); border-radius: 7px; padding: 20px 16px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+      #sipModalDropZone:hover, #sipModalDropZone.drag-over { border-color: #e8836a; background: rgba(232,131,106,0.05); }
       #sipModalDropZone .dz-icon  { font-size: 1.4rem; margin-bottom: 5px; opacity: 0.55; }
       #sipModalDropZone .dz-label { font-size: 0.8rem; color: #666; }
       #sipModalDropZone .dz-label span { color: #e8836a; text-decoration: underline; cursor: pointer; }
       #sipModalFileInput { display: none; }
-
-      /* staged previews */
-      #sipModalStagedGrid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 7px; margin-bottom: 10px;
-      }
-      .staged-img-wrap {
-        position: relative; border-radius: 5px;
-        overflow: hidden; aspect-ratio: 1;
-        background: rgba(255,255,255,0.04);
-      }
+      #sipModalStagedGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 7px; margin-bottom: 10px; }
+      .staged-img-wrap { position: relative; border-radius: 5px; overflow: hidden; aspect-ratio: 1; background: rgba(255,255,255,0.04); }
       .staged-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .staged-remove {
-        position: absolute; top: 4px; right: 4px;
-        background: rgba(0,0,0,0.7); border: none;
-        color: #fff; font-size: 0.65rem; border-radius: 3px;
-        padding: 2px 5px; cursor: pointer;
-      }
-      .staged-label {
-        position: absolute; bottom: 0; left: 0; right: 0;
-        background: rgba(0,0,0,0.55); color: #aaa;
-        font-size: 0.58rem; text-align: center; padding: 3px;
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      }
-      .sip-staged-count {
-        font-size: 0.75rem; color: #e8836a;
-        margin-bottom: 6px;
-      }
-
-      /* ── TOAST ── */
-      #sipToast {
-        position:fixed; bottom:32px; right:32px;
-        background:#1a1917; border:1px solid #e8836a;
-        border-radius:6px; padding:14px 22px;
-        font-size:0.85rem; color:#f5f0eb;
-        font-family:'Jost',sans-serif;
-        z-index:2147483647;
-        transform:translateY(20px); opacity:0;
-        transition:transform 0.25s ease, opacity 0.25s ease;
-        pointer-events:none;
-      }
+      .staged-remove { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.7); border: none; color: #fff; font-size: 0.65rem; border-radius: 3px; padding: 2px 5px; cursor: pointer; }
+      .staged-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.55); color: #aaa; font-size: 0.58rem; text-align: center; padding: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .sip-staged-count { font-size: 0.75rem; color: #e8836a; margin-bottom: 6px; }
+      #sipToast { position:fixed; bottom:32px; right:32px; background:#1a1917; border:1px solid #e8836a; border-radius:6px; padding:14px 22px; font-size:0.85rem; color:#f5f0eb; font-family:'Jost',sans-serif; z-index:2147483647; transform:translateY(20px); opacity:0; transition:transform 0.25s ease, opacity 0.25s ease; pointer-events:none; }
       #sipToast.show { transform:translateY(0); opacity:1; }
     `;
     document.head.appendChild(style);
 
-    /* ── POST MODAL (now includes photo section) ── */
     const postModal = document.createElement('div');
     postModal.id = 'sipPostModal';
     postModal.innerHTML = `
@@ -768,7 +1001,7 @@ permalink: /sip/blog
             <label for="sipPostTag">Program Tag</label>
             <select id="sipPostTag">
               <option value="">— None —</option>
-              <option value="Transitional Housing">Transittional Housing</option>
+              <option value="Transitional Housing">Transitional Housing</option>
               <option value="Live Your Dream">Live Your Dream</option>
               <option value="Dream It Be It">Dream It Be It</option>
               <option value="STAT!">STAT!</option>
@@ -782,28 +1015,20 @@ permalink: /sip/blog
           <label for="sipPostBody">Content *</label>
           <textarea id="sipPostBody" placeholder="Share your update with the community…"></textarea>
         </div>
-
-        <!-- ── PHOTO SECTION ── -->
         <div class="sip-photo-section">
           <div class="sip-photo-section-header">
-            <p class="sip-photo-section-label">📷 Photos </p>
+            <p class="sip-photo-section-label">📷 Photos</p>
             <button type="button" id="sipPhotoAddBtn" onclick="toggleDropZone()">
               <span class="plus-icon">+</span> Add Photos
             </button>
           </div>
-
-          <!-- existing photos (shown in edit mode) -->
           <div id="sipModalExistingSection" style="display:none; margin-bottom:14px;">
             <div id="sipModalExistingGrid"></div>
           </div>
-
-          <!-- staged (new) photos -->
           <div id="sipModalStagedSection" style="display:none; margin-bottom:10px;">
             <p class="sip-staged-count" id="sipModalStagedCount"></p>
             <div id="sipModalStagedGrid"></div>
           </div>
-
-          <!-- collapsible drop zone -->
           <div id="sipModalDropWrapper">
             <div id="sipModalDropZone">
               <div class="dz-icon">🖼️</div>
@@ -812,7 +1037,6 @@ permalink: /sip/blog
             </div>
           </div>
         </div>
-
         <div class="sip-error" id="sipPostError"></div>
         <div class="sip-actions">
           <button class="sip-btn-publish" id="sipPublishBtn" onclick="submitPost(true)">Publish</button>
@@ -823,16 +1047,13 @@ permalink: /sip/blog
     document.body.appendChild(postModal);
     postModal.addEventListener('mousedown', e => { if (e.target === postModal) closePostModal(); });
 
-    /* ── TOAST ── */
     const toast = document.createElement('div');
     toast.id = 'sipToast';
     document.body.appendChild(toast);
 
-    // Remove in-page toast (replaced by sipToast)
     const old = document.getElementById('toast');
     if (old) old.remove();
 
-    /* ── DROP ZONE WIRING ── */
     const dz  = document.getElementById('sipModalDropZone');
     const fin = document.getElementById('sipModalFileInput');
 
@@ -845,7 +1066,6 @@ permalink: /sip/blog
     dz.addEventListener('click', e => { if (e.target !== fin) fin.click(); });
     fin.addEventListener('change', () => { stageFiles(fin.files); fin.value = ''; });
 
-    // Also open drop zone when something is dragged over the whole modal panel
     document.getElementById('sipPostModal').addEventListener('dragover', e => {
       e.preventDefault();
       const wrapper = document.getElementById('sipModalDropWrapper');
@@ -853,9 +1073,6 @@ permalink: /sip/blog
     });
   })();
 
-  /* ═══════════════════════════════════════════════
-     DROP ZONE TOGGLE
-  ═══════════════════════════════════════════════ */
   function toggleDropZone(forceOpen) {
     const wrapper = document.getElementById('sipModalDropWrapper');
     const btn     = document.getElementById('sipPhotoAddBtn');
@@ -866,9 +1083,6 @@ permalink: /sip/blog
     btn.classList.toggle('open', opening);
   }
 
-  /* ═══════════════════════════════════════════════
-     PHOTO STAGING (inside post modal)
-  ═══════════════════════════════════════════════ */
   function stageFiles(fileList) {
     Array.from(fileList).forEach(file => {
       if (!file.type.startsWith('image/')) return;
@@ -879,7 +1093,6 @@ permalink: /sip/blog
       };
       reader.readAsDataURL(file);
     });
-    // Collapse drop zone after selecting files
     const wrapper = document.getElementById('sipModalDropWrapper');
     const btn     = document.getElementById('sipPhotoAddBtn');
     if (wrapper) { wrapper.classList.remove('expanded'); btn.classList.remove('open'); }
@@ -890,14 +1103,10 @@ permalink: /sip/blog
     const grid    = document.getElementById('sipModalStagedGrid');
     const count   = document.getElementById('sipModalStagedCount');
     if (!section) return;
-
-    if (uploadQueue.length === 0) {
-      section.style.display = 'none'; return;
-    }
+    if (uploadQueue.length === 0) { section.style.display = 'none'; return; }
     section.style.display = 'block';
     count.textContent = uploadQueue.length + ' photo' + (uploadQueue.length !== 1 ? 's' : '') + ' ready to upload';
     grid.innerHTML = '';
-
     uploadQueue.forEach((item, idx) => {
       const wrap = document.createElement('div');
       wrap.className = 'staged-img-wrap';
@@ -914,18 +1123,15 @@ permalink: /sip/blog
     renderModalStagedGrid();
   }
 
-  /* Refresh existing-photos strip inside the modal (used after a delete) */
   function refreshModalExistingPhotos(postId) {
     if (editingPostId !== postId) return;
     const imgs    = postImages[postId] || [];
     const section = document.getElementById('sipModalExistingSection');
     const grid    = document.getElementById('sipModalExistingGrid');
     if (!section || !grid) return;
-
     if (imgs.length === 0) { section.style.display = 'none'; return; }
     section.style.display = 'block';
     grid.innerHTML = '';
-
     imgs.forEach(img => {
       const wrap = document.createElement('div');
       wrap.className = 'existing-img-wrap';
@@ -936,12 +1142,10 @@ permalink: /sip/blog
     });
   }
 
-  /* Upload all staged images for a given post id */
   async function uploadQueuedImages(postId) {
     if (uploadQueue.length === 0) return;
     const total = uploadQueue.length;
     let succeeded = 0;
-
     for (let i = 0; i < total; i++) {
       const item = uploadQueue[i];
       try {
@@ -953,31 +1157,21 @@ permalink: /sip/blog
         if (resp.ok) {
           const data = await resp.json();
           if (!postImages[postId]) postImages[postId] = [];
-          postImages[postId].push({
-            filename: data.filename,
-            data: item.dataURL.split(',')[1],
-          });
+          postImages[postId].push({ filename: data.filename, data: item.dataURL.split(',')[1] });
           succeeded++;
         }
-      } catch (e) { /* continue */ }
+      } catch (e) {}
     }
-
     uploadQueue = [];
     renderGallery(postId);
     return succeeded;
   }
 
-  /* ═══════════════════════════════════════════════
-     POST MODAL FUNCTIONS
-  ═══════════════════════════════════════════════ */
   function openPostModal(postId) {
     editingPostId = postId || null;
     const isEdit  = editingPostId !== null;
-
-    // Reset staged queue
     uploadQueue = [];
     renderModalStagedGrid();
-
     document.getElementById('sipModalEyebrow').textContent = isEdit ? '✏️ Edit Entry' : '✍️ New Entry';
     document.getElementById('sipModalTitle').textContent   = isEdit ? 'Edit Post'     : 'Create Post';
     document.getElementById('sipPublishBtn').disabled      = false;
@@ -985,7 +1179,6 @@ permalink: /sip/blog
     document.getElementById('sipPublishBtn').textContent   = 'Publish';
     document.getElementById('sipDraftBtn').textContent     = 'Save Draft';
     clearPostError();
-
     if (isEdit) {
       const p = posts.find(post => post.id === editingPostId);
       if (!p) return;
@@ -993,18 +1186,15 @@ permalink: /sip/blog
       document.getElementById('sipPostDate').value  = p.event_date  || '';
       document.getElementById('sipPostTag').value   = p.program_tag || '';
       document.getElementById('sipPostBody').value  = p.description || '';
-      // Show existing photos
       refreshModalExistingPhotos(editingPostId);
     } else {
       document.getElementById('sipPostTitle').value = '';
       document.getElementById('sipPostDate').value  = new Date().toISOString().slice(0, 10);
       document.getElementById('sipPostTag').value   = '';
       document.getElementById('sipPostBody').value  = '';
-      // Hide existing photos section for new posts
       const exSection = document.getElementById('sipModalExistingSection');
       if (exSection) exSection.style.display = 'none';
     }
-
     document.getElementById('sipPostModal').classList.add('open');
     setTimeout(() => document.getElementById('sipPostTitle').focus(), 80);
   }
@@ -1015,7 +1205,6 @@ permalink: /sip/blog
     uploadQueue   = [];
     renderModalStagedGrid();
     clearPostError();
-    // Collapse drop zone
     const wrapper = document.getElementById('sipModalDropWrapper');
     const btn     = document.getElementById('sipPhotoAddBtn');
     if (wrapper) { wrapper.classList.remove('expanded'); btn.classList.remove('open'); }
@@ -1027,9 +1216,9 @@ permalink: /sip/blog
     const program_tag = document.getElementById('sipPostTag').value.trim() || null;
     const description = document.getElementById('sipPostBody').value.trim();
 
-    if (!title || title.length < 2)             return showPostError('Title is required (at least 2 characters).');
-    if (!event_date)                             return showPostError('Event date is required.');
-    if (!description || description.length < 2)  return showPostError('Content is required (at least 2 characters).');
+    if (!title || title.length < 2)            return showPostError('Title is required (at least 2 characters).');
+    if (!event_date)                            return showPostError('Event date is required.');
+    if (!description || description.length < 2) return showPostError('Content is required (at least 2 characters).');
 
     const isEdit  = editingPostId !== null;
     const payload = { title, event_date, description, program_tag, published };
@@ -1048,10 +1237,7 @@ permalink: /sip/blog
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!r.ok) {
-        const d = await r.json();
-        throw new Error(d.message || 'Server error');
-      }
+      if (!r.ok) { const d = await r.json(); throw new Error(d.message || 'Server error'); }
       saved = await r.json();
     } catch (err) {
       showPostError(String(err));
@@ -1061,7 +1247,6 @@ permalink: /sip/blog
       return;
     }
 
-    // Update local posts list
     if (isEdit) {
       const idx = posts.findIndex(p => p.id === editingPostId);
       if (idx !== -1) posts[idx] = saved;
@@ -1070,7 +1255,6 @@ permalink: /sip/blog
       postImages[saved.id] = [];
     }
 
-    // Upload any staged photos
     const targetId    = saved.id;
     const hadPhotos   = uploadQueue.length > 0;
     let uploadedCount = 0;
@@ -1084,13 +1268,10 @@ permalink: /sip/blog
     closePostModal();
     renderPosts();
 
-    // Compose toast message
     let toast = isEdit
       ? (published ? 'Post published.' : 'Draft saved.')
       : (published ? 'Post published!' : 'Draft saved.');
-    if (hadPhotos) {
-      toast += ` ${uploadedCount} photo${uploadedCount !== 1 ? 's' : ''} uploaded.`;
-    }
+    if (hadPhotos) toast += ` ${uploadedCount} photo${uploadedCount !== 1 ? 's' : ''} uploaded.`;
     showToast(toast);
   }
 
@@ -1103,7 +1284,6 @@ permalink: /sip/blog
     if (el) { el.textContent = ''; el.classList.remove('visible'); }
   }
 
-  /* ── INIT ── */
   checkAdminSession();
 </script>
 
@@ -1111,111 +1291,45 @@ permalink: /sip/blog
   (function () {
     const canvas = document.getElementById('flower-canvas');
     const ctx    = canvas.getContext('2d');
-
     const PETAL_PALETTES = [
-      ['#e8836a','#f0a080','#ffd0bb'],
-      ['#6ab0e8','#90c8f8','#c0e0ff'],
-      ['#d4b84a','#f0d870','#fff0a0'],
-      ['#5ecb8a','#80e8a8','#b0f8cc'],
-      ['#e86a6a','#f89090','#ffbbbb'],
-      ['#b07de8','#cc9eff','#e8d0ff'],
+      ['#e8836a','#f0a080','#ffd0bb'],['#6ab0e8','#90c8f8','#c0e0ff'],
+      ['#d4b84a','#f0d870','#fff0a0'],['#5ecb8a','#80e8a8','#b0f8cc'],
+      ['#e86a6a','#f89090','#ffbbbb'],['#b07de8','#cc9eff','#e8d0ff'],
     ];
-
     let flowers = [];
     let W, H;
-
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
     resize();
     window.addEventListener('resize', resize);
-
     function makeFlower() {
       const palette = PETAL_PALETTES[Math.floor(Math.random() * PETAL_PALETTES.length)];
-      return {
-        x:         Math.random() * W,
-        y:         Math.random() * H,
-        progress:  0,
-        speed:     0.004 + Math.random() * 0.008,
-        maxR:      14 + Math.random() * 22,
-        petals:    4 + Math.floor(Math.random() * 4),
-        palette,
-        rotation:  Math.random() * Math.PI * 2,
-        waitTicks: 180 + Math.random() * 300,
-        waited:    0,
-        fadeSpeed: 0.003 + Math.random() * 0.004,
-        alpha:     0,
-        done:      false,
-      };
+      return { x: Math.random()*W, y: Math.random()*H, progress: 0, speed: 0.004+Math.random()*0.008, maxR: 14+Math.random()*22, petals: 4+Math.floor(Math.random()*4), palette, rotation: Math.random()*Math.PI*2, waitTicks: 180+Math.random()*300, waited: 0, fadeSpeed: 0.003+Math.random()*0.004, alpha: 0, done: false };
     }
-
-    function seed(n) {
-      for (let i = 0; i < n; i++) {
-        const f = makeFlower();
-        f.progress = Math.random();
-        flowers.push(f);
-      }
-    }
+    function seed(n) { for (let i=0;i<n;i++){const f=makeFlower();f.progress=Math.random();flowers.push(f);} }
     seed(18);
-
     function drawFlower(f) {
-      if (f.alpha <= 0) return;
-      ctx.save();
-      ctx.globalAlpha = f.alpha;
-      ctx.translate(f.x, f.y);
-      ctx.rotate(f.rotation);
-
-      const r  = f.maxR * f.progress;
-      const pr = r * 0.55;
-      const [c1, c2, c3] = f.palette;
-
-      for (let p = 0; p < f.petals; p++) {
-        const angle = (p / f.petals) * Math.PI * 2;
-        const px = Math.cos(angle) * pr;
-        const py = Math.sin(angle) * pr;
-        ctx.beginPath();
-        ctx.ellipse(px, py, r * 0.38, r * 0.24, angle, 0, Math.PI * 2);
-        const g = ctx.createRadialGradient(px, py, 0, px, py, r * 0.4);
-        g.addColorStop(0, c2);
-        g.addColorStop(1, c1);
-        ctx.fillStyle = g;
-        ctx.fill();
+      if (f.alpha<=0) return;
+      ctx.save(); ctx.globalAlpha=f.alpha; ctx.translate(f.x,f.y); ctx.rotate(f.rotation);
+      const r=f.maxR*f.progress, pr=r*0.55, [c1,c2,c3]=f.palette;
+      for (let p=0;p<f.petals;p++){
+        const angle=(p/f.petals)*Math.PI*2, px=Math.cos(angle)*pr, py=Math.sin(angle)*pr;
+        ctx.beginPath(); ctx.ellipse(px,py,r*0.38,r*0.24,angle,0,Math.PI*2);
+        const g=ctx.createRadialGradient(px,py,0,px,py,r*0.4);
+        g.addColorStop(0,c2); g.addColorStop(1,c1); ctx.fillStyle=g; ctx.fill();
       }
-
-      ctx.beginPath();
-      ctx.arc(0, 0, r * 0.22, 0, Math.PI * 2);
-      ctx.fillStyle = c3;
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(0, 0, r * 0.22, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(0,0,0,0.18)';
-      ctx.lineWidth = r * 0.06;
-      ctx.stroke();
-
+      ctx.beginPath(); ctx.arc(0,0,r*0.22,0,Math.PI*2); ctx.fillStyle=c3; ctx.fill();
+      ctx.beginPath(); ctx.arc(0,0,r*0.22,0,Math.PI*2); ctx.strokeStyle='rgba(0,0,0,0.18)'; ctx.lineWidth=r*0.06; ctx.stroke();
       ctx.restore();
     }
-
     function tick() {
-      ctx.clearRect(0, 0, W, H);
-      flowers = flowers.filter(f => !f.done);
-      while (flowers.length < 14) flowers.push(makeFlower());
-
-      for (const f of flowers) {
-        if (f.progress < 1) {
-          f.progress = Math.min(1, f.progress + f.speed);
-          f.alpha    = Math.min(0.75, f.alpha + f.speed * 2);
-        } else {
-          f.waited++;
-          if (f.waited > f.waitTicks) {
-            f.alpha -= f.fadeSpeed;
-            if (f.alpha <= 0) { f.done = true; continue; }
-          }
-        }
+      ctx.clearRect(0,0,W,H);
+      flowers=flowers.filter(f=>!f.done);
+      while(flowers.length<14) flowers.push(makeFlower());
+      for(const f of flowers){
+        if(f.progress<1){f.progress=Math.min(1,f.progress+f.speed);f.alpha=Math.min(0.75,f.alpha+f.speed*2);}
+        else{f.waited++;if(f.waited>f.waitTicks){f.alpha-=f.fadeSpeed;if(f.alpha<=0){f.done=true;continue;}}}
         drawFlower(f);
       }
-
       requestAnimationFrame(tick);
     }
     tick();
