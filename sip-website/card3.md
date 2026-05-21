@@ -128,7 +128,7 @@ permalink: /sip/dreamit-beit/
               <p style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #d4b84a; margin: 0 0 6px;">${date}</p>
               <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: #f5f0eb; margin: 0 0 8px; line-height: 1.3;">${escapeHtml(post.title)}</h3>
               <p style="font-size: 0.92rem; color: #a0a0a0; margin: 0 0 12px; line-height: 1.6;">${escapeHtml(post.description.substring(0, 120))}${post.description.length > 120 ? '...' : ''}</p>
-              <a href="/sip/blog/" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #d4b84a; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#e0cc6a'" onmouseout="this.style.color='#d4b84a'">Read full post →</a>
+              <a href="/sip/blog" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #d4b84a; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#e0cc6a'" onmouseout="this.style.color='#d4b84a'">Read full post →</a>
             </div>`;
         }).join('');
       })
