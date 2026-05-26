@@ -120,4 +120,4 @@ search_exclude: true
 
 ## Backend Connection
 
-Pages that fetch live data (contact forms, blog, events) make API calls to the Flask backend at `https://sipoway.opencodingsociety.com/`. When running locally, you may need to update API base URLs in the relevant page files to point to a local backend instance (`http://localhost:8587`).
+Pages that fetch live data (contact forms, blog, events) make API calls to the Flask backend at `https://sipoway.opencodingsociety.com/`. When running locally, you may need to update API base URLs in the relevant page files to point to a local backend instance (`http://localhost:4500`).
