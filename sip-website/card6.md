@@ -151,7 +151,7 @@ permalink: /sip/colegio-la-esparanza/
               <p style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: #b07de8; margin: 0 0 6px;">${date}</p>
               <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; color: #f5f0eb; margin: 0 0 8px; line-height: 1.3;">${escapeHtml(post.title)}</h3>
               <p style="font-size: 0.92rem; color: #a0a0a0; margin: 0 0 12px; line-height: 1.6;">${escapeHtml(post.description.substring(0, 120))}${post.description.length > 120 ? '...' : ''}</p>
-              <a href="/sip/blog/" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #b07de8; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#c495f0'" onmouseout="this.style.color='#b07de8'">Read full post →</a>
+              <a href="/sip/blog" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #b07de8; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#c495f0'" onmouseout="this.style.color='#b07de8'">Read full post →</a>
             </div>`;
         }).join('');
       })
