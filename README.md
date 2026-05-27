@@ -121,3 +121,7 @@ search_exclude: true
 ## Backend Connection
 
 Pages that fetch live data (contact forms, blog, events) make API calls to the Flask backend at `https://sipoway.opencodingsociety.com/`. When running locally, you may need to update API base URLs in the relevant page files to point to a local backend instance (`http://localhost:4500`).
+
+## DO NOT FORK THIS REPOSITORY!
+
+To future students picking this project up, please make a *new* repository by using this repo as a template. Do not make a fork.
